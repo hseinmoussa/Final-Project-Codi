@@ -100,5 +100,43 @@ dist
 # DynamoDB Local files
 .dynamodb/
 
+**/*node_modules
+**/*build
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# production
+/build
+
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
 # TernJS port file
 .tern-port
+
+
+back/public/hot
+back/public/storage
+back/storage/*.key
+back/vendor
+back/.env
+back/.env.backup
+back/.phpunit.result.cache
+back/Homestead.json
+back/Homestead.yaml
+back/npm-debug.log
+back/yarn-error.log
