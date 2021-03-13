@@ -2,17 +2,17 @@
 
 namespace App;
 
+use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Tymon\JWTAuth\Contracts\JWTSubject;
 
-use App\Events;
-use App\Hobbies;
-class User extends Authenticatable implements JWTSubject
 
+class Admins extends Authenticatable implements JWTSubject
 {
     use Notifiable;
+  
+    public $timestamps = false;
 
     /**
      * The attributes that are mass assignable.
@@ -20,7 +20,7 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','image','phone','gender','age'
+        'name', 'email', 'password','is_owner','image'
     ];
 
     /**
@@ -40,7 +40,7 @@ class User extends Authenticatable implements JWTSubject
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
+    
     public function getJWTIdentifier()
     {
         return $this->getKey();
@@ -55,16 +55,5 @@ class User extends Authenticatable implements JWTSubject
         if ( !empty($password) ) {
             $this->attributes['password'] = bcrypt($password);
         }
-    } 
-
-
-    public function hobbies()
-    {
-        return $this->belongsToMany(Hobbies::class, 'Users_Hobbies', 'user_id', 'hobby_id');
-    //->withPivot('quantity')
-    }
-    public function events()
-    {
-        return $this->hasMany(Events::class, 'user_id', 'id');
-    }
+    }   
 }

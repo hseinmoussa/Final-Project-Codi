@@ -175,6 +175,9 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        Fruitcake\Cors\CorsServiceProvider::class,
+        App\Providers\RepoServiceProvider::class
+
     ],
 
     /*
@@ -190,6 +193,8 @@ return [
 
     'aliases' => [
 
+
+        
         'App' => Illuminate\Support\Facades\App::class,
         'Arr' => Illuminate\Support\Arr::class,
         'Artisan' => Illuminate\Support\Facades\Artisan::class,
