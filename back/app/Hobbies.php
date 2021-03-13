@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Events;
+use App\User;
 class Hobbies extends Model
 {
         
@@ -24,7 +25,7 @@ class Hobbies extends Model
 
     public function users()
     {
-        return $this->belongsToMany(Users::class, 'Users_Hobbies', 'hobby_id', 'user_id');
+        return $this->belongsToMany(User::class, 'Users_Hobbies', 'hobby_id', 'user_id');
     //->withPivot('quantity')
     }
 }

@@ -67,4 +67,20 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(Events::class, 'user_id', 'id');
     }
+
+
+    public static function boot() {
+        parent::boot();
+        self::deleting(function($user) { // before delete() method call this
+             $user->hobbies()->each(function($hobby) {
+                $hobby->delete(); // <-- direct deletion
+             });
+             $user->events()->each(function($event) {
+                $event->delete(); // <-- raise another deleting event on Post to delete comments
+             });
+             // do the rest of the cleanup...
+        });
+    }
+
+
 }

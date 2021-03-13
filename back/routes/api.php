@@ -52,3 +52,15 @@ Route::put('/user/{id}', 'UsersController@update');
 // Route::post('/user', 'UsersController@store');
 Route::delete('/user/{id}', 'UsersController@destroy');
 
+
+
+
+/////Hobbies
+Route::get('/hobbies/{row}', 'HobbiesController@index');
+Route::get('/hobby/{id}', 'HobbiesController@show');
+Route::get('/hobbyRelations/{id}', 'HobbiesController@showRelation');
+Route::put('/hobby/{id}', 'HobbiesController@update');
+Route::post('/hobby', 'HobbiesController@store');
+Route::delete('/hobby/{id}', 'HobbiesController@destroy');
+
+

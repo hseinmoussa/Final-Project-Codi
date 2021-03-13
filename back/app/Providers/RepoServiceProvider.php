@@ -17,6 +17,10 @@ class RepoServiceProvider extends ServiceProvider
             'App\Repositories\Interfaces\UsersInterface',
             'App\Repositories\Users'
         );
+        $this->app->bind(
+            'App\Repositories\Interfaces\HobbiesInterface',
+            'App\Repositories\HobbiesRepo'
+        );
     }
 
     /**

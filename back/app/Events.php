@@ -39,4 +39,16 @@ class Events extends Model
     {
         return $this->belongsTo(Cities::class, 'city_id', 'id');
     }
+
+
+    public static function boot() {
+        parent::boot();
+        self::deleting(function($user) { // before delete() method call this
+             $user->hobbies()->detach();
+             $user->images()->each(function($image) {
+                $image->delete(); 
+             });
+        });
+    }
+
 }
