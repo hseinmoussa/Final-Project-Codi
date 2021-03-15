@@ -28,4 +28,13 @@ class Hobbies extends Model
         return $this->belongsToMany(User::class, 'Users_Hobbies', 'hobby_id', 'user_id');
     //->withPivot('quantity')
     }
+
+
+    public static function boot() {
+        parent::boot();
+        self::deleting(function($hobby) { // before delete() method call this
+             $hobby->users()->detach();
+             $hobby->events()->detach();
+        });
+    }
 }

@@ -1,31 +1,38 @@
 <?php
-
 namespace App\Http\Controllers;
-
-use App\Countries;
 use Illuminate\Http\Request;
+use App\Countries;
+use App\Repositories\Interfaces\CountriesInterface;
+use App\Response\Response;
+use App\Http\Requests\CountriesRequest;
+
+
+
 
 class CountriesController extends Controller
 {
+    protected $repository = null;
+
+    public function __construct(CountriesInterface $repository)
+    {
+        $this->repository = $repository;
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($rowNb)
     {
-        //
+     
+        $Countries = $this->repository->index($rowNb);
+
+        if ($Countries) return Response::success($Countries);
+        
+        return Response::error(400, "couldn't get Countries");
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -33,9 +40,19 @@ class CountriesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CountriesRequest $request)
     {
-        //
+      
+        if ($request->validator->fails())  return Response::error(400, $request->validator->messages());
+        
+    
+        $Country = $this->repository->storeOrUpdate($request);
+
+        if ($Country)  return Response::success($Country);
+        
+        return Response::error(400, "couldn't add new Country");
+    
+          
     }
 
     /**
@@ -44,33 +61,60 @@ class CountriesController extends Controller
      * @param  \App\Countries  $countries
      * @return \Illuminate\Http\Response
      */
-    public function show(Countries $countries)
+    public function show($id)
     {
-        //
+
+        $Country = $this->repository->show($id);
+
+        if ($Country) return Response::success($Country);
+
+        return Response::error(400, "couldn't find Country");
+
     }
 
-    /**
-     * Show the form for editing the specified resource.
+            /**
+     * Display the specified resource.
      *
-     * @param  \App\Countries  $countries
+     * @param  \App\Countries $Country
      * @return \Illuminate\Http\Response
      */
-    public function edit(Countries $countries)
+    public function showRelation($id)
     {
-        //
+
+        $Country = $this->repository->relations($id);
+
+        if ($Country) return Response::success($Country);
+
+        return Response::error(400, "couldn't find Country");
+
     }
 
-    /**
+
+
+
+     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Countries  $countries
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Countries $countries)
+    public function update(CountriesRequest $request, $id)
     {
-        //
+      
+        if ($request->validator->fails())  return Response::error(400, $request->validator->messages());
+
+    
+        $Country = $this->repository->storeOrUpdate($request,$id);
+
+        if ($Country)  return Response::success($Country);
+        
+        return Response::error(400, "couldn't update Country");
+
+        
     }
+
+
 
     /**
      * Remove the specified resource from storage.
@@ -78,8 +122,24 @@ class CountriesController extends Controller
      * @param  \App\Countries  $countries
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Countries $countries)
+    public function destroy($id)
     {
-        //
+        $Country = $this->repository->destroy($id);
+
+        if ($Country)  return Response::success("Country has been deleted successfuly");
+        
+        return Response::error(400, "couldn't delete Country");
+
     }
+
 }
+
+
+
+
+
+
+
+
+
+

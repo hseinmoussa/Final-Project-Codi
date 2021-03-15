@@ -4,6 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Cities;
+use App\User;
+use App\Hobbies;
 class Users_Hobbies extends Model
 {
     protected $table = 'Users_Hobbies';
@@ -18,4 +20,15 @@ class Users_Hobbies extends Model
     {
         return $this->belongsTo(Cities::class, 'city_id', 'id');
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    public function hobby()
+    {
+        return $this->belongsTo(Hobbies::class, 'hobby_id', 'id');
+    }
+    
 }

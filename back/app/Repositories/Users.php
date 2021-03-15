@@ -35,7 +35,9 @@ class Users implements UsersInterface
      
          
 
-     return  UsersResources::collection($user);
+    //  return  UsersResources::collection($user);
+     return  $user;
+
 
     }
 
@@ -89,7 +91,7 @@ class Users implements UsersInterface
      
              }else{
  
-             $path = self::image($request->file('image'),'images');
+             $path = self::image($request->file('image'),'users');
  
              }
          $user= new User();
@@ -111,7 +113,7 @@ class Users implements UsersInterface
 
                 $old_path = self::findImageOfId($id);
         
-                $path = self::image($request->file('image'),'images',$old_path);
+                $path = self::image($request->file('image'),'users',$old_path);
             
              }
             

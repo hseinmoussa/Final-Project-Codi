@@ -1,21 +1,25 @@
 <?php
-namespace App\Http\Controllers;
 
+namespace App\Http\Controllers;
+use App\Response\Response;
 use App\Admins;
-use Illuminate\Http\Request;
-use App\Http\Requests\AdminRequest;
+use App\Http\Requests\AdminsRequest;
+use App\Http\Requests\loginRequest;
+use App\FileType\FileType;
 
 class AdminAuthController extends Controller
 {
-    public function register(AdminRequest $request)
+    
+    public function register(AdminsRequest $request)
     {
+        if ($request->validator->fails())  return Response::error(400, $request->validator->messages());
+//        'name', 'email', 'password','image','phone','gender','age'
 
         $admin = Admins::create([
              'name' => $request->name,
              'email'    => $request->email,
              'password' => $request->password,
-             'is_owner' => $request->is_owner,
-             'image' => $request->image,
+             'image'=>self::image($request->file('image'),'images'),
          ]);
 
         $token = auth('admins')->login($admin);
@@ -23,7 +27,28 @@ class AdminAuthController extends Controller
         return $this->respondWithToken($token);
     }
 
-    /**
+    public function image($image,$folder,$old_path=null)
+    {
+
+     if(is_null($old_path))  
+    {
+     $path= FileType::store($image,$folder);
+
+     if (!$path) return Response::error(400, "Couldn't upload image");
+
+     return $path;
+
+    }else
+    {
+        $path = FileType::update($image, $folder , $old_path); 
+
+        return $path;
+    }
+ 
+    }
+
+
+      /**
      * Get a JWT token via given credentials.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -31,8 +56,11 @@ class AdminAuthController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
 
-    public function login()
+    public function login(loginRequest $request)
     {
+        if ($request->validator->fails())  return Response::error(400, $request->validator->messages());
+
+
         $credentials = request(['email', 'password']);
 
         if (! $token = auth('admins')->attempt($credentials)) {
@@ -42,47 +70,38 @@ class AdminAuthController extends Controller
         return $this->respondWithToken($token);
     }
 
+ 
+  
 
-          /**
-     * Get the authenticated Admin
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function me()
-    {
-        //return response()->json($this->guard()->user());
-        return response()->json(auth('admins')->user());
-
-    }
-
+     
     /**
-     * Log the user out (Invalidate the token)
+     * Log the admin out (Invalidate the token)
      *
      * @return \Illuminate\Http\JsonResponse
      */
+
 
     public function logout()
     {
-        auth('admins')->logout();
-
+        // auth('users')->logout();
+        auth()->guard('admins')->logout();
+        // $this->guard()->logout();
         return response()->json(['message' => 'Successfully logged out']);
     }
-
-      /**
+    /**
      * Get the token array structure.
      *
      * @param  string $token
      *
      * @return \Illuminate\Http\JsonResponse
      */
-
     protected function respondWithToken($token)
     {
         return response()->json([
             'access_token' => $token,
             'token_type'   => 'bearer',
             'expires_in'   => auth()->factory()->getTTL() * 60,
-            'Admin'         => auth()->user()
+            'admin'         => auth('admins')->user(),
         ]);
     }
 }

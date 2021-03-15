@@ -21,6 +21,8 @@ class Events extends Model
     public function hobbies()
     {
         return $this->belongsToMany(Hobbies::class, 'Events_Hobbies', 'event_id', 'hobby_id');
+
+        
     //->withPivot('quantity')
     }
 

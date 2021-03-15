@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Cities extends Model
 {
-    protected $table = 'Countries';
+    protected $table = 'Cities';
     public $timestamps = false;
 
 
@@ -30,5 +30,19 @@ class Cities extends Model
     {
         return $this->hasMany(Events::class, 'city_id', 'id');
     }
+
+//http://localhost:8000/api/cityRelations/1
+    public static function boot() {
+        parent::boot();
+        self::deleting(function($city) { 
+             $city->users_hobbies()->each(function($user_hobby) {
+                $user_hobby->delete(); // <-- raise another deleting event on Post to delete comments
+             });
+             $city->events()->each(function($event) {
+                $event->delete(); // <-- raise another deleting event on Post to delete comments
+             });
+        });
+    }
+
 }
 

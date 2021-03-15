@@ -13,6 +13,8 @@ class User extends Authenticatable implements JWTSubject
 
 {
     use Notifiable;
+    protected $table = 'users';
+
 
     /**
      * The attributes that are mass assignable.
@@ -60,8 +62,8 @@ class User extends Authenticatable implements JWTSubject
 
     public function hobbies()
     {
-        return $this->belongsToMany(Hobbies::class, 'Users_Hobbies', 'user_id', 'hobby_id');
-    //->withPivot('quantity')
+        return $this->belongsToMany(Hobbies::class, 'Users_Hobbies', 'user_id', 'hobby_id')->withPivot('id','fees_per_hour','city_id','address','level_id','rating','is_freelancer');
+
     }
     public function events()
     {

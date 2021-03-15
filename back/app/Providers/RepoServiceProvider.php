@@ -21,6 +21,38 @@ class RepoServiceProvider extends ServiceProvider
             'App\Repositories\Interfaces\HobbiesInterface',
             'App\Repositories\HobbiesRepo'
         );
+        $this->app->bind(
+            'App\Repositories\Interfaces\CountriesInterface',
+            'App\Repositories\CountriesRepo'
+        );
+        $this->app->bind(
+            'App\Repositories\Interfaces\CitiesInterface',
+            'App\Repositories\CitiesRepo'
+        );
+        $this->app->bind(
+            'App\Repositories\Interfaces\AdminsInterface',
+            'App\Repositories\AdminsRepo'
+        );
+        $this->app->bind(
+            'App\Repositories\Interfaces\ImagesInterface',
+            'App\Repositories\ImagesRepo'
+        );
+        $this->app->bind(
+            'App\Repositories\Interfaces\Users_HobbiesInterface',
+            'App\Repositories\Users_HobbiesRepo'
+        );
+        $this->app->bind(
+            'App\Repositories\Interfaces\Events_HobbiesInterface',
+            'App\Repositories\Events_HobbiesRepo'
+        );
+        $this->app->bind(
+            'App\Repositories\Interfaces\EventsInterface',
+            'App\Repositories\EventsRepo'
+        );
+
+
+        
+        
     }
 
     /**

@@ -12,6 +12,8 @@ class Admins extends Authenticatable implements JWTSubject
 {
     use Notifiable;
   
+    protected $table = 'admins';
+
     public $timestamps = false;
 
     /**

@@ -26,7 +26,8 @@ class HobbiesRepo implements HobbiesInterface
      
          
 
-     return  HobbiesResources::collection($hobby);
+    //  return  HobbiesResources::collection($hobby);
+     return $hobby;
 
     }
 

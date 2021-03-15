@@ -23,7 +23,7 @@ class CreateUsersHobbiesTable extends Migration
             $table->string('address');
             $table->float('rating')->nullable();
             $table->boolean('is_freelancer')->nullable()->default(false);
-            $table->unique(['hobby_id', 'user_id','city_id']);
+            $table->unique(['hobby_id', 'user_id','city_id','is_freelancer']);
 
 //        'id','hobby_id','user_id','fees_per_hour','city_id','address','level_id','rating','is_freelancer'
 

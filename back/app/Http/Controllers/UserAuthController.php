@@ -19,7 +19,7 @@ class UserAuthController extends Controller
              'name' => $request->name,
              'email'    => $request->email,
              'password' => $request->password,
-             'image'=>self::image($request->file('image'),'images'),
+             'image'=>self::image($request->file('image'),'users'),
              'phone' => $request->phone,
              'gender' => $request->gender,
              'age' => $request->age,
