@@ -29,7 +29,7 @@ class Events_HobbiesRepo implements Events_HobbiesInterface
         // ::where('name', 'LIKE', '%' . $searchName. '%')
         //  ->with(['Events','events'])
          
-        $Events_Hobbies= Events_Hobbies::with(['event','hobby'])->paginate($rowNb);
+        $Events_Hobbies= Events_Hobbies::with(['event.user','hobby'])->paginate($rowNb);
 
          
 
@@ -48,8 +48,10 @@ class Events_HobbiesRepo implements Events_HobbiesInterface
         $hobby = Hobbies::whereHas('Events', function ($query) use($id) {
             $query->where('Events_Hobbies.id', $id);
         })->get(); 
+        
         if(!Events_Hobbies::where('id',$id)->first())
-        return null;
+            return null;
+
         $Events_hobby= Events_Hobbies::where('id',$id)->first();
 
         $Events_hobby->Events_hobby_id = $hobby[0]->id;
@@ -76,7 +78,7 @@ class Events_HobbiesRepo implements Events_HobbiesInterface
     {   
       try{
        
-        $Events = Events::where('id',$request->Events_id)->first();
+        $Events = Events::where('id',$request->event_id)->first();
 
         $hobby_id = $request->hobby_id;
 
@@ -86,19 +88,20 @@ class Events_HobbiesRepo implements Events_HobbiesInterface
         {
 
         $Events->hobbies()
-        ->attach($hobby_id,['city_id'=>$request->city_id,'level_id'=>$request->level_id,'address'=>$request->address]);
+        ->attach($hobby_id);
         //  $Events_hobby= new Events_Hobbies();
 
         //  $Events_hobby->fill($request->all());
         
         }else
         {
-         
-           
-            $attributes = ['city_id'=>$request->city_id,'level_id'=>$request->level_id,'address'=>$request->address];
-            
             if(!is_null($Events))
-                $Events->hobbies()->updateExistingPivot($hobby_id, $attributes);
+            {
+                self::destroy($id);
+                $Events->hobbies()
+                ->attach($hobby_id);
+                // $Events->hobbies()->updateExistingPivot($hobby_id);
+            }
             else
                 return null;
             // return Events_Hobbies::where('id',$id)->first();

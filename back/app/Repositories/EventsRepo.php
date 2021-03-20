@@ -21,8 +21,8 @@ class EventsRepo implements EventsInterface
        
      
         $Events= Events::where('name', 'LIKE', '%' . $searchName. '%')
-        ->with('images')
-         ->paginate($rowNb);
+        ->with(['images','user','state'])
+        ->paginate($rowNb);
      
          
 
@@ -58,9 +58,10 @@ class EventsRepo implements EventsInterface
          $event->location=$request->all()['location'];
          $event->start_date=$request->all()['start_date'];
          $event->end_date=$request->all()['end_date'];
-         $event->start_time=$request->all()['start_time'];
-         $event->end_time=$request->all()['end_time'];
-         $event->city_id=$request->all()['city_id'];
+         $event->zone=$request->all()['zone'];
+        //  $event->start_time=$request->all()['start_time'];
+        //  $event->end_time=$request->all()['end_time'];
+         $event->state_id=$request->all()['state_id'];
          $event->user_id=$request->all()['user_id'];
 
         //  echo($request->photos);
@@ -85,7 +86,7 @@ class EventsRepo implements EventsInterface
         
          $event->save();
          foreach ($request->photos as $photo) {
-        
+
             copyImage::store($photo,$event->id);
             
          }

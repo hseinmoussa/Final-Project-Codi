@@ -54,6 +54,17 @@ class HobbiesRepo implements HobbiesInterface
     {   
         if(is_null($id))
         {
+
+            if(empty($request->file('image'))){
+           
+                $path = '';
+     
+             }else{
+ 
+             $path = self::image($request->file('image'),'hobbies');
+ 
+             }
+
          $hobby= new Hobbies();
 
          $hobby->fill($request->all());
@@ -61,6 +72,18 @@ class HobbiesRepo implements HobbiesInterface
         }else
         {
          
+            if(empty($request->file('image'))){
+           
+                $path = self::findImageOfId($id);
+     
+             }else{
+
+                $old_path = self::findImageOfId($id);
+        
+                $path = self::image($request->file('image'),'hobbies',$old_path);
+            
+             }
+
        
             $hobby = Hobbies::where('id', $id)->first();
             if(!is_null($hobby))
@@ -71,11 +94,51 @@ class HobbiesRepo implements HobbiesInterface
         }
 
         
+        $hobby->image = $path;
+
          $hobby->save();
       
          return $hobby;
     }
     
+
+
+
+    public function findImageOfId($id)
+    {
+     
+       $user = $this->show($id);
+       
+       if(!is_null($user))
+       {
+       $old_path = $user->image;
+
+       return $old_path;
+       }
+       return null;
+
+    }
+
+    public function image($image,$folder,$old_path=null)
+    {
+
+     if(is_null($old_path))  
+    {
+     $path= FileType::store($image,$folder);
+
+     if (!$path) return Response::error(400, "Couldn't upload image");
+
+     return $path;
+
+    }else
+    {
+        $path = FileType::update($image, $folder , $old_path); 
+
+        return $path;
+    }
+ 
+    }
+
 
 
     public function destroy($id)
@@ -84,6 +147,11 @@ class HobbiesRepo implements HobbiesInterface
         $hobby = self::show($id);
 
      
+        $image = self::findImageOfId($id);
+
+        if(!is_null($image))
+          FileType::destroy($image);
+
         if(!is_null($hobby))
           $hobby->delete();
 

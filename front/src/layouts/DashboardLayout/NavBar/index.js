@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Link as RouterLink, useLocation } from 'react-router-dom';
+import React, { useEffect, useState, useRef } from 'react';
+import { Link as RouterLink, useLocation, useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
   Avatar,
@@ -10,7 +10,8 @@ import {
   Hidden,
   List,
   Typography,
-  makeStyles
+  makeStyles,
+  Icon
 } from '@material-ui/core';
 import {
   AlertCircle as AlertCircleIcon,
@@ -20,60 +21,75 @@ import {
   ShoppingBag as ShoppingBagIcon,
   User as UserIcon,
   UserPlus as UserPlusIcon,
-  Users as UsersIcon
+  Users as UsersIcon,
+  UserCheck,
+  MapPin,
+  Heart,
+  UserPlus,
+  Grid
 } from 'react-feather';
 import NavItem from './NavItem';
 
-const user = {
-  avatar: '/static/images/avatars/avatar_6.png',
-  jobTitle: 'Senior Developer',
-  name: 'Katarina Smith'
-};
-
 const items = [
   {
-    href: '/app/dashboard',
+    href: '/admin',
     icon: BarChartIcon,
     title: 'Dashboard'
   },
   {
-    href: '/app/customers',
+    href: '/admin/customers',
     icon: UsersIcon,
-    title: 'Customers'
+    title: 'Users'
   },
   {
-    href: '/app/products',
+    href: '/admin/admins',
+    icon: UserCheck,
+    title: 'Admins'
+  },
+
+  {
+    href: '/admin/hobbies',
+    icon: Heart,
+    title: 'Hobbies'
+  },
+  {
+    href: '/admin/usersHobbies',
+    icon: UserPlus,
+    title: 'Users Hobbies'
+  },
+  {
+    href: '/admin/countries',
+    icon: MapPin,
+    title: 'Countries'
+  },
+  {
+    href: '/admin/states',
+    icon: MapPin,
+    title: 'States'
+  },
+  {
+    href: '/admin/eventsHobbies',
     icon: ShoppingBagIcon,
-    title: 'Products'
+    title: 'Events Hobbies'
   },
   {
-    href: '/app/account',
+    href: '/admin/events',
+    icon: Grid,
+    title: 'events'
+  },
+  {
+    href: '/admin/account',
     icon: UserIcon,
     title: 'Account'
   },
   {
-    href: '/app/settings',
+    href: '/admin/settings',
     icon: SettingsIcon,
     title: 'Settings'
-  },
-  {
-    href: '/login',
-    icon: LockIcon,
-    title: 'Login'
-  },
-  {
-    href: '/register',
-    icon: UserPlusIcon,
-    title: 'Register'
-  },
-  {
-    href: '/404',
-    icon: AlertCircleIcon,
-    title: 'Error'
   }
 ];
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   mobileDrawer: {
     width: 256
   },
@@ -86,50 +102,103 @@ const useStyles = makeStyles(() => ({
     cursor: 'pointer',
     width: 64,
     height: 64
+  },
+
+  button: {
+    color: theme.palette.text.secondary,
+    fontWeight: theme.typography.fontWeightMedium,
+    justifyContent: 'flex-start',
+    letterSpacing: 0,
+    padding: '10px 8px',
+    textTransform: 'none',
+    width: '100%'
+  },
+  icon: {
+    marginRight: theme.spacing(1)
+  },
+
+  active: {
+    color: theme.palette.primary.main,
+    '& $title': {
+      fontWeight: theme.typography.fontWeightMedium
+    },
+    '& $icon': {
+      color: theme.palette.primary.main
+    }
   }
 }));
 
 const NavBar = ({ onMobileClose, openMobile }) => {
   const classes = useStyles();
   const location = useLocation();
+  const [user, setUser] = useState('');
+
+  const [logout, setLogout] = useState(false);
+
+  const navigate = useNavigate();
+
+  const tokenAdmin = window.localStorage.getItem('tokenAdmin');
+  const id = window.localStorage.getItem('Admin');
 
   useEffect(() => {
     if (openMobile && onMobileClose) {
       onMobileClose();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname]);
 
+  const isInitialMount2 = useRef(true);
+
+  useEffect(() => {
+    if (isInitialMount2.current) {
+      isInitialMount2.current = false;
+    } else {
+      if (logout) {
+        console.log(logout);
+        window.localStorage.removeItem('tokenAdmin');
+        window.localStorage.removeItem('Admin');
+        navigate('/Log/dash', { replace: true });
+      }
+    }
+  }, [logout]);
+
+  const handleLogout = () => {
+    setLogout(!logout);
+  };
+  useEffect(() => {
+    try {
+      fetch(process.env.REACT_APP_URL + `admin/admin/${id}`, {
+        method: 'get',
+        // body: formData,
+        headers: {
+          Accept: 'application/json',
+          Authorization: 'Bearer ' + tokenAdmin
+        }
+      })
+        .then((response) => response.json())
+        .then((res) => {
+          console.log(res);
+          if (res.status == 200) {
+            setUser(res.data);
+          } else {
+            console.log(res);
+            // alert(res.error.message[Object.keys(res.error.message)][0]);
+          }
+        });
+    } catch (e) {
+      console.log(e);
+    }
+  }, []);
   const content = (
-    <Box
-      height="100%"
-      display="flex"
-      flexDirection="column"
-    >
-      <Box
-        alignItems="center"
-        display="flex"
-        flexDirection="column"
-        p={2}
-      >
+    <Box height="100%" display="flex" flexDirection="column">
+      <Box alignItems="center" display="flex" flexDirection="column" p={2}>
         <Avatar
           className={classes.avatar}
           component={RouterLink}
-          src={user.avatar}
+          src={process.env.REACT_APP_URL2 + user.image}
           to="/app/account"
         />
-        <Typography
-          className={classes.name}
-          color="textPrimary"
-          variant="h5"
-        >
-          {user.name}
-        </Typography>
-        <Typography
-          color="textSecondary"
-          variant="body2"
-        >
-          {user.jobTitle}
+        <Typography className={classes.name} color="textPrimary" variant="h5">
+          {user && user.name}
         </Typography>
       </Box>
       <Divider />
@@ -145,40 +214,19 @@ const NavBar = ({ onMobileClose, openMobile }) => {
           ))}
         </List>
       </Box>
-      <Box flexGrow={1} />
-      <Box
-        p={2}
-        m={2}
-        bgcolor="background.dark"
-      >
-        <Typography
-          align="center"
-          gutterBottom
-          variant="h4"
+
+      <Box p={2}>
+        <Button
+          onClick={handleLogout}
+          activeClassName={classes.active}
+          className={classes.button}
         >
-          Need more?
-        </Typography>
-        <Typography
-          align="center"
-          variant="body2"
-        >
-          Upgrade to PRO version and access 20 more screens
-        </Typography>
-        <Box
-          display="flex"
-          justifyContent="center"
-          mt={2}
-        >
-          <Button
-            color="primary"
-            component="a"
-            href="https://react-material-kit.devias.io"
-            variant="contained"
-          >
-            See PRO version
-          </Button>
-        </Box>
+          {<SettingsIcon className={classes.icon} size="20" />}
+          <span>Logout</span>
+        </Button>
       </Box>
+
+      <Box flexGrow={1} />
     </Box>
   );
 

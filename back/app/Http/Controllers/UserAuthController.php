@@ -9,7 +9,10 @@ use App\FileType\FileType;
 
 class UserAuthController extends Controller
 {
-    
+  
+    public $successStatus = 200;
+
+
     public function register(UsersRequest $request)
     {
         if ($request->validator->fails())  return Response::error(400, $request->validator->messages());
@@ -26,6 +29,13 @@ class UserAuthController extends Controller
          ]);
 
         $token = auth('users')->login($user);
+
+        $user->sendApiEmailVerificationNotification();
+
+$success['message'] = 'Please confirm yourself by clicking on verify user button sent to you on your email';
+
+return response()->json(['success'=>$success], $this-> successStatus);
+
 
         return $this->respondWithToken($token);
     }
@@ -67,10 +77,23 @@ class UserAuthController extends Controller
         $credentials = request(['email', 'password']);
 
         if (! $token = auth('users')->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return response()->json(['status'=>400,'error' => 'Unauthorized'], 401);
         }
+        else 
+        if(auth('users')->user()->email_verified_at !== NULL){
 
-        return $this->respondWithToken($token);
+            $success['message'] = 'Login successfull';
+            
+            return $this->respondWithToken($token);
+            // return response()->json(['success' => $success], $this-> successStatus);
+            
+            }else{
+            
+            return response()->json(['error'=>'Please Verify Email'], 401);
+            
+            }
+
+        
     }
 
         /**
@@ -97,7 +120,7 @@ class UserAuthController extends Controller
     public function logout()
     {
         // auth('users')->logout();
-        auth()->guard('users')->logout();
+        // auth()->guard('users')->logout();
         // $this->guard()->logout();
         return response()->json(['message' => 'Successfully logged out']);
     }
@@ -111,6 +134,7 @@ class UserAuthController extends Controller
     protected function respondWithToken($token)
     {
         return response()->json([
+            'status'=>200,
             'access_token' => $token,
             'token_type'   => 'bearer',
             'expires_in'   => auth()->factory()->getTTL() * 60,

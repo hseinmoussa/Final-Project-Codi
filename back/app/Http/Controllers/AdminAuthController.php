@@ -19,7 +19,7 @@ class AdminAuthController extends Controller
              'name' => $request->name,
              'email'    => $request->email,
              'password' => $request->password,
-             'image'=>self::image($request->file('image'),'images'),
+             'image'=>self::image($request->file('image'),'admins'),
          ]);
 
         $token = auth('admins')->login($admin);
@@ -64,7 +64,8 @@ class AdminAuthController extends Controller
         $credentials = request(['email', 'password']);
 
         if (! $token = auth('admins')->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return response()->json(['status'=>400,'error' => 'Unauthorized'], 401);
+
         }
 
         return $this->respondWithToken($token);
@@ -98,6 +99,7 @@ class AdminAuthController extends Controller
     protected function respondWithToken($token)
     {
         return response()->json([
+            'status'=>200,
             'access_token' => $token,
             'token_type'   => 'bearer',
             'expires_in'   => auth()->factory()->getTTL() * 60,

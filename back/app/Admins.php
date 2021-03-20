@@ -58,4 +58,10 @@ class Admins extends Authenticatable implements JWTSubject
             $this->attributes['password'] = bcrypt($password);
         }
     }   
+
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new AdminResetPasswordNotification($token));
+    }
+    
 }

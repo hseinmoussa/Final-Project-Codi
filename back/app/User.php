@@ -7,14 +7,26 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
+
 use App\Events;
 use App\Hobbies;
-class User extends Authenticatable implements JWTSubject
+
+use App\Notifications\VerifyApiEmail;
+class User extends Authenticatable implements JWTSubject , MustVerifyEmail
 
 {
     use Notifiable;
     protected $table = 'users';
 
+    
+    
+    public function sendApiEmailVerificationNotification()
+
+    {
+
+    $this->notify(new VerifyApiEmail); // my notification
+
+    }
 
     /**
      * The attributes that are mass assignable.
@@ -62,7 +74,7 @@ class User extends Authenticatable implements JWTSubject
 
     public function hobbies()
     {
-        return $this->belongsToMany(Hobbies::class, 'Users_Hobbies', 'user_id', 'hobby_id')->withPivot('id','fees_per_hour','city_id','address','level_id','rating','is_freelancer');
+        return $this->belongsToMany(Hobbies::class, 'Users_Hobbies', 'user_id', 'hobby_id')->withPivot('id','fees_per_hour','state_id','address','level_id','rating','is_freelancer');
 
     }
     public function events()
@@ -70,6 +82,7 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(Events::class, 'user_id', 'id');
     }
 
+ 
 
     public static function boot() {
         parent::boot();

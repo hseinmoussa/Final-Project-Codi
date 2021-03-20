@@ -16,8 +16,7 @@ class CreateHobbiesTable extends Migration
         Schema::create('Hobbies', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-
-
+            $table->string('image');
           
         });
     }

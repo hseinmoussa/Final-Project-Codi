@@ -26,8 +26,8 @@ class RepoServiceProvider extends ServiceProvider
             'App\Repositories\CountriesRepo'
         );
         $this->app->bind(
-            'App\Repositories\Interfaces\CitiesInterface',
-            'App\Repositories\CitiesRepo'
+            'App\Repositories\Interfaces\StatesInterface',
+            'App\Repositories\StatesRepo'
         );
         $this->app->bind(
             'App\Repositories\Interfaces\AdminsInterface',

@@ -26,8 +26,9 @@ class Events_HobbiesResources extends ResourceCollection
              $myarray['user_name']= $this->collection[$i]->name;
              $myarray['start_date']=$this->collection[$i]->start_date;
              $myarray['end_date']=$this->collection[$i]->end_date;
-             $myarray['start_time']=$this->collection[$i]->start_time;
-             $myarray['end_time']=$this->collection[$i]->end_time;
+             $myarray['zone']=$this->collection[$i]->zone;
+            //  $myarray['start_time']=$this->collection[$i]->start_time;
+            //  $myarray['end_time']=$this->collection[$i]->end_time;
              $myarray['location']=$this->collection[$i]->location;
        
              $myarray3=[];

@@ -17,15 +17,16 @@ class CreateUsersHobbiesTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('hobby_id')->unsigned();
             $table->bigInteger('user_id')->unsigned();
-            $table->bigInteger('city_id')->unsigned();
-            $table->bigInteger('level_id')->unsigned();
-            $table->float('fees_per_hour')->nullable();
+            $table->bigInteger('state_id')->unsigned();
+            $table->string('level_id');
+            $table->string('fees_per_hour')->nullable();
             $table->string('address');
-            $table->float('rating')->nullable();
+            $table->string('rating')->nullable();
+            $table->string('about')->nullable();
             $table->boolean('is_freelancer')->nullable()->default(false);
-            $table->unique(['hobby_id', 'user_id','city_id','is_freelancer']);
+            $table->unique(['hobby_id', 'user_id','state_id','is_freelancer']);
 
-//        'id','hobby_id','user_id','fees_per_hour','city_id','address','level_id','rating','is_freelancer'
+//        'id','hobby_id','user_id','fees_per_hour','state_id','address','level_id','rating','is_freelancer'
 
 
           

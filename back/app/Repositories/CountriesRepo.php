@@ -19,7 +19,7 @@ class CountriesRepo implements CountriesInterface
        
      
         $country= Countries::where('name', 'LIKE', '%' . $searchName. '%')
-         ->with('cities')
+         ->with('states')
          ->paginate($rowNb);
      
          
@@ -39,7 +39,7 @@ class CountriesRepo implements CountriesInterface
 
     public function relations($id)
     {
-        $country= Countries::where('id',$id)->with('cities')->first();
+        $country= Countries::where('id',$id)->with('states')->first();
         
         return  $country;
     }

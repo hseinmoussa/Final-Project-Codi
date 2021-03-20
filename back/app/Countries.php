@@ -1,7 +1,7 @@
 <?php
 
 namespace App;
-use App\Cities;
+use App\States;
 use Illuminate\Database\Eloquent\Model;
 
 class Countries extends Model
@@ -14,9 +14,9 @@ class Countries extends Model
         'id','name','code'
     ];
 
-    public function cities()
+    public function states()
     {
-        return $this->hasMany(Cities::class, 'country_id', 'id');
+        return $this->hasMany(States::class, 'country_id', 'id');
     }
 
 
@@ -24,8 +24,8 @@ class Countries extends Model
     {
         parent::boot();
         self::deleting(function($contry) { // before delete() method call this
-             $contry->cities()->each(function($city) {
-                $city->delete(); 
+             $contry->states()->each(function($state) {
+                $state->delete(); 
              });
                });
     }

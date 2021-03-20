@@ -28,6 +28,10 @@ class AssignGuard extends BaseMiddleware
 
         try {
             
+            $headers = apache_request_headers();
+            $request->headers->set('Authorization', $headers['authorization']);
+
+            // dd(JWTAuth::getToken());
             if (! $user = JWTAuth::parseToken()->authenticate()) {
                 return response()->json(['user_not_found'], 404);
             }
