@@ -104,13 +104,11 @@ const Results = ({ className, render, setRender, ...rest }) => {
 
     try {
       let formData = new FormData();
-      console.log(info);
 
       formData.append('name', info.name);
 
       formData.append('email', info.email);
       if (info.password && info.password != undefined && info.password != '') {
-        console.log(info.password);
         formData.append('password', info.password);
       }
       formData.append('image', info.image);
@@ -127,7 +125,6 @@ const Results = ({ className, render, setRender, ...rest }) => {
         .then((response) => response.json())
         .then((res) => {
           if (res.status == 200) {
-            console.log(res);
             setOpen(!open);
             setRender(render + 1);
             toast.info('Eddited Successfully', {
@@ -157,7 +154,6 @@ const Results = ({ className, render, setRender, ...rest }) => {
               progress: undefined
             });
           } else {
-            console.log(res);
             res.error &&
               res.error.message &&
               toast.error(
@@ -208,7 +204,6 @@ const Results = ({ className, render, setRender, ...rest }) => {
         .then((response) => response.json())
         .then((res) => {
           if (res.status == 200) {
-            console.log(res.data);
             setCustomers(res.data.data);
             setTotal(res.data.total);
           } else if (
@@ -237,15 +232,6 @@ const Results = ({ className, render, setRender, ...rest }) => {
 
   useEffect(() => {
     try {
-      // e.preventDefault();
-
-      // let formData = new FormData();
-      // formData.append(
-      //   "article_category_id",
-      //   document.getElementById("assign").value
-      // );
-      console.log(search);
-
       fetch(
         process.env.REACT_APP_URL +
           `admin/admins/${limit}?page=1&name=${search}&email=${search_email}`,
@@ -261,7 +247,6 @@ const Results = ({ className, render, setRender, ...rest }) => {
         .then((response) => response.json())
         .then((res) => {
           if (res.status == 200) {
-            console.log(res.data);
             setCustomers(res.data.data);
             setTotal(res.data.total);
           } else if (
@@ -293,7 +278,6 @@ const Results = ({ className, render, setRender, ...rest }) => {
   };
 
   const handlePageChange = (event, newPage) => {
-    console.log(newPage);
     setPage(newPage);
   };
 
@@ -312,7 +296,6 @@ const Results = ({ className, render, setRender, ...rest }) => {
           .then((response) => response.json())
           .then((res) => {
             if (res.status == 200) {
-              console.log(res.data);
               toast.info('Deleted Successfully', {
                 position: 'top-center',
                 autoClose: 1000,
@@ -341,7 +324,6 @@ const Results = ({ className, render, setRender, ...rest }) => {
                 progress: undefined
               });
             } else {
-              console.log(res);
               return toast.info(
                 "Couldn't delete item, Please try again later",
                 {
@@ -364,7 +346,6 @@ const Results = ({ className, render, setRender, ...rest }) => {
   };
 
   const handleEdit = (e, id, customer) => {
-    console.log(customer);
     setInfo({
       ['id']: id,
       ['name']: customer.name,

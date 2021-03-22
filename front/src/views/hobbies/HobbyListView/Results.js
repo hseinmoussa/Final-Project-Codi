@@ -105,6 +105,12 @@ const Results = ({ className, render, setRender, ...rest }) => {
       formData.append('name', info.name);
       formData.append('image', info.image);
 
+      if (info.main != null && info.main != undefined) {
+        console.log(info.main);
+        formData.append('main', info.main);
+      }
+      console.log(info);
+
       formData.append('_method', 'put');
 
       fetch(process.env.REACT_APP_URL + `admin/hobby/${info.id}`, {
@@ -118,7 +124,6 @@ const Results = ({ className, render, setRender, ...rest }) => {
         .then((response) => response.json())
         .then((res) => {
           if (res.status == 200) {
-            console.log(res);
             setOpen(!open);
             setRender(render + 1);
             toast.info('Eddited Successfully', {
@@ -148,20 +153,21 @@ const Results = ({ className, render, setRender, ...rest }) => {
               progress: undefined
             });
           } else {
-            console.log(res);
-            toast.error(
-              res.error.message[Object.keys(res.error.message)[0]][0],
-              {
-                position: 'top-center',
-                autoClose: 1000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                // onClose: () => (window.location.href = "/cart"),
-                draggable: true,
-                progress: undefined
-              }
-            );
+            res.error &&
+              res.error.message &&
+              toast.error(
+                res.error.message[Object.keys(res.error.message)[0]][0],
+                {
+                  position: 'top-center',
+                  autoClose: 1000,
+                  hideProgressBar: true,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  // onClose: () => (window.location.href = "/cart"),
+                  draggable: true,
+                  progress: undefined
+                }
+              );
             // alert(res.error.message[Object.keys(res.error.message)][0]);
           }
         });
@@ -187,7 +193,6 @@ const Results = ({ className, render, setRender, ...rest }) => {
         .then((response) => response.json())
         .then((res) => {
           if (res.status == 200) {
-            console.log(res.data);
             setCustomers(res.data.data);
             setTotal(res.data.total);
           } else if (
@@ -216,8 +221,6 @@ const Results = ({ className, render, setRender, ...rest }) => {
 
   useEffect(() => {
     try {
-      console.log(search);
-
       fetch(
         process.env.REACT_APP_URL +
           `admin/hobbies/${limit}?page=1&name=${search}`,
@@ -233,7 +236,6 @@ const Results = ({ className, render, setRender, ...rest }) => {
         .then((response) => response.json())
         .then((res) => {
           if (res.status == 200) {
-            console.log(res.data);
             setCustomers(res.data.data);
             setTotal(res.data.total);
           } else if (
@@ -265,7 +267,6 @@ const Results = ({ className, render, setRender, ...rest }) => {
   };
 
   const handlePageChange = (event, newPage) => {
-    console.log(newPage);
     setPage(newPage);
   };
 
@@ -284,7 +285,6 @@ const Results = ({ className, render, setRender, ...rest }) => {
           .then((response) => response.json())
           .then((res) => {
             if (res.status == 200) {
-              console.log(res.data);
               toast.info('Deleted Successfully', {
                 position: 'top-center',
                 autoClose: 1000,
@@ -313,7 +313,6 @@ const Results = ({ className, render, setRender, ...rest }) => {
                 progress: undefined
               });
             } else {
-              console.log(res);
               return toast.info(
                 "Couldn't delete item, Please try again later",
                 {
@@ -336,11 +335,11 @@ const Results = ({ className, render, setRender, ...rest }) => {
   };
 
   const handleEdit = (e, id, customer) => {
-    console.log(customer);
     setInfo({
       ['id']: id,
       ['name']: customer.name,
-      ['image']: customer.image
+      ['image']: customer.image,
+      ['main']: customer.main
     });
 
     setOpen(!open);
@@ -404,6 +403,15 @@ const Results = ({ className, render, setRender, ...rest }) => {
                 onChange={setInputState}
               />
 
+              <TextValidator
+                label="Main"
+                name="main"
+                id="main"
+                value={info.main}
+                placeholder="Main ? (optional)"
+                onChange={setInputState}
+              />
+
               <Box mt={1}>
                 <Box mt={1}>
                   <input
@@ -443,6 +451,7 @@ const Results = ({ className, render, setRender, ...rest }) => {
               <TableRow>
                 <TableCell padding="checkbox"></TableCell>
                 <TableCell>Name</TableCell>
+                <TableCell>Main?</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -507,6 +516,19 @@ const Results = ({ className, render, setRender, ...rest }) => {
                         </Box>
                       </TableCell>
 
+                      <TableCell>
+                        <Box alignItems="center" display="flex">
+                          {customer.main == 1 ? (
+                            <Typography color="textPrimary" variant="body1">
+                              Yes
+                            </Typography>
+                          ) : (
+                            <Typography color="textPrimary" variant="body1">
+                              No
+                            </Typography>
+                          )}
+                        </Box>
+                      </TableCell>
                       {customer.id && (
                         <TableCell padding="checkbox">
                           <EditIcon

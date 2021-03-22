@@ -213,7 +213,6 @@ const Results = ({ className, render, setRender, ...rest }) => {
         .then((response) => response.json())
         .then((res) => {
           if (res.status == 200) {
-            console.log(res.data);
             setCustomers(res.data.data);
             setTotal(res.data.total);
           } else if (
@@ -242,15 +241,6 @@ const Results = ({ className, render, setRender, ...rest }) => {
 
   useEffect(() => {
     try {
-      // e.preventDefault();
-
-      // let formData = new FormData();
-      // formData.append(
-      //   "article_category_id",
-      //   document.getElementById("assign").value
-      // );
-      console.log(search);
-
       fetch(
         process.env.REACT_APP_URL +
           `admin/users/${limit}?page=1&name=${search}&email=${search_email}`,
@@ -266,7 +256,6 @@ const Results = ({ className, render, setRender, ...rest }) => {
         .then((response) => response.json())
         .then((res) => {
           if (res.status == 200) {
-            console.log(res.data);
             setCustomers(res.data.data);
             setTotal(res.data.total);
           } else if (
@@ -298,7 +287,6 @@ const Results = ({ className, render, setRender, ...rest }) => {
   };
 
   const handlePageChange = (event, newPage) => {
-    console.log(newPage);
     setPage(newPage);
   };
 
@@ -317,7 +305,6 @@ const Results = ({ className, render, setRender, ...rest }) => {
           .then((response) => response.json())
           .then((res) => {
             if (res.status == 200) {
-              console.log(res.data);
               toast.info('Deleted Successfully', {
                 position: 'top-center',
                 autoClose: 1000,
@@ -368,7 +355,6 @@ const Results = ({ className, render, setRender, ...rest }) => {
   };
 
   const handleEdit = (e, id, customer) => {
-    console.log(customer);
     setInfo({
       ['id']: id,
       ['name']: customer.name,

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import {
@@ -26,7 +26,28 @@ const useStyles = makeStyles(() => ({
 
 const TopBar = ({ className, onMobileNavOpen, ...rest }) => {
   const classes = useStyles();
-  const [notifications] = useState([]);
+
+  const [logout, setLogout] = useState(false);
+
+  const navigate = useNavigate();
+
+  const isInitialMount2 = useRef(true);
+
+  useEffect(() => {
+    if (isInitialMount2.current) {
+      isInitialMount2.current = false;
+    } else {
+      if (logout) {
+        window.localStorage.removeItem('tokenAdmin');
+        window.localStorage.removeItem('Admin');
+        navigate('/Log/dash', { replace: true });
+      }
+    }
+  }, [logout]);
+
+  const handleLogout = () => {
+    setLogout(!logout);
+  };
 
   return (
     <AppBar className={clsx(classes.root, className)} elevation={0} {...rest}>
@@ -45,7 +66,7 @@ const TopBar = ({ className, onMobileNavOpen, ...rest }) => {
               <NotificationsIcon />
             </Badge>
           </IconButton> */}
-          <IconButton color="inherit">
+          <IconButton color="inherit" onClick={handleLogout}>
             <InputIcon />
           </IconButton>
         </Hidden>

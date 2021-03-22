@@ -16,6 +16,7 @@ import FacebookIcon from 'src/icons/Facebook';
 import GoogleIcon from 'src/icons/Google';
 import Page from 'src/components/Page';
 import { ToastContainer, toast } from 'react-toastify';
+import MainLayout from 'src/layouts/MainLayout';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -52,15 +53,12 @@ const ResetPassword = () => {
       },
       // body: formData
       body: JSON.stringify(body)
-    }).catch(function (error) {
-      console.log(error);
-    });
+    }).catch(function (error) {});
 
     const res = await response.json();
     const result = await response.status;
 
     if (result == 200) {
-      console.log(res);
       // var accessToken = res.access_token;
       // var admin = res.admin;
       // var adminId = admin.id;
@@ -109,6 +107,7 @@ const ResetPassword = () => {
         draggable
         pauseOnHover
       />
+      <MainLayout />
       <Box
         display="flex"
         flexDirection="column"

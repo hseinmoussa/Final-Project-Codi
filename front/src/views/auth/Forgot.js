@@ -15,11 +15,12 @@ import {
 
 import Page from 'src/components/Page';
 import { ToastContainer, toast } from 'react-toastify';
+import MainLayout from 'src/layouts/MainLayout';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.dark,
-    height: '100%',
+    height: '50%',
     paddingBottom: theme.spacing(3),
     paddingTop: theme.spacing(3)
   }
@@ -31,7 +32,7 @@ const Forgot = () => {
 
   const handleSubmit = async (e) => {
     // e.preventDefault();
-    console.log(e);
+
     try {
       const url = process.env.REACT_APP_URL + 'forgot';
       const body = {
@@ -49,16 +50,12 @@ const Forgot = () => {
         },
         // body: formData
         body: JSON.stringify(body)
-      }).catch(function (error) {
-        console.log(error);
-      });
+      }).catch(function (error) {});
 
       const res = await response.json();
       const result = await response.status;
 
-      console.log(res);
       if (result == 200) {
-        console.log(res);
         // var accessToken = res.access_token;
         // var admin = res.admin;
         // var adminId = admin.id;
@@ -92,9 +89,7 @@ const Forgot = () => {
           });
         // this.setState({ error: res.error });
       }
-    } catch (e) {
-      console.log(e);
-    }
+    } catch (e) {}
   };
 
   return (
@@ -110,6 +105,7 @@ const Forgot = () => {
         draggable
         pauseOnHover
       />
+      <MainLayout />
       <Box
         display="flex"
         flexDirection="column"
@@ -128,7 +124,6 @@ const Forgot = () => {
                 .required('Email is required')
             })}
             onSubmit={(e) => {
-              console.log(e);
               handleSubmit(e);
             }}
           >
@@ -144,7 +139,7 @@ const Forgot = () => {
               <form onSubmit={handleSubmit}>
                 <Box mb={3}>
                   <Typography color="textPrimary" variant="h2">
-                    Sign in
+                    Forgot Password
                   </Typography>
                 </Box>
 

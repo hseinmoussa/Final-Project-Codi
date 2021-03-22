@@ -89,7 +89,6 @@ const Toolbar = ({ className, setRender, render, User, State, ...rest }) => {
 
   const search = (e) => {
     //action name
-    console.log(e.target.name);
     dispatch(Search_Event(e.target.value));
   };
   const setInputState = (e) => {
@@ -106,7 +105,6 @@ const Toolbar = ({ className, setRender, render, User, State, ...rest }) => {
 
     try {
       let formData = new FormData();
-      console.log(info.image);
       formData.append('name', document.getElementById('name').value);
       formData.append('start_date', datetime);
 
@@ -115,12 +113,14 @@ const Toolbar = ({ className, setRender, render, User, State, ...rest }) => {
       formData.append('user_id', document.getElementById('user_id').value);
       formData.append('state_id', document.getElementById('state_id').value);
       formData.append('location', document.getElementById('location').value);
+      formData.append(
+        'description',
+        document.getElementById('description').value
+      );
+
       formData.append('zone', timezone);
 
-      console.log(document.getElementById('name').value);
-      console.log(info.image[0]);
       for (let i = 0; i < info.image.length; i++) {
-        console.log(info.image[i]);
         formData.append('photos[]', info.image[i]);
       }
       // formData.append('photos[]', info.image);
@@ -136,7 +136,6 @@ const Toolbar = ({ className, setRender, render, User, State, ...rest }) => {
         .then((response) => response.json())
         .then((res) => {
           if (res.status == 200) {
-            console.log(res);
             setOpen(!open);
             setRender(render + 1);
             toast.info('Added Successfully', {
@@ -283,6 +282,25 @@ const Toolbar = ({ className, setRender, render, User, State, ...rest }) => {
               </Grid>
 
               <Grid container spacing={3}>
+                <Grid item xs>
+                  <TextValidator
+                    helperText="Please specify the Description"
+                    label="Description"
+                    name="description"
+                    id="description"
+                    placeholder="Description"
+                    validators={['required', 'isString']}
+                    errorMessages={[
+                      'this field is required',
+                      'Description is not valid'
+                    ]}
+                    value={info.description}
+                    onChange={(e) => setInputState(e)}
+                  />
+                </Grid>
+              </Grid>
+
+              <Grid container spacing={3}>
                 <Grid item>
                   <FormControl>
                     <InputLabel htmlFor="state_id">State</InputLabel>
@@ -330,7 +348,6 @@ const Toolbar = ({ className, setRender, render, User, State, ...rest }) => {
                   <DatePicker
                     // selected={startDate}
                     onChange={(date) => {
-                      console.log(date);
                       // setDatetime(date.toString().split(' GMT')[0]);
                       setDate1(date);
                       setDatetime(

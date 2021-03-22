@@ -72,8 +72,6 @@ const Password = ({ className, ...rest }) => {
           .then((response) => response.json())
           .then((res) => {
             if (res.status == 200) {
-              console.log(res);
-
               toast.info('Updated Successfully', {
                 position: 'top-center',
                 autoClose: 1000,
@@ -119,9 +117,7 @@ const Password = ({ className, ...rest }) => {
               // alert(res.error.message[Object.keys(res.error.message)][0]);
             }
           });
-      } catch (e) {
-        console.log(e);
-      }
+      } catch (e) {}
     }
   };
 

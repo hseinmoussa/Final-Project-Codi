@@ -63,6 +63,7 @@ class EventsRepo implements EventsInterface
         //  $event->end_time=$request->all()['end_time'];
          $event->state_id=$request->all()['state_id'];
          $event->user_id=$request->all()['user_id'];
+         $event->description=$request->all()['description'];
 
         //  echo($request->photos);
 
@@ -85,6 +86,7 @@ class EventsRepo implements EventsInterface
 
         
          $event->save();
+         if(!is_null($request->photos))
          foreach ($request->photos as $photo) {
 
             copyImage::store($photo,$event->id);

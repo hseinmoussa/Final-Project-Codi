@@ -13,7 +13,7 @@ class Hobbies extends Model
 
 
     protected $fillable = [
-        'id','name','image'
+        'id','name','image','main'
     ];
 
 

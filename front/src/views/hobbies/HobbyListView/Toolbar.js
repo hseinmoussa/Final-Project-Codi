@@ -79,7 +79,6 @@ const Toolbar = ({ className, setRender, render, ...rest }) => {
 
   const search = (e) => {
     //action name
-    console.log(e.target.name);
     if (e.target.name == 'name') dispatch(Search_Hobby(e.target.value));
 
     //props
@@ -99,10 +98,13 @@ const Toolbar = ({ className, setRender, render, ...rest }) => {
 
     try {
       let formData = new FormData();
-      console.log(info.image);
       formData.append('name', document.getElementById('name').value);
 
       formData.append('image', info.image);
+
+      if (info.main != null && info.main != undefined) {
+        formData.append('main', info.main);
+      }
 
       fetch(process.env.REACT_APP_URL + `admin/hobby`, {
         method: 'post',
@@ -115,7 +117,6 @@ const Toolbar = ({ className, setRender, render, ...rest }) => {
         .then((response) => response.json())
         .then((res) => {
           if (res.status == 200) {
-            console.log(res);
             setOpen(!open);
             setRender(render + 1);
             toast.info('Added Successfully', {
@@ -237,7 +238,16 @@ const Toolbar = ({ className, setRender, render, ...rest }) => {
                 validators={['required', 'isString']}
                 errorMessages={['this field is required', 'Name is not valid']}
                 value={info.name}
-                placeholder="First Name"
+                placeholder="Name"
+                onChange={setInputState}
+              />
+
+              <TextValidator
+                label="Main"
+                name="main"
+                id="main"
+                value={info.main}
+                placeholder=" Main? (optional,default no)"
                 onChange={setInputState}
               />
 
@@ -305,7 +315,6 @@ Toolbar.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  console.log(state);
   //state.reducer file name . variable inside reducer
   return {
     hobby: state.SearchHobby.hobby

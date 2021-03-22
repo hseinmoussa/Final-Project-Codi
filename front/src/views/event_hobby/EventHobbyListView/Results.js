@@ -94,7 +94,6 @@ const Results = ({ className, render, setRender, ...rest }) => {
 
     try {
       let formData = new FormData();
-      console.log(info.password);
 
       formData.append('event_id', info.event_id);
       formData.append('hobby_id', info.hobby_id);
@@ -112,7 +111,6 @@ const Results = ({ className, render, setRender, ...rest }) => {
         .then((response) => response.json())
         .then((res) => {
           if (res.status == 200) {
-            console.log(res);
             setOpen(!open);
             setRender(render + 1);
             toast.info('Eddited Successfully', {
@@ -142,7 +140,6 @@ const Results = ({ className, render, setRender, ...rest }) => {
               progress: undefined
             });
           } else {
-            console.log(res);
             toast.error(
               res.error.message[Object.keys(res.error.message)[0]][0],
               {
@@ -180,7 +177,6 @@ const Results = ({ className, render, setRender, ...rest }) => {
         .then((response) => response.json())
         .then((res) => {
           if (res.status == 200) {
-            console.log(res.data);
             setCustomers(res.data.data);
             setTotal(res.data.total);
           } else if (
@@ -222,7 +218,6 @@ const Results = ({ className, render, setRender, ...rest }) => {
         .then((response) => response.json())
         .then((res) => {
           if (res.status == 200) {
-            console.log(res.data);
             setCustomers(res.data.data);
             setTotal(res.data.total);
           } else if (
@@ -260,9 +255,7 @@ const Results = ({ className, render, setRender, ...rest }) => {
       })
         .then((response) => response.json())
         .then((res) => {
-          console.log(res);
           if (res.status == 200) {
-            console.log(res.data);
             setHobby(res.data);
           } else if (
             res.status == 'Token expired' ||
@@ -301,9 +294,7 @@ const Results = ({ className, render, setRender, ...rest }) => {
       })
         .then((response) => response.json())
         .then((res) => {
-          console.log(res);
           if (res.status == 200) {
-            console.log(res.data);
             setEvent(res.data);
           } else if (
             res.status == 'Token expired' ||
@@ -424,7 +415,6 @@ const Results = ({ className, render, setRender, ...rest }) => {
   };
 
   const handleEdit = (e, id, customer) => {
-    console.log(customer);
     setInfo({
       ['id']: id,
       ['event_id']: customer.event_id,

@@ -14,7 +14,7 @@ class Events extends Model
 
 
     protected $fillable = [
-        'id','name','start_date','end_date','user_id','location','state_id'
+        'id','name','start_date','end_date','user_id','location','state_id','description'
     ];
 
 

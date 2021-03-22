@@ -85,7 +85,6 @@ const Toolbar = ({ className, setRender, render, ...rest }) => {
         .then((response) => response.json())
         .then((res) => {
           if (res.status == 200) {
-            console.log(res);
             setOpen(!open);
             setRender(render + 1);
             toast.info('Added Successfully', {
@@ -149,9 +148,7 @@ const Toolbar = ({ className, setRender, render, ...rest }) => {
       })
         .then((response) => response.json())
         .then((res) => {
-          console.log(res);
           if (res.status == 200) {
-            console.log(res.data);
             setState(res.data);
           } else if (
             res.status == 'Token expired' ||
@@ -190,7 +187,6 @@ const Toolbar = ({ className, setRender, render, ...rest }) => {
     }
 
   const search = (e) => {
-    console.log(e.target.name);
     if (e.target.name == 'name') dispatch(Search_State(e.target.value));
   };
 
@@ -326,7 +322,6 @@ Toolbar.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  console.log(state);
   //state.reducer file name . variable inside reducer
   return {
     country: state.SearchCountry.country

@@ -26,7 +26,8 @@ import {
   MapPin,
   Heart,
   UserPlus,
-  Grid
+  Grid,
+  LogOut
 } from 'react-feather';
 import NavItem from './NavItem';
 
@@ -153,7 +154,6 @@ const NavBar = ({ onMobileClose, openMobile }) => {
       isInitialMount2.current = false;
     } else {
       if (logout) {
-        console.log(logout);
         window.localStorage.removeItem('tokenAdmin');
         window.localStorage.removeItem('Admin');
         navigate('/Log/dash', { replace: true });
@@ -176,17 +176,13 @@ const NavBar = ({ onMobileClose, openMobile }) => {
       })
         .then((response) => response.json())
         .then((res) => {
-          console.log(res);
           if (res.status == 200) {
             setUser(res.data);
           } else {
-            console.log(res);
             // alert(res.error.message[Object.keys(res.error.message)][0]);
           }
         });
-    } catch (e) {
-      console.log(e);
-    }
+    } catch (e) {}
   }, []);
   const content = (
     <Box height="100%" display="flex" flexDirection="column">
@@ -221,7 +217,7 @@ const NavBar = ({ onMobileClose, openMobile }) => {
           activeClassName={classes.active}
           className={classes.button}
         >
-          {<SettingsIcon className={classes.icon} size="20" />}
+          {<LogOut className={classes.icon} size="20" />}
           <span>Logout</span>
         </Button>
       </Box>

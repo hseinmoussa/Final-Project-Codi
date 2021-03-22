@@ -17,6 +17,8 @@ import {
   Select,
   CircularProgress
 } from '@material-ui/core';
+import MainLayout from 'src/layouts/MainLayout';
+
 import Page from 'src/components/Page';
 import { ToastContainer, toast } from 'react-toastify';
 
@@ -69,7 +71,6 @@ const RegisterView = () => {
 
     setLoading(true);
 
-    console.log(image);
     const url = process.env.REACT_APP_URL + 'user/register';
 
     let formData = new FormData();
@@ -88,16 +89,12 @@ const RegisterView = () => {
         // 'Content-Type': 'application/json'
       },
       body: formData
-    }).catch(function (error) {
-      console.log(error);
-    });
+    }).catch(function (error) {});
 
     const res = await response.json();
     const result = await response.status;
-    console.log(result);
-    console.log(res);
+
     if (result == 200) {
-      console.log(res);
       // var accessToken = res.access_token;
       var WaitingToVerify = e.email;
       // var adminId = admin.id;
@@ -167,7 +164,8 @@ const RegisterView = () => {
             draggable
             pauseOnHover
           />
-          <Container maxWidth="sm">
+          <MainLayout />
+          <Container maxWidth="sm" style={{ marginTop: '10vh' }}>
             <Formik
               initialValues={{
                 email: '',

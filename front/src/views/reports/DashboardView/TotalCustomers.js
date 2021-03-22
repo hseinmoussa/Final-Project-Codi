@@ -54,9 +54,7 @@ const TotalCustomers = ({ className, ...rest }) => {
             // alert(res.error.message[Object.keys(res.error.message)][0]);
           }
         });
-    } catch (e) {
-      console.log(e);
-    }
+    } catch (e) {}
   }, []);
 
   return (

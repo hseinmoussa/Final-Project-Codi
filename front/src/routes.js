@@ -24,6 +24,8 @@ import SettingsView from 'src/views/settings/SettingsView';
 
 import Dashboard from 'src/views/Dashboard/Dashboard';
 
+import Home from 'src/views/Home/Home';
+
 const routes = [
   {
     path: 'admin',
@@ -47,7 +49,7 @@ const routes = [
 
   {
     path: '/Log',
-    element: <MainLayout />,
+    // element: <MainLayout />,
     children: [
       { path: 'dash', element: <LoginView /> },
       { path: '*', element: <Navigate to="/404" /> }
@@ -56,21 +58,22 @@ const routes = [
 
   {
     path: '/',
-    element: <MainLayout />,
+    // element: <MainLayout />,
     children: [
       { path: 'loginUser', element: <LoginUser /> },
       { path: 'forgot', element: <Forgot /> },
       { path: 'resetpass/:id', element: <ResetPassword /> },
       { path: 'register', element: <RegisterView /> },
+      { path: 'home', element: <Home /> },
       { path: '404', element: <NotFoundView /> },
-
+      { path: '/', element: <Navigate to="/home" /> },
       { path: '*', element: <Navigate to="/404" /> }
     ]
   },
 
   {
     path: '/usercostumer',
-    element: <MainLayout />,
+    // element: <MainLayout />,
     children: [{ path: '/', element: <Navigate to="/404" /> }]
   }
 ];

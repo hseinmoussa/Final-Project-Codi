@@ -16,11 +16,12 @@ import FacebookIcon from 'src/icons/Facebook';
 import GoogleIcon from 'src/icons/Google';
 import Page from 'src/components/Page';
 import { ToastContainer, toast } from 'react-toastify';
+import MainLayout from 'src/layouts/MainLayout';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.dark,
-    height: '100%',
+    height: 'auto',
     paddingBottom: theme.spacing(3),
     paddingTop: theme.spacing(3)
   }
@@ -113,7 +114,6 @@ const LoginUser = () => {
     const result = await response.status;
 
     if (result == 200) {
-      console.log(res);
       var accessToken = res.access_token;
       var user = res.user;
       var userId = user.id;
@@ -158,11 +158,13 @@ const LoginUser = () => {
         draggable
         pauseOnHover
       />
+      <MainLayout />
       <Box
         display="flex"
         flexDirection="column"
         height="100%"
         justifyContent="center"
+        style={{ marginTop: '10vh' }}
       >
         <Container maxWidth="sm">
           <Formik
@@ -240,7 +242,6 @@ const LoginUser = () => {
 
                 {resend ? (
                   <Typography color="textSecondary" variant="body1">
-                    {console.log(WaitingToVerify)}
                     Resend Verification Link ?{' '}
                     <Button onClick={handleResend}>resend</Button>
                   </Typography>

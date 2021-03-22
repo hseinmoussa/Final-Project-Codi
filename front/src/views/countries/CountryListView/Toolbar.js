@@ -79,11 +79,11 @@ const Toolbar = ({ className, setRender, render, ...rest }) => {
 
   const search = (e) => {
     //action name
-    console.log(e.target.name);
+
     if (e.target.name == 'name') dispatch(Search_Country(e.target.value));
 
     //props
-    // console.log(rest.user);
+    //
   };
   const setInputState = (e) => {
     setInfo({ ...info, [e.target.name]: e.target.value });
@@ -94,7 +94,7 @@ const Toolbar = ({ className, setRender, render, ...rest }) => {
 
     try {
       let formData = new FormData();
-      console.log(info.image);
+
       formData.append('name', document.getElementById('name').value);
       formData.append('code', document.getElementById('code').value);
 
@@ -109,7 +109,6 @@ const Toolbar = ({ className, setRender, render, ...rest }) => {
         .then((response) => response.json())
         .then((res) => {
           if (res.status == 200) {
-            console.log(res);
             setOpen(!open);
             setRender(render + 1);
             toast.info('Added Successfully', {
@@ -157,9 +156,7 @@ const Toolbar = ({ className, setRender, render, ...rest }) => {
             // alert(res.error.message[Object.keys(res.error.message)][0]);
           }
         });
-    } catch (e) {
-      console.log(e);
-    }
+    } catch (e) {}
   };
   return (
     <div className={clsx(classes.root, className)} {...rest}>
@@ -200,7 +197,7 @@ const Toolbar = ({ className, setRender, render, ...rest }) => {
                 justifyContent: 'center'
               }}
             >
-              Add New Hobby
+              Add New Country
             </h2>
 
             <ValidatorForm
@@ -279,7 +276,6 @@ Toolbar.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  console.log(state);
   //state.reducer file name . variable inside reducer
   return {
     country: state.SearchCountry.country

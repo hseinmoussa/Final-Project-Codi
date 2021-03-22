@@ -95,7 +95,6 @@ const Results = ({ className, render, setRender, ...rest }) => {
 
     try {
       let formData = new FormData();
-      console.log(info);
 
       formData.append('hobby_id', info.hobby_id);
       formData.append('user_id', info.user_id);
@@ -140,7 +139,6 @@ const Results = ({ className, render, setRender, ...rest }) => {
         .then((response) => response.json())
         .then((res) => {
           if (res.status == 200) {
-            console.log(res);
             setOpen(!open);
             setRender(render + 1);
             toast.info('Eddited Successfully', {
@@ -170,7 +168,6 @@ const Results = ({ className, render, setRender, ...rest }) => {
               progress: undefined
             });
           } else {
-            console.log(res);
             var msg;
             res.error &&
               res.error.message &&
@@ -212,7 +209,6 @@ const Results = ({ className, render, setRender, ...rest }) => {
         .then((response) => response.json())
         .then((res) => {
           if (res.status == 200) {
-            console.log(res.data);
             setCustomers(res.data.data);
             setTotal(res.data.total);
           } else if (
@@ -251,7 +247,6 @@ const Results = ({ className, render, setRender, ...rest }) => {
         .then((response) => response.json())
         .then((res) => {
           if (res.status == 200) {
-            console.log(res.data);
             setCustomers(res.data.data);
             setTotal(res.data.total);
           } else if (
@@ -289,9 +284,7 @@ const Results = ({ className, render, setRender, ...rest }) => {
       })
         .then((response) => response.json())
         .then((res) => {
-          console.log(res);
           if (res.status == 200) {
-            console.log(res.data);
             setHobby(res.data);
           } else if (
             res.status == 'Token expired' ||
@@ -340,9 +333,7 @@ const Results = ({ className, render, setRender, ...rest }) => {
       })
         .then((response) => response.json())
         .then((res) => {
-          console.log(res);
           if (res.status == 200) {
-            console.log(res.data);
             setState(res.data);
           } else if (
             res.status == 'Token expired' ||
@@ -391,9 +382,7 @@ const Results = ({ className, render, setRender, ...rest }) => {
       })
         .then((response) => response.json())
         .then((res) => {
-          console.log(res);
           if (res.status == 200) {
-            console.log(res.data);
             setUser(res.data);
           } else if (
             res.status == 'Token expired' ||
@@ -502,7 +491,6 @@ const Results = ({ className, render, setRender, ...rest }) => {
   };
 
   const handleEdit = (e, id, customer) => {
-    console.log(customer);
     setInfo({
       ['id']: id,
       ['user_id']: customer.user_id,

@@ -31,6 +31,21 @@ class HobbiesRepo implements HobbiesInterface
 
     }
 
+
+
+
+//Main Hobbies
+    public function main($rowNb)
+    {
+
+  
+        $hobby= Hobbies::where('main', '1')
+         ->with(['users','events'])
+         ->paginate($rowNb);
+ 
+     return $hobby;
+
+    }
     public function show($id)
     {
         $hobby= Hobbies::where('id',$id)->first();

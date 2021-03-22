@@ -34,17 +34,13 @@ const Account = () => {
       })
         .then((response) => response.json())
         .then((res) => {
-          console.log(res);
           if (res.status == 200) {
             setUser(res.data);
           } else {
-            console.log(res);
             // alert(res.error.message[Object.keys(res.error.message)][0]);
           }
         });
-    } catch (e) {
-      console.log(e);
-    }
+    } catch (e) {}
   }, []);
 
   return (

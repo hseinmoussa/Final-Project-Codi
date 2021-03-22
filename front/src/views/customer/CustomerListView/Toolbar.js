@@ -80,7 +80,6 @@ const Toolbar = ({ className, setRender, render, ...rest }) => {
 
   const search = (e) => {
     //action name
-    console.log(e.target.name);
     if (e.target.name == 'name') dispatch(Search_User(e.target.value));
     if (e.target.name == 'email') dispatch(Search_User_Email(e.target.value));
 
@@ -101,7 +100,6 @@ const Toolbar = ({ className, setRender, render, ...rest }) => {
 
     try {
       let formData = new FormData();
-      console.log(info.image);
       formData.append('name', document.getElementById('name').value);
       formData.append('phone', document.getElementById('phone').value);
       formData.append('gender', document.getElementById('gender').value);
@@ -122,7 +120,6 @@ const Toolbar = ({ className, setRender, render, ...rest }) => {
         .then((response) => response.json())
         .then((res) => {
           if (res.status == 200) {
-            console.log(res);
             setOpen(!open);
             setRender(render + 1);
             toast.info('Added Successfully', {
@@ -152,7 +149,6 @@ const Toolbar = ({ className, setRender, render, ...rest }) => {
               progress: undefined
             });
           } else {
-            console.log(res);
             res.error &&
               res.error.message &&
               toast.error(
@@ -408,7 +404,6 @@ Toolbar.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  console.log(state);
   //state.reducer file name . variable inside reducer
   return {
     user: state.SearchUser.user,

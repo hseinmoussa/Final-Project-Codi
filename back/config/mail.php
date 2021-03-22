@@ -85,6 +85,7 @@ return [
 
     'from' => ['address' => 'hseinmoussa98@gmail.com', 'name' => 'Hobby Connect'],
 
+
     // 'from' => [
     //     'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
     //     'name' => env('MAIL_FROM_NAME', 'Example'),

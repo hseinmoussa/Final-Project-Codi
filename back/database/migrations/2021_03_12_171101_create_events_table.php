@@ -28,6 +28,7 @@ class CreateEventsTable extends Migration
         $table->bigInteger('user_id')->unsigned();
         $table->bigInteger('state_id')->unsigned();
         $table->string('location');
+        $table->string('description');
 
          
         });

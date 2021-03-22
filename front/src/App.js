@@ -17,7 +17,6 @@ const App = () => {
   const admin = window.localStorage.getItem('Admin');
   const user = window.localStorage.getItem('User');
   const route = window.location.href;
-  console.log(tokenAdmin, admin);
 
   if (route.includes('/admin') && !tokenAdmin && !admin)
     return <div>{window.location.replace('/Log/dash')}</div>;

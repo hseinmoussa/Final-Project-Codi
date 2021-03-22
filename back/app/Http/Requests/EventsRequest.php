@@ -41,6 +41,7 @@ class EventsRequest extends FormRequest
                         // 'end_time' => 'required|max:255',
                         'state_id' => 'required|exists:States,id',
                         'user_id' => 'required|exists:users,id',
+                        'description' => 'required|max:255',
                     ];
                 }
             case 'PUT':
@@ -57,6 +58,7 @@ class EventsRequest extends FormRequest
                         // 'end_time' => 'required|max:255',
                         'state_id' => 'required|exists:States,id',
                         'user_id' => 'required|exists:users,id',
+                        'description' => 'required|max:255',
                     ];
                 }
         }
@@ -100,6 +102,9 @@ class EventsRequest extends FormRequest
 
             'country_id.required' => 'Country field is required!',
             'country_id.exists' => 'Country field should be real one!',
+
+            'description.required' => 'Description is required!',
+            'description.max' => 'Description is too long',
         ];
     }
 

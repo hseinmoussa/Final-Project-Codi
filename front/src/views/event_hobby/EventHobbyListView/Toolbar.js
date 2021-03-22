@@ -78,7 +78,6 @@ const Toolbar = ({ className, setRender, render, ...rest }) => {
         .then((response) => response.json())
         .then((res) => {
           if (res.status == 200) {
-            console.log(res);
             setOpen(!open);
             setRender(render + 1);
             toast.info('Added Successfully', {
@@ -140,9 +139,7 @@ const Toolbar = ({ className, setRender, render, ...rest }) => {
       })
         .then((response) => response.json())
         .then((res) => {
-          console.log(res);
           if (res.status == 200) {
-            console.log(res.data);
             setHobby(res.data);
           } else if (
             res.status == 'Token expired' ||
@@ -181,9 +178,7 @@ const Toolbar = ({ className, setRender, render, ...rest }) => {
       })
         .then((response) => response.json())
         .then((res) => {
-          console.log(res);
           if (res.status == 200) {
-            console.log(res.data);
             setEvent(res.data);
           } else if (
             res.status == 'Token expired' ||

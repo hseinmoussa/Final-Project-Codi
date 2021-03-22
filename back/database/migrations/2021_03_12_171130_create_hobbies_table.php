@@ -17,6 +17,7 @@ class CreateHobbiesTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('image');
+            $table->string('main')->nullable()->default('0');
           
         });
     }

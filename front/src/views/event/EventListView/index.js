@@ -5,6 +5,7 @@ import Page from 'src/components/Page';
 import Toolbar from './Toolbar';
 import ProductCard from './ProductCard';
 import { useSelector, connect } from 'react-redux';
+import { ToastContainer, toast } from 'react-toastify';
 
 import { useNavigate } from 'react-router-dom';
 
@@ -44,7 +45,6 @@ const EventListView = () => {
   const tokenAdmin = window.localStorage.getItem('tokenAdmin');
 
   const search = useSelector((state) => {
-    console.log(state.SearchEvent.event);
     return state.SearchEvent.event;
   });
 
@@ -60,7 +60,6 @@ const EventListView = () => {
         .then((response) => response.json())
         .then((res) => {
           if (res.status == 200) {
-            console.log(res.data.data);
             setEvents(res.data.data);
             setTotal(res.data.last_page);
           } else if (
@@ -80,7 +79,6 @@ const EventListView = () => {
               progress: undefined
             });
           } else {
-            console.log(res);
             // alert(res.error.message[Object.keys(res.error.message)][0]);
           }
         });
@@ -103,7 +101,6 @@ const EventListView = () => {
         .then((response) => response.json())
         .then((res) => {
           if (res.status == 200) {
-            console.log(res);
             setEvents(res.data.data);
             setTotal(res.data.last_page);
           } else if (
@@ -123,7 +120,6 @@ const EventListView = () => {
               progress: undefined
             });
           } else {
-            console.log(res);
           }
         });
     } catch (e) {}
@@ -140,9 +136,7 @@ const EventListView = () => {
       })
         .then((response) => response.json())
         .then((res) => {
-          console.log(res);
           if (res.status == 200) {
-            console.log(res.data);
             setState(res.data);
           } else if (
             res.status == 'Token expired' ||
@@ -161,13 +155,10 @@ const EventListView = () => {
               progress: undefined
             });
           } else {
-            console.log(res);
             // alert(res.error.message[Object.keys(res.error.message)][0]);
           }
         });
-    } catch (e) {
-      console.log(e);
-    }
+    } catch (e) {}
   }, []);
 
   let State = [];
@@ -191,9 +182,7 @@ const EventListView = () => {
       })
         .then((response) => response.json())
         .then((res) => {
-          console.log(res);
           if (res.status == 200) {
-            console.log(res.data);
             setUser(res.data);
           } else if (
             res.status == 'Token expired' ||
@@ -212,13 +201,10 @@ const EventListView = () => {
               progress: undefined
             });
           } else {
-            console.log(res);
             // alert(res.error.message[Object.keys(res.error.message)][0]);
           }
         });
-    } catch (e) {
-      console.log(e);
-    }
+    } catch (e) {}
   }, []);
 
   let User = [];
@@ -234,6 +220,17 @@ const EventListView = () => {
   };
   return (
     <Page className={classes.root} title="Products">
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <Container maxWidth={false}>
         <Toolbar
           setRender={setRender}
@@ -274,7 +271,6 @@ const EventListView = () => {
 };
 
 const mapStateToProps = (state) => {
-  console.log(state);
   return {
     event: state.SearchEvent.event
   };

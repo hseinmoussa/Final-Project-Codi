@@ -156,7 +156,7 @@ Route::put('/hobby/{id}', 'HobbiesController@update');
 Route::post('/hobby', 'HobbiesController@store');
 Route::delete('/hobby/{id}', 'HobbiesController@destroy');
 
-
+Route::get('/hobbiesmain/{row}', 'HobbiesController@main');
 
 /////Images
 Route::get('/images/{row}', 'ImagesController@index');
@@ -185,11 +185,22 @@ Route::post('/event_hobby', 'EventsHobbiesController@store');
 Route::delete('/event_hobby/{id}', 'EventsHobbiesController@destroy');
 
 
+
+
 /////Events
 Route::get('/events/{row}', 'EventsController@index');
 Route::get('/event/{id}', 'EventsController@show');
 Route::put('/event/{id}', 'EventsController@update');
 Route::post('/event', 'EventsController@store');
 Route::delete('/event/{id}', 'EventsController@destroy');
+
+
+
+
+
+
+
+////Contact Us
+Route::post('/contactus', 'ContactUs@sendEmail');
 
 

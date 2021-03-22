@@ -29,6 +29,6 @@ public function build()
 // why send the data? because u need to pass the token in the url to authnticate the reset password 
 // Subject is the defult subjects for all emails
 $data = $this->data;
-return $this->from("hseinmoussa98@gmail.com")->view('forgot', compact('data'))->subject(" inReturn Password Reset Link");
+return $this->from("hseinmoussa98@gmail.com")->view('forgot', compact('data'))->subject(" Return Password Reset Link");
 }
 }

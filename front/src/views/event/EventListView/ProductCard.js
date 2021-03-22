@@ -101,7 +101,6 @@ const ProductCard = ({
 
     try {
       let formData = new FormData();
-      console.log(info.image);
 
       formData.append('name', document.getElementById('name').value);
       formData.append('start_date', info.start_date);
@@ -111,14 +110,18 @@ const ProductCard = ({
       formData.append('user_id', document.getElementById('user_id').value);
       formData.append('state_id', document.getElementById('state_id').value);
       formData.append('location', document.getElementById('location').value);
+      formData.append(
+        'description',
+        document.getElementById('description').value
+      );
+
       formData.append('zone', info.zone);
 
-      console.log(document.getElementById('name').value);
-      console.log(info.image[0]);
-      for (let i = 0; i < info.image.length; i++) {
-        console.log(info.image[i]);
-        formData.append('photos[]', info.image[i]);
-      }
+      if (info.image)
+        for (let i = 0; i < info.image.length; i++) {
+          console.log(1);
+          formData.append('photos[]', info.image[i]);
+        }
       // formData.append('photos[]', info.image);
 
       formData.append('_method', 'put');
@@ -134,7 +137,6 @@ const ProductCard = ({
         .then((response) => response.json())
         .then((res) => {
           if (res.status == 200) {
-            console.log(res);
             setOpen(!open);
             setRender(render + 1);
             toast.info('Eddited Successfully', {
@@ -202,7 +204,6 @@ const ProductCard = ({
           .then((response) => response.json())
           .then((res) => {
             if (res.status == 200) {
-              console.log(res.data);
               toast.info('Deleted Successfully', {
                 position: 'top-center',
                 autoClose: 1000,
@@ -231,7 +232,6 @@ const ProductCard = ({
                 progress: undefined
               });
             } else {
-              console.log(res);
               return toast.info(
                 "Couldn't delete item, Please try again later",
                 {
@@ -267,7 +267,6 @@ const ProductCard = ({
           .then((response) => response.json())
           .then((res) => {
             if (res.status == 200) {
-              console.log(res.data);
               toast.info('Deleted Successfully', {
                 position: 'top-center',
                 autoClose: 1000,
@@ -296,7 +295,6 @@ const ProductCard = ({
                 progress: undefined
               });
             } else {
-              console.log(res);
               return toast.info(
                 "Couldn't delete item, Please try again later",
                 {
@@ -394,6 +392,25 @@ const ProductCard = ({
                     name: 'zone',
                     id: 'zone'
                   }}
+                />
+              </Grid>
+            </Grid>
+
+            <Grid container spacing={3}>
+              <Grid item xs>
+                <TextValidator
+                  helperText="Please specify the Description"
+                  label="Description"
+                  name="description"
+                  id="description"
+                  placeholder="Description"
+                  validators={['required', 'isString']}
+                  errorMessages={[
+                    'this field is required',
+                    'description is not valid'
+                  ]}
+                  value={info.description}
+                  onChange={(e) => setInputState(e)}
                 />
               </Grid>
             </Grid>
@@ -529,10 +546,11 @@ const ProductCard = ({
 
             <Box mt={1}>
               <Box mt={1}>
-                <label htmlFor="icon-button-file">Add more image </label>
+                <label htmlFor="icon-button-file">
+                  Add more image (optional){' '}
+                </label>
                 <input
                   accept="image/*"
-                  required
                   onChange={setInputState}
                   // style={{ display: 'none' }}
                   type="file"
@@ -552,7 +570,7 @@ const ProductCard = ({
                   variant="contained"
                   style={{ margin: 'auto' }}
                 >
-                  Edit User
+                  Edit Event
                 </Button>
               </Box>
             </Box>
@@ -639,6 +657,10 @@ const ProductCard = ({
         <Typography align="center" color="textPrimary" variant="body1">
           <strong>Location: </strong>
           {event.location}
+        </Typography>
+        <Typography align="center" color="textPrimary" variant="body1">
+          <strong>Description: </strong>
+          {event.description}
         </Typography>
       </CardContent>
       <Box flexGrow={1} />

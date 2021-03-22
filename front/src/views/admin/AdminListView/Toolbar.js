@@ -79,7 +79,7 @@ const Toolbar = ({ className, setRender, render, ...rest }) => {
 
   const search = (e) => {
     //action name
-    console.log(e.target.name);
+
     if (e.target.name == 'name') dispatch(Search_Admin(e.target.value));
     if (e.target.name == 'email') dispatch(Search_Admin_Email(e.target.value));
 
@@ -100,7 +100,7 @@ const Toolbar = ({ className, setRender, render, ...rest }) => {
 
     try {
       let formData = new FormData();
-      console.log(info.image);
+
       formData.append('name', document.getElementById('name').value);
       formData.append('email', document.getElementById('email').value);
       formData.append('password', document.getElementById('password').value);
@@ -117,7 +117,6 @@ const Toolbar = ({ className, setRender, render, ...rest }) => {
         .then((response) => response.json())
         .then((res) => {
           if (res.status == 200) {
-            console.log(res);
             setOpen(!open);
             setRender(render + 1);
             toast.info('Added Successfully', {
@@ -354,7 +353,6 @@ Toolbar.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  console.log(state);
   //state.reducer file name . variable inside reducer
   return {
     admin: state.SearchAdmin.admin,

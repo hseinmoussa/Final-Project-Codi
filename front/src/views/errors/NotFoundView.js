@@ -46,7 +46,7 @@ const NotFoundView = () => {
           </Typography>
           <Box display="flex">
             <Box m="auto" mt={1}>
-              <Link to="/app/dashboard" variant="h6">
+              <Link to="/" variant="h6">
                 Go Home
               </Link>
             </Box>

@@ -64,7 +64,6 @@ const Toolbar = ({ className, setRender, render, ...rest }) => {
 
     try {
       let formData = new FormData();
-      console.log(1);
       formData.append('hobby_id', document.getElementById('hobby_id').value);
       formData.append('user_id', document.getElementById('user_id').value);
       formData.append('state_id', document.getElementById('state_id').value);
@@ -76,7 +75,6 @@ const Toolbar = ({ className, setRender, render, ...rest }) => {
         document.getElementById('rating').value != undefined &&
         document.getElementById('rating').value != ''
       ) {
-        console.log(document.getElementById('rating').value);
         formData.append('rating', document.getElementById('rating').value);
       }
       if (
@@ -84,7 +82,6 @@ const Toolbar = ({ className, setRender, render, ...rest }) => {
         document.getElementById('is_freelancer').value != undefined &&
         document.getElementById('is_freelancer').value != ''
       ) {
-        console.log(document.getElementById('is_freelancer').value);
         formData.append(
           'is_freelancer',
           document.getElementById('is_freelancer').value
@@ -95,7 +92,6 @@ const Toolbar = ({ className, setRender, render, ...rest }) => {
         document.getElementById('fees_per_hour').value != undefined &&
         document.getElementById('fees_per_hour').value != ''
       ) {
-        console.log(document.getElementById('fees_per_hour').value);
         formData.append(
           'fees_per_hour',
           document.getElementById('fees_per_hour').value
@@ -121,7 +117,6 @@ const Toolbar = ({ className, setRender, render, ...rest }) => {
         .then((response) => response.json())
         .then((res) => {
           if (res.status == 200) {
-            console.log(res);
             setOpen(!open);
             setRender(render + 1);
             toast.info('Added Successfully', {
@@ -151,7 +146,6 @@ const Toolbar = ({ className, setRender, render, ...rest }) => {
               progress: undefined
             });
           } else {
-            console.log(res);
             var msg;
             if (Object.keys(res.error.message)[0] == 0) msg = res.error.message;
             else msg = res.error.message[Object.keys(res.error.message)[0]][0];
@@ -184,9 +178,7 @@ const Toolbar = ({ className, setRender, render, ...rest }) => {
       })
         .then((response) => response.json())
         .then((res) => {
-          console.log(res);
           if (res.status == 200) {
-            console.log(res.data);
             setHobby(res.data);
           } else if (
             res.status == 'Token expired' ||
@@ -235,9 +227,7 @@ const Toolbar = ({ className, setRender, render, ...rest }) => {
       })
         .then((response) => response.json())
         .then((res) => {
-          console.log(res);
           if (res.status == 200) {
-            console.log(res.data);
             setState(res.data);
           } else if (
             res.status == 'Token expired' ||
@@ -288,9 +278,7 @@ const Toolbar = ({ className, setRender, render, ...rest }) => {
       })
         .then((response) => response.json())
         .then((res) => {
-          console.log(res);
           if (res.status == 200) {
-            console.log(res.data);
             setUser(res.data);
           } else if (
             res.status == 'Token expired' ||

@@ -48,7 +48,6 @@ const ProfileDetails = ({ className, user, ...rest }) => {
 
   const tokenAdmin = window.localStorage.getItem('tokenAdmin');
 
-  console.log(user);
   useEffect(() => {
     setInfo(user);
   }, [user]);
@@ -67,7 +66,6 @@ const ProfileDetails = ({ className, user, ...rest }) => {
 
     try {
       let formData = new FormData();
-      console.log(info);
 
       formData.append('name', info.name);
 
@@ -87,8 +85,6 @@ const ProfileDetails = ({ className, user, ...rest }) => {
         .then((response) => response.json())
         .then((res) => {
           if (res.status == 200) {
-            console.log(res);
-
             toast.info('Eddited Successfully', {
               position: 'top-center',
               autoClose: 1000,
@@ -100,20 +96,21 @@ const ProfileDetails = ({ className, user, ...rest }) => {
               progress: undefined
             });
           } else {
-            console.log(res);
-            toast.error(
-              res.error.message[Object.keys(res.error.message)[0]][0],
-              {
-                position: 'top-center',
-                autoClose: 1000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                // onClose: () => (window.location.href = "/cart"),
-                draggable: true,
-                progress: undefined
-              }
-            );
+            res.error &&
+              res.error.message &&
+              toast.error(
+                res.error.message[Object.keys(res.error.message)[0]][0],
+                {
+                  position: 'top-center',
+                  autoClose: 1000,
+                  hideProgressBar: true,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  // onClose: () => (window.location.href = "/cart"),
+                  draggable: true,
+                  progress: undefined
+                }
+              );
             // alert(res.error.message[Object.keys(res.error.message)][0]);
           }
         });
@@ -178,7 +175,6 @@ const ProfileDetails = ({ className, user, ...rest }) => {
             <CardContent>
               {!info.id ? (
                 <div className={classes.root2}>
-                  {console.log(info)}
                   <CircularProgress />
                 </div>
               ) : (
