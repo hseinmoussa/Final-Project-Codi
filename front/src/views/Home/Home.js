@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
@@ -20,7 +20,8 @@ import {
   CardMedia,
   Typography,
   Button,
-  Zoom
+  Zoom,
+  ButtonBase
 } from '@material-ui/core';
 import MainLayout from 'src/layouts/MainLayout';
 import { ToastContainer, toast } from 'react-toastify';
@@ -223,6 +224,8 @@ export default function Home(props) {
     shadow: 1
   });
 
+  const navigate = useNavigate();
+
   const [state2, setState2] = React.useState({
     raised: false,
     shadow: 1
@@ -231,12 +234,29 @@ export default function Home(props) {
   const [events, setEvents] = React.useState([]);
   const [hobbiesMain, setHobbiesMain] = React.useState([]);
 
-  const tokenAdmin = window.localStorage.getItem('tokenAdmin');
+  // const tokenAdmin = window.localStorage.getItem('tokenAdmin');
 
   const [info, setInfo] = React.useState({});
 
   const setInputState = (e) => {
     setInfo({ ...info, [e.target.name]: e.target.value });
+  };
+
+  const handleClick2 = (e, id, item) => {
+    console.log(11);
+    navigate(
+      `/event/${id}`,
+      {
+        replace: true
+      },
+      { state: item }
+    );
+  };
+  const handleClick = (e, id) => {
+    console.log(11);
+    navigate(`/EventsByHobby/${id}`, {
+      replace: true
+    });
   };
 
   const handleSubmit = (e) => {
@@ -300,33 +320,17 @@ export default function Home(props) {
   React.useEffect(() => {
     try {
       fetch(process.env.REACT_APP_URL + `events/8?page=1`, {
-        method: 'get',
-        headers: {
-          Accept: 'application/json',
-          Authorization: 'Bearer ' + tokenAdmin
-        }
+        method: 'get'
+        // headers: {
+        //   Accept: 'application/json',
+        //   Authorization: 'Bearer ' + tokenAdmin
+        // }
       })
         .then((response) => response.json())
         .then((res) => {
           if (res.status == 200) {
             console.log(res);
             setEvents(res.data.data);
-          } else if (
-            res.status == 'Token expired' ||
-            res.status == 'Not authorized'
-          ) {
-            window.localStorage.removeItem('tokenAdmin');
-            window.localStorage.removeItem('Admin');
-            toast.info('Cookies Expired, Please Login Again', {
-              position: 'top-center',
-              autoClose: 1000,
-              hideProgressBar: true,
-              closeOnClick: true,
-              pauseOnHover: true,
-              onClose: () => navigate('/Log/dash', { replace: true }),
-              draggable: true,
-              progress: undefined
-            });
           } else {
             // alert(res.error.message[Object.keys(res.error.message)][0]);
           }
@@ -335,33 +339,17 @@ export default function Home(props) {
 
     try {
       fetch(process.env.REACT_APP_URL + `hobbiesmain/8?page=1`, {
-        method: 'get',
-        headers: {
-          Accept: 'application/json',
-          Authorization: 'Bearer ' + tokenAdmin
-        }
+        method: 'get'
+        // headers: {
+        //   Accept: 'application/json',
+        //   Authorization: 'Bearer ' + tokenAdmin
+        // }
       })
         .then((response) => response.json())
         .then((res) => {
           if (res.status == 200) {
             console.log(res);
             setHobbiesMain(res.data.data);
-          } else if (
-            res.status == 'Token expired' ||
-            res.status == 'Not authorized'
-          ) {
-            window.localStorage.removeItem('tokenAdmin');
-            window.localStorage.removeItem('Admin');
-            toast.info('Cookies Expired, Please Login Again', {
-              position: 'top-center',
-              autoClose: 1000,
-              hideProgressBar: true,
-              closeOnClick: true,
-              pauseOnHover: true,
-              onClose: () => navigate('/Log/dash', { replace: true }),
-              draggable: true,
-              progress: undefined
-            });
           } else {
             // alert(res.error.message[Object.keys(res.error.message)][0]);
           }
@@ -504,58 +492,76 @@ export default function Home(props) {
                       lg={3}
                       style={{ textAlign: 'center' }}
                     >
-                      <Card
-                        classes={{
-                          root:
-                            state2.raised && hobbymain.id == state2.id
-                              ? classes.cardHovered
-                              : ''
-                        }}
-                        style={{ textAlign: 'center', width: '100%' }}
-                        onMouseOver={() =>
-                          setState2({
-                            raised: true,
-                            shadow: 3,
-                            id: hobbymain.id
-                          })
-                        }
-                        onMouseOut={() =>
-                          setState2({ raised: false, shadow: 1 })
-                        }
-                        raised={state2.raised}
-                        className={classes.root}
+                      <ButtonBase
+                        className={classes.cardAction}
+                        onClick={(event) => handleClick(event, hobbymain.id)}
                       >
-                        <CardActionArea>
-                          <CardMedia
-                            component="img"
-                            alt="Contemplative Reptile"
-                            height="250"
-                            width="250"
-                            image={process.env.REACT_APP_URL2 + hobbymain.image}
-                            title="Contemplative Reptile"
-                          />
+                        <Card
+                          classes={{
+                            root:
+                              state2.raised && hobbymain.id == state2.id
+                                ? classes.cardHovered
+                                : ''
+                          }}
+                          style={{ textAlign: 'center', width: '100%' }}
+                          onMouseOver={() =>
+                            setState2({
+                              raised: true,
+                              shadow: 3,
+                              id: hobbymain.id
+                            })
+                          }
+                          onMouseOut={() =>
+                            setState2({ raised: false, shadow: 1 })
+                          }
+                          onclick={() => handleClick(hobbymain.id)}
+                          raised={state2.raised}
+                          className={classes.root}
+                        >
+                          <CardActionArea>
+                            <CardMedia
+                              component="img"
+                              alt="Contemplative Reptile"
+                              height="250"
+                              width="250"
+                              image={
+                                process.env.REACT_APP_URL2 + hobbymain.image
+                              }
+                              title="Contemplative Reptile"
+                            />
 
-                          <CardContent>
-                            <Typography
-                              gutterBottom
-                              variant="h5"
-                              component="h2"
-                              style={{ textTransform: 'uppercase' }}
+                            <CardContent>
+                              <Typography
+                                gutterBottom
+                                variant="h5"
+                                component="h2"
+                                style={{ textTransform: 'uppercase' }}
+                              >
+                                {hobbymain.name}
+                              </Typography>
+                            </CardContent>
+                          </CardActionArea>
+                          <CardActions>
+                            <Button
+                              size="small"
+                              color="primary"
+                              style={{ color: '#daa520' }}
+                              onclick={
+                                handleClick
+
+                                // window.location.replace(
+                                //   `/EventsByHobby/${hobbymain.id}`
+                                // )
+                                // navigate(`/EventsByHobby/${hobbymain.id}`, {
+                                //   replace: true
+                                // })
+                              }
                             >
-                              {hobbymain.name}
-                            </Typography>
-                          </CardContent>
-                        </CardActionArea>
-                        <CardActions>
-                          <Button
-                            size="small"
-                            color="primary"
-                            style={{ color: '#daa520' }}
-                          >
-                            Check It
-                          </Button>
-                        </CardActions>
-                      </Card>
+                              Check It
+                            </Button>
+                          </CardActions>
+                        </Card>
+                      </ButtonBase>
                     </Grid>
                   );
                 })}
@@ -599,83 +605,89 @@ export default function Home(props) {
                       lg={3}
                       style={{ textAlign: 'center' }}
                     >
-                      <Card
-                        classes={{
-                          root:
-                            state.raised && event.id == state.id
-                              ? classes.cardHovered
-                              : ''
-                        }}
-                        style={{ textAlign: 'center', width: '100%' }}
-                        onMouseOver={() =>
-                          setState({ raised: true, shadow: 3, id: event.id })
-                        }
-                        onMouseOut={() =>
-                          setState({ raised: false, shadow: 1 })
-                        }
-                        raised={state.raised}
-                        className={classes.root}
+                      <ButtonBase
+                        className={classes.cardAction}
+                        onClick={(e) => handleClick2(e, event.id)}
                       >
-                        <CardActionArea>
-                          {event.images && event.images[0] && (
-                            <CardMedia
-                              component="img"
-                              alt="Contemplative Reptile"
-                              height="250"
-                              width="250"
-                              image={
-                                process.env.REACT_APP_URL2 +
-                                event.images[0].image
-                              }
-                              title="Contemplative Reptile"
-                            />
-                          )}
-                          <CardContent>
-                            <Typography
-                              gutterBottom
-                              variant="h5"
-                              component="h2"
-                              style={{ textTransform: 'uppercase' }}
+                        <Card
+                          classes={{
+                            root:
+                              state.raised && event.id == state.id
+                                ? classes.cardHovered
+                                : ''
+                          }}
+                          style={{ textAlign: 'center', width: '100%' }}
+                          onMouseOver={() =>
+                            setState({ raised: true, shadow: 3, id: event.id })
+                          }
+                          onMouseOut={() =>
+                            setState({ raised: false, shadow: 1 })
+                          }
+                          raised={state.raised}
+                          className={classes.root}
+                        >
+                          <CardActionArea>
+                            {event.images && event.images[0] && (
+                              <CardMedia
+                                component="img"
+                                alt="Contemplative Reptile"
+                                height="250"
+                                width="250"
+                                image={
+                                  process.env.REACT_APP_URL2 +
+                                  event.images[0].image
+                                }
+                                title="Contemplative Reptile"
+                              />
+                            )}
+                            <CardContent>
+                              <Typography
+                                gutterBottom
+                                variant="h5"
+                                component="h2"
+                                style={{ textTransform: 'uppercase' }}
+                              >
+                                {event.name}
+                              </Typography>
+                              <Typography
+                                variant="body2"
+                                color="textSecondary"
+                                component="p"
+                              >
+                                <p>
+                                  {' '}
+                                  <b>State : </b>
+                                  {event.state.name}
+                                </p>
+                                <p>
+                                  {' '}
+                                  <b>Location :</b>
+                                  {event.location}
+                                </p>
+                                <p>
+                                  {' '}
+                                  <b>Added By :</b>{' '}
+                                  {event && event.user && event.user.name}
+                                </p>
+                                <p>
+                                  {' '}
+                                  <b>Description :</b>
+                                  {event.description}
+                                </p>
+                              </Typography>
+                            </CardContent>
+                          </CardActionArea>
+                          <CardActions>
+                            <Button
+                              size="small"
+                              color="primary"
+                              style={{ color: '#daa520' }}
                             >
-                              {event.name}
-                            </Typography>
-                            <Typography
-                              variant="body2"
-                              color="textSecondary"
-                              component="p"
-                            >
-                              <p>
-                                {' '}
-                                <b>State : </b>
-                                {event.state.name}
-                              </p>
-                              <p>
-                                {' '}
-                                <b>Location :</b>
-                                {event.location}
-                              </p>
-                              <p>
-                                {' '}
-                                <b>Added By :</b> {event.user.name}
-                              </p>
-                              <p>
-                                {' '}
-                                <b>Description :</b>
-                                {event.description}
-                              </p>
-                            </Typography>
-                          </CardContent>
-                        </CardActionArea>
-                        <CardActions>
-                          <Button
-                            size="small"
-                            color="primary"
-                            style={{ color: '#daa520' }}
-                          >
-                            Check It
-                          </Button>
-                        </CardActions>
-                      </Card>
+                              Check It
+                            </Button>
+                          </CardActions>
+                        </Card>
+                      </ButtonBase>
                     </Grid>
                   );
                 })}

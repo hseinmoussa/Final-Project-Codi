@@ -37,6 +37,7 @@ const RegisterView = () => {
 
   const [image, setImage] = useState({});
   const [loading, setLoading] = useState(false);
+  const [emailsent, setEmailSent] = useState(false);
 
   const isInitialMount = useRef(true);
 
@@ -52,7 +53,7 @@ const RegisterView = () => {
   useEffect(() => {
     if (isInitialMount.current) {
       isInitialMount.current = false;
-    } else if (!loading) {
+    } else if (emailsent) {
       toast.info('Please Check your email to activate your account', {
         position: 'top-center',
         autoClose: 5000,
@@ -64,7 +65,7 @@ const RegisterView = () => {
         progress: undefined
       });
     }
-  }, [loading]);
+  }, [emailsent]);
 
   const handleSubmit = async (e) => {
     // e.preventDefault();
@@ -102,6 +103,7 @@ const RegisterView = () => {
       window.localStorage.setItem('WaitingToVerify', WaitingToVerify);
       // window.localStorage.setItem('admin', id);
       setLoading(false);
+      setEmailSent(true);
 
       // alert( ");
       // this.props.handleModalLog();
@@ -110,17 +112,19 @@ const RegisterView = () => {
       if (result == 400)
         msg = res.error.message[Object.keys(res.error.message)[0]][0];
       else msg = res.error;
+      setLoading(false);
 
-      toast.error(msg, {
+      return toast.error(msg, {
         position: 'top-right',
         autoClose: 1000,
         hideProgressBar: true,
         closeOnClick: true,
-        // onClose: () => this.props.handleModalLog(),
+        // onClose: () => setLoading(false),
         pauseOnHover: true,
         draggable: true,
         progress: undefined
       });
+
       // this.setState({ error: res.error });
     }
   };
@@ -147,225 +151,228 @@ const RegisterView = () => {
           </div>
         </div>
       ) : (
-        <Box
-          display="flex"
-          flexDirection="column"
-          // height="100%"
-          justifyContent="center"
-        >
-          <ToastContainer
-            position="top-right"
-            autoClose={2000}
-            hideProgressBar
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-          />
-          <MainLayout />
-          <Container maxWidth="sm" style={{ marginTop: '10vh' }}>
-            <Formik
-              initialValues={{
-                email: '',
-                name: '',
-                password: '',
-                phone: '',
-                age: '',
-                image: '',
-                gender: '',
-                policy: false
-              }}
-              validationSchema={Yup.object().shape({
-                email: Yup.string()
-                  .email('Must be a valid email')
-                  .max(255)
-                  .required('Email is required'),
-                name: Yup.string().max(255).required('Your Name is required'),
-                password: Yup.string()
-                  .max(255)
-                  .required('password is required'),
-                policy: Yup.boolean().oneOf(
-                  [true],
-                  'This field must be checked'
-                ),
-                phone: Yup.number('Must Be Real Phone Number').required(
-                  'Phone nb is required'
-                ),
-                age: Yup.number('Must Be Number')
-                  .max(255)
-                  .required('Age is required')
-              })}
-              onSubmit={(e) => {
-                handleSubmit(e);
-                // navigate('/app/dashboard', { replace: true });
-              }}
-            >
-              {({
-                errors,
-                handleBlur,
-                handleChange,
-                handleSubmit,
-                isSubmitting,
-                touched,
-                values
-              }) => (
-                <form onSubmit={handleSubmit}>
-                  <Box mb={3}>
-                    <Typography color="textPrimary" variant="h2">
-                      Create new account
-                    </Typography>
-                    <Typography
-                      color="textSecondary"
-                      gutterBottom
-                      variant="body2"
-                    >
-                      Use your email to create new account
-                    </Typography>
-                  </Box>
-                  <TextField
-                    error={Boolean(touched.name && errors.name)}
-                    fullWidth
-                    helperText={touched.name && errors.name}
-                    label="Your Name"
-                    margin="normal"
-                    name="name"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values.name}
-                    variant="outlined"
-                  />
+        ''
+      )}
+      <Box
+        display="flex"
+        flexDirection="column"
+        // height="100%"
+        justifyContent="center"
+      >
+        <ToastContainer
+          position="top-right"
+          autoClose={2000}
+          hideProgressBar
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
+        <MainLayout />
+        <Container maxWidth="sm" style={{ marginTop: '10vh' }}>
+          <Formik
+            initialValues={{
+              email: '',
+              name: '',
+              password: '',
+              phone: '',
+              age: '',
+              image: '',
+              gender: '',
+              policy: false
+            }}
+            validationSchema={Yup.object().shape({
+              email: Yup.string()
+                .email('Must be a valid email')
+                .max(255)
+                .required('Email is required'),
+              name: Yup.string().max(255).required('Your Name is required'),
+              password: Yup.string().max(255).required('password is required'),
+              policy: Yup.boolean().oneOf([true], 'This field must be checked'),
+              phone: Yup.number('Must Be Real Phone Number')
+                .min(7)
+                .required('Phone nb is required'),
+              age: Yup.number('Must Be Number')
+                .max(255)
 
-                  <TextField
-                    error={Boolean(touched.email && errors.email)}
-                    fullWidth
-                    helperText={touched.email && errors.email}
-                    label="Email Address"
-                    margin="normal"
-                    name="email"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    type="email"
-                    value={values.email}
-                    variant="outlined"
-                  />
-                  <TextField
-                    error={Boolean(touched.password && errors.password)}
-                    fullWidth
-                    helperText={touched.password && errors.password}
-                    label="Password"
-                    margin="normal"
-                    name="password"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    type="password"
-                    value={values.password}
-                    variant="outlined"
-                  />
-                  <TextField
-                    error={Boolean(touched.phone && errors.phone)}
-                    fullWidth
-                    helperText={touched.phone && errors.phone}
-                    label="phone"
-                    margin="normal"
-                    name="phone"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    type="phone"
-                    value={values.phone}
-                    variant="outlined"
-                  />
+                .required('Age is required')
+            })}
+            onSubmit={(e) => {
+              handleSubmit(e);
+              // navigate('/app/dashboard', { replace: true });
+            }}
+          >
+            {({
+              errors,
+              handleBlur,
+              handleChange,
+              handleSubmit,
+              isSubmitting,
+              touched,
+              values
+            }) => (
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleSubmit(e);
+                }}
+                // onSubmit={handleSubmit}
+              >
+                <Box mb={3}>
+                  <Typography color="textPrimary" variant="h2">
+                    Create new account
+                  </Typography>
+                  <Typography
+                    color="textSecondary"
+                    gutterBottom
+                    variant="body2"
+                  >
+                    Use your email to create new account
+                  </Typography>
+                </Box>
+                <TextField
+                  error={Boolean(touched.name && errors.name)}
+                  fullWidth
+                  helperText={touched.name && errors.name}
+                  label="Your Name"
+                  margin="normal"
+                  name="name"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.name}
+                  variant="outlined"
+                />
 
-                  <TextField
-                    error={Boolean(touched.age && errors.age)}
-                    fullWidth
-                    helperText={touched.age && errors.age}
-                    label="age"
-                    margin="normal"
-                    name="age"
-                    onBlur={handleBlur}
+                <TextField
+                  error={Boolean(touched.email && errors.email)}
+                  fullWidth
+                  helperText={touched.email && errors.email}
+                  label="Email Address"
+                  margin="normal"
+                  name="email"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  type="email"
+                  value={values.email}
+                  variant="outlined"
+                />
+                <TextField
+                  error={Boolean(touched.password && errors.password)}
+                  fullWidth
+                  helperText={touched.password && errors.password}
+                  label="Password"
+                  margin="normal"
+                  name="password"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  type="password"
+                  value={values.password}
+                  variant="outlined"
+                />
+                <TextField
+                  error={Boolean(touched.phone && errors.phone)}
+                  fullWidth
+                  helperText={touched.phone && errors.phone}
+                  label="phone"
+                  margin="normal"
+                  name="phone"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  type="phone"
+                  value={values.phone}
+                  variant="outlined"
+                />
+
+                <TextField
+                  error={Boolean(touched.age && errors.age)}
+                  fullWidth
+                  helperText={touched.age && errors.age}
+                  label="age"
+                  margin="normal"
+                  name="age"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  type="age"
+                  value={values.age}
+                  variant="outlined"
+                />
+
+                <FormControl>
+                  <InputLabel htmlFor="gender">Gender</InputLabel>
+                  <Select
+                    required
+                    native
+                    value={values.gender}
                     onChange={handleChange}
-                    type="age"
-                    value={values.age}
-                    variant="outlined"
+                    inputProps={{
+                      name: 'gender',
+                      id: 'gender'
+                    }}
+                  >
+                    <option aria-label="None" value="" />
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                  </Select>
+                </FormControl>
+
+                <Box mt={1}>
+                  <input
+                    accept="image/*"
+                    type="file"
+                    required
+                    name="image"
+                    onChange={setInputState}
+                    // style={{ display: 'none' }}
+                    id="image"
                   />
-
-                  <FormControl>
-                    <InputLabel htmlFor="gender">Gender</InputLabel>
-                    <Select
-                      required
-                      native
-                      value={values.gender}
-                      onChange={handleChange}
-                      inputProps={{
-                        name: 'gender',
-                        id: 'gender'
-                      }}
-                    >
-                      <option aria-label="None" value="" />
-                      <option value="Male">Male</option>
-                      <option value="Female">Female</option>
-                    </Select>
-                  </FormControl>
-
-                  <Box mt={1}>
-                    <input
-                      accept="image/*"
-                      type="file"
-                      required
-                      name="image"
-                      onChange={setInputState}
-                      // style={{ display: 'none' }}
-                      id="image"
-                    />
-                    <label htmlFor="icon-button-file" />
-                  </Box>
-                  <Box alignItems="center" display="flex" ml={-1}>
-                    <Checkbox
-                      checked={values.policy}
-                      name="policy"
-                      onChange={handleChange}
-                    />
-                    <Typography color="textSecondary" variant="body1">
-                      I have read the{' '}
-                      <Link
-                        color="primary"
-                        component={RouterLink}
-                        to="#"
-                        underline="always"
-                        variant="h6"
-                      >
-                        Terms and Conditions
-                      </Link>
-                    </Typography>
-                  </Box>
-                  {Boolean(touched.policy && errors.policy) && (
-                    <FormHelperText error>{errors.policy}</FormHelperText>
-                  )}
-                  <Box my={2}>
-                    <Button
-                      color="primary"
-                      fullWidth
-                      size="large"
-                      type="submit"
-                      variant="contained"
-                    >
-                      Sign up now
-                    </Button>
-                  </Box>
+                  <label htmlFor="icon-button-file" />
+                </Box>
+                <Box alignItems="center" display="flex" ml={-1}>
+                  <Checkbox
+                    checked={values.policy}
+                    name="policy"
+                    onChange={handleChange}
+                  />
                   <Typography color="textSecondary" variant="body1">
-                    Have an account?{' '}
-                    <Link component={RouterLink} to="/login" variant="h6">
-                      Sign in
+                    I have read the{' '}
+                    <Link
+                      color="primary"
+                      component={RouterLink}
+                      to="#"
+                      underline="always"
+                      variant="h6"
+                    >
+                      Terms and Conditions
                     </Link>
                   </Typography>
-                </form>
-              )}
-            </Formik>
-          </Container>
-        </Box>
-      )}
+                </Box>
+                {Boolean(touched.policy && errors.policy) && (
+                  <FormHelperText error>{errors.policy}</FormHelperText>
+                )}
+                <Box my={2}>
+                  <Button
+                    color="primary"
+                    fullWidth
+                    size="large"
+                    type="submit"
+                    variant="contained"
+                  >
+                    Sign up now
+                  </Button>
+                </Box>
+                <Typography color="textSecondary" variant="body1">
+                  Have an account?{' '}
+                  <Link component={RouterLink} to="/login" variant="h6">
+                    Sign in
+                  </Link>
+                </Typography>
+              </form>
+            )}
+          </Formik>
+        </Container>
+      </Box>
     </Page>
   );
 };

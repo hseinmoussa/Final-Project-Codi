@@ -13,15 +13,29 @@ class EventsRepo implements EventsInterface
     public function index($rowNb)
     {
 
-        $searchName  ="";
+        $searchName  =$searchCountry="";
         if (isset($_GET['name'])) 
         {
             $searchName = $_GET['name'];
         }
+
+        if (isset($_GET['country'])) 
+        {
+            $searchCountry = $_GET['country'];
+            return $Events= Events::
+
+            whereHas('state.country', function ($query) use($searchCountry) {
+                $query->where('name', 'like','%' . $searchCountry. '%');
+            })
+
+            ->with(['images','user','state.country'])
+            ->where('name', 'LIKE', '%' . $searchName. '%')
+            ->paginate($rowNb);
+        }
        
      
         $Events= Events::where('name', 'LIKE', '%' . $searchName. '%')
-        ->with(['images','user','state'])
+        ->with(['images','user','state.country'])
         ->paginate($rowNb);
      
          
@@ -32,9 +46,35 @@ class EventsRepo implements EventsInterface
 
     }
 
+    public function indexByHobby($rowNb,$id=null)
+    {
+
+        if (!is_null($id)) 
+        {
+           
+            return $Events= Events::
+
+            whereHas('hobbies', function ($query) use($id) {
+                $query->where('Hobbies.id', $id);
+            })
+
+            ->with(['images','user','state.country'])
+            ->paginate($rowNb);
+        }
+       
+     
+     
+         
+
+    //  return  HobbiesResources::collection($country);
+     return  null;
+
+
+    }
+
     public function show($id)
     {
-        $event= Events::where('id',$id)->with('images')->first();
+        $event= Events::where('id',$id)->with(['images','user','state.country'])->first();
         
         return  $event;
     }

@@ -26,6 +26,13 @@ import Dashboard from 'src/views/Dashboard/Dashboard';
 
 import Home from 'src/views/Home/Home';
 
+import Events from 'src/views/Events/Events';
+import EventsByHobby from 'src/views/Events/EventsByHobby';
+import Event from 'src/views/Events/Event';
+
+import Freelancers from 'src/views/Freelancers/Freelancers';
+import Not_Freelancers from 'src/views/Freelancers/Not_Freelancers';
+
 const routes = [
   {
     path: 'admin',
@@ -65,6 +72,13 @@ const routes = [
       { path: 'resetpass/:id', element: <ResetPassword /> },
       { path: 'register', element: <RegisterView /> },
       { path: 'home', element: <Home /> },
+      { path: 'Events', element: <Events /> },
+      { path: 'EventsByHobby/:id', element: <EventsByHobby /> },
+      { path: 'Event/:id', element: <Event /> },
+
+      { path: 'Freelancers', element: <Freelancers /> },
+      { path: 'Not_Freelancers', element: <Not_Freelancers /> },
+
       { path: '404', element: <NotFoundView /> },
       { path: '/', element: <Navigate to="/home" /> },
       { path: '*', element: <Navigate to="/404" /> }

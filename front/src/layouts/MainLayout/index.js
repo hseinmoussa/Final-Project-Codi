@@ -32,9 +32,9 @@ const useStyles = makeStyles(() => ({
   },
   menuButton: {
     fontFamily: 'Open Sans, sans-serif',
-    fontWeight: 700,
-    size: '18px',
-    marginLeft: '38px'
+    fontWeight: 500,
+    size: '12px',
+    marginLeft: '15px'
   },
   toolbar: {
     display: 'flex',
@@ -73,6 +73,14 @@ export default function MainLayout() {
         href: '/register'
       },
       {
+        label: 'Events',
+        href: '/events'
+      },
+      {
+        label: 'Looking For Freelancer?',
+        href: '/Freelancers'
+      },
+      {
         label: 'Login',
         href: '/loginUser'
       }
@@ -80,12 +88,20 @@ export default function MainLayout() {
   else
     var [headersData, setHeadersData] = useState([
       {
-        label: 'Listings',
-        href: '/listings'
+        label: 'About Us',
+        href: '/home#about'
       },
       {
-        label: 'Mentors',
-        href: '/mentors'
+        label: 'Contact Us',
+        href: '/home#contact'
+      },
+      {
+        label: 'Events',
+        href: '/events'
+      },
+      {
+        label: 'Looking For Freelancer?',
+        href: '/Freelancers'
       },
       {
         label: 'Logout',

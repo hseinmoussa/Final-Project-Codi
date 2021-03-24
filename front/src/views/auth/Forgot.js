@@ -111,6 +111,7 @@ const Forgot = () => {
         flexDirection="column"
         height="100%"
         justifyContent="center"
+        style={{ marginTop: '10%' }}
       >
         <Container maxWidth="sm">
           <Formik

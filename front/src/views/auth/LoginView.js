@@ -138,7 +138,7 @@ const LoginView = () => {
               <form onSubmit={handleSubmit}>
                 <Box mb={3}>
                   <Typography color="textPrimary" variant="h2">
-                    Sign in
+                    Sign in (Admin)
                   </Typography>
                 </Box>
 

@@ -101,8 +101,7 @@ Route::post('/admin/login', 'AdminAuthController@login');
 
     /////Users_Hobbies
     Route::get('/users_hobbies/{row}', 'UsersHobbiesController@index');
-    Route::get('/freelancers/{row}', 'UsersHobbiesController@freelancers');
-    Route::get('/not_freelancers/{row}', 'UsersHobbiesController@not_freelancers');
+   
     Route::get('/user_hobby/{id}', 'UsersHobbiesController@show');
     Route::put('/user_hobby/{id}', 'UsersHobbiesController@update');
     Route::post('/user_hobby', 'UsersHobbiesController@store');
@@ -124,6 +123,7 @@ Route::post('/admin/login', 'AdminAuthController@login');
     Route::post('/event', 'EventsController@store');
     Route::delete('/event/{id}', 'EventsController@destroy');
 
+    
     
 
 });
@@ -193,6 +193,7 @@ Route::get('/event/{id}', 'EventsController@show');
 Route::put('/event/{id}', 'EventsController@update');
 Route::post('/event', 'EventsController@store');
 Route::delete('/event/{id}', 'EventsController@destroy');
+Route::get('/eventsbyhobby/{row}/{id}', 'EventsController@indexByHobby');
 
 
 

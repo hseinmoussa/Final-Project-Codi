@@ -646,9 +646,9 @@ const ProductCard = ({
         <Typography align="center" color="textPrimary" variant="body1">
           <strong>Created By: </strong>
 
-          {event.user.name}
+          {event.user && event.user.name}
           <br></br>
-          <i>({event.user.email})</i>
+          <i>({event.user && event.user.email})</i>
         </Typography>
         <Typography align="center" color="textPrimary" variant="body1">
           <strong>state: </strong>
