@@ -7,6 +7,7 @@ use App\Http\Requests\AdminsRequest;
 use App\Http\Requests\loginRequest;
 use App\FileType\FileType;
 
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 class AdminAuthController extends Controller
 {
     
@@ -48,14 +49,42 @@ class AdminAuthController extends Controller
     }
 
 
-      /**
-     * Get a JWT token via given credentials.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
+   
 
+
+     /**
+ * @OA\Get(
+ *     path="/index",
+ *     description="Return a user's first and last name",
+ *     name="Projects",
+ *     @OA\Parameter(
+ *         name="firstname",
+ *         in="query",
+ *         type="string",
+ *         description="Your first name",
+ *         required=true,
+ *     ),
+ *     @OA\Parameter(
+ *         name="lastname",
+ *         in="query",
+ *         type="string",
+ *         description="Your last name",
+ *         required=true,
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="OK",
+ *     ),
+ *     @OA\Response(
+ *         response=422,
+ *         description="Missing Data"
+ *     ),
+ *   @OA\Tag(
+     *     name="Projects",
+     *     description="API Endpoints of Projects"
+     * )
+ * )
+ */
     public function login(loginRequest $request)
     {
         if ($request->validator->fails())  return Response::error(400, $request->validator->messages());
