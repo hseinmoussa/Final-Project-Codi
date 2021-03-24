@@ -73,7 +73,7 @@ Route::post('/admin/login', 'AdminAuthController@login');
     Route::get('/country/{id}', 'CountriesController@show');
     Route::get('/countryRelations/{id}', 'CountriesController@showRelation');
     Route::put('/country/{id}', 'CountriesController@update');
-    Route::post('/country', 'CountriesController@store');
+    Route::post('/country', 'CountriesController@store')->name('country.create');
     Route::delete('/country/{id}', 'CountriesController@destroy');
 
 
