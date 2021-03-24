@@ -36,7 +36,7 @@ class Users_HobbiesRequest extends FormRequest
                         // 'name' => 'required|max:255|unique:Users_Hobbies,name',
                         'hobby_id' => 'required|exists:Hobbies,id',
                         'user_id' => 'required|exists:users,id',
-                        'city_id' => 'required|exists:Cities,id',
+                        'state_id' => 'required|exists:States,id',
                         'level_id' => 'required',
                         'address' => 'required|max:255',
                     ];
@@ -48,7 +48,7 @@ class Users_HobbiesRequest extends FormRequest
                         // 'name' => 'required|max:255|unique:Users_Hobbies,name,'.$this->id,
                         'hobby_id' => 'required|exists:Hobbies,id',
                         'user_id' => 'required|exists:users,id',
-                        'city_id' => 'required|exists:Cities,id',
+                        'state_id' => 'required|exists:States,id',
                         'level_id' => 'required',
                         'address' => 'required|max:255',
                     ];
@@ -75,8 +75,8 @@ class Users_HobbiesRequest extends FormRequest
             'user_id.required' => 'User is required!',
             'user_id.exists' => 'Invalid User',
 
-            'city_id.required' => 'City is required!',
-            'city_id.exists' => 'Invalid City',
+            'state_id.required' => 'State is required!',
+            'state_id.exists' => 'Invalid State',
 
             'level_id.required' => 'Level is required!',
 

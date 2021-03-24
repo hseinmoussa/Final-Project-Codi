@@ -127,6 +127,7 @@ class Users implements UsersInterface
                 $user->name = $data['name'];
                 $user->email = $data['email'];
                 $user->gender = $data['gender'];
+                $user->phone = $data['phone'];
                 $user->age = $data['age'];
             } else 
             {

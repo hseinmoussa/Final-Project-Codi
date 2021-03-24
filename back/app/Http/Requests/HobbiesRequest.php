@@ -34,7 +34,7 @@ class HobbiesRequest extends FormRequest
                     
                     return [
                         'name' => 'required|max:255|unique:Hobbies,name',
-
+                        'image' => 'required|mimes:jpeg,png,jpg,gif,svg|max:2048',
                  
                     ];
                 }
@@ -44,6 +44,7 @@ class HobbiesRequest extends FormRequest
                     return [
 
                         'name' => 'required|max:255|unique:Hobbies,name,'.$this->id,
+                        'image' => 'required|max:2048',
 
                     ];
                 }
@@ -62,6 +63,10 @@ class HobbiesRequest extends FormRequest
             'name.required' => 'Name is required!',
             'name.max' => 'Name is too long',
             'name.unique'=> 'This hobby is already taken ',
+
+            'image.required' => ' Image is required!',
+            'image.max' => 'Image is too larage',
+            'image.mimes' => 'Image type is unacceptable',
         ];
     }
 

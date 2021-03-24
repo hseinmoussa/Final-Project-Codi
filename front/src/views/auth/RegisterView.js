@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
@@ -11,9 +11,16 @@ import {
   Link,
   TextField,
   Typography,
-  makeStyles
+  makeStyles,
+  FormControl,
+  InputLabel,
+  Select,
+  CircularProgress
 } from '@material-ui/core';
+import MainLayout from 'src/layouts/MainLayout';
+
 import Page from 'src/components/Page';
+import { ToastContainer, toast } from 'react-toastify';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,37 +35,173 @@ const RegisterView = () => {
   const classes = useStyles();
   const navigate = useNavigate();
 
+  const [image, setImage] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [emailsent, setEmailSent] = useState(false);
+
+  const isInitialMount = useRef(true);
+
+  const setInputState = (e) => {
+    let file;
+
+    if (e.target.files) {
+      file = e.target.files[0];
+      setImage(file);
+    }
+  };
+
+  useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+    } else if (emailsent) {
+      toast.info('Please Check your email to activate your account', {
+        position: 'top-center',
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        onClose: () => (window.location.href = '/loginUser'),
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined
+      });
+    }
+  }, [emailsent]);
+
+  const handleSubmit = async (e) => {
+    // e.preventDefault();
+
+    setLoading(true);
+
+    const url = process.env.REACT_APP_URL + 'user/register';
+
+    let formData = new FormData();
+    formData.append('password', e.password);
+    formData.append('email', e.email);
+    formData.append('name', e.name);
+    formData.append('phone', e.phone);
+    formData.append('age', e.age);
+    formData.append('gender', e.gender);
+    formData.append('image', image);
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        // Accept: 'application/json',
+        // 'Content-Type': 'application/json'
+      },
+      body: formData
+    }).catch(function (error) {});
+
+    const res = await response.json();
+    const result = await response.status;
+
+    if (result == 200) {
+      // var accessToken = res.access_token;
+      var WaitingToVerify = e.email;
+      // var adminId = admin.id;
+      // var id = JSON.stringify(adminId);
+      window.localStorage.setItem('WaitingToVerify', WaitingToVerify);
+      // window.localStorage.setItem('admin', id);
+      setLoading(false);
+      setEmailSent(true);
+
+      // alert( ");
+      // this.props.handleModalLog();
+    } else {
+      var msg;
+      if (result == 400)
+        msg = res.error.message[Object.keys(res.error.message)[0]][0];
+      else msg = res.error;
+      setLoading(false);
+
+      return toast.error(msg, {
+        position: 'top-right',
+        autoClose: 1000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        // onClose: () => setLoading(false),
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined
+      });
+
+      // this.setState({ error: res.error });
+    }
+  };
+
   return (
-    <Page
-      className={classes.root}
-      title="Register"
-    >
+    <Page className={classes.root} title="Register">
+      {loading ? (
+        <div
+          style={{
+            position: 'absolute',
+            left: '50%',
+            top: '50%'
+          }}
+        >
+          <div
+            style={{
+              position: 'relative',
+              left: '-50%'
+            }}
+          >
+            <CircularProgress>
+              <span className="sr-only">Loading...</span>
+            </CircularProgress>
+          </div>
+        </div>
+      ) : (
+        ''
+      )}
       <Box
         display="flex"
         flexDirection="column"
-        height="100%"
+        // height="100%"
         justifyContent="center"
       >
-        <Container maxWidth="sm">
+        <ToastContainer
+          position="top-right"
+          autoClose={2000}
+          hideProgressBar
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
+        <MainLayout />
+        <Container maxWidth="sm" style={{ marginTop: '10vh' }}>
           <Formik
             initialValues={{
               email: '',
-              firstName: '',
-              lastName: '',
+              name: '',
               password: '',
+              phone: '',
+              age: '',
+              image: '',
+              gender: '',
               policy: false
             }}
-            validationSchema={
-              Yup.object().shape({
-                email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
-                firstName: Yup.string().max(255).required('First name is required'),
-                lastName: Yup.string().max(255).required('Last name is required'),
-                password: Yup.string().max(255).required('password is required'),
-                policy: Yup.boolean().oneOf([true], 'This field must be checked')
-              })
-            }
-            onSubmit={() => {
-              navigate('/app/dashboard', { replace: true });
+            validationSchema={Yup.object().shape({
+              email: Yup.string()
+                .email('Must be a valid email')
+                .max(255)
+                .required('Email is required'),
+              name: Yup.string().max(255).required('Your Name is required'),
+              password: Yup.string().max(255).required('password is required'),
+              policy: Yup.boolean().oneOf([true], 'This field must be checked'),
+              phone: Yup.number('Must Be Real Phone Number')
+                .min(7)
+                .required('Phone nb is required'),
+              age: Yup.number('Must Be Number')
+                .max(255)
+
+                .required('Age is required')
+            })}
+            onSubmit={(e) => {
+              handleSubmit(e);
+              // navigate('/app/dashboard', { replace: true });
             }}
           >
             {({
@@ -70,12 +213,15 @@ const RegisterView = () => {
               touched,
               values
             }) => (
-              <form onSubmit={handleSubmit}>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleSubmit(e);
+                }}
+                // onSubmit={handleSubmit}
+              >
                 <Box mb={3}>
-                  <Typography
-                    color="textPrimary"
-                    variant="h2"
-                  >
+                  <Typography color="textPrimary" variant="h2">
                     Create new account
                   </Typography>
                   <Typography
@@ -87,29 +233,18 @@ const RegisterView = () => {
                   </Typography>
                 </Box>
                 <TextField
-                  error={Boolean(touched.firstName && errors.firstName)}
+                  error={Boolean(touched.name && errors.name)}
                   fullWidth
-                  helperText={touched.firstName && errors.firstName}
-                  label="First name"
+                  helperText={touched.name && errors.name}
+                  label="Your Name"
                   margin="normal"
-                  name="firstName"
+                  name="name"
                   onBlur={handleBlur}
                   onChange={handleChange}
-                  value={values.firstName}
+                  value={values.name}
                   variant="outlined"
                 />
-                <TextField
-                  error={Boolean(touched.lastName && errors.lastName)}
-                  fullWidth
-                  helperText={touched.lastName && errors.lastName}
-                  label="Last name"
-                  margin="normal"
-                  name="lastName"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  value={values.lastName}
-                  variant="outlined"
-                />
+
                 <TextField
                   error={Boolean(touched.email && errors.email)}
                   fullWidth
@@ -136,22 +271,72 @@ const RegisterView = () => {
                   value={values.password}
                   variant="outlined"
                 />
-                <Box
-                  alignItems="center"
-                  display="flex"
-                  ml={-1}
-                >
+                <TextField
+                  error={Boolean(touched.phone && errors.phone)}
+                  fullWidth
+                  helperText={touched.phone && errors.phone}
+                  label="phone"
+                  margin="normal"
+                  name="phone"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  type="phone"
+                  value={values.phone}
+                  variant="outlined"
+                />
+
+                <TextField
+                  error={Boolean(touched.age && errors.age)}
+                  fullWidth
+                  helperText={touched.age && errors.age}
+                  label="age"
+                  margin="normal"
+                  name="age"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  type="age"
+                  value={values.age}
+                  variant="outlined"
+                />
+
+                <FormControl>
+                  <InputLabel htmlFor="gender">Gender</InputLabel>
+                  <Select
+                    required
+                    native
+                    value={values.gender}
+                    onChange={handleChange}
+                    inputProps={{
+                      name: 'gender',
+                      id: 'gender'
+                    }}
+                  >
+                    <option aria-label="None" value="" />
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                  </Select>
+                </FormControl>
+
+                <Box mt={1}>
+                  <input
+                    accept="image/*"
+                    type="file"
+                    required
+                    name="image"
+                    onChange={setInputState}
+                    // style={{ display: 'none' }}
+                    id="image"
+                  />
+                  <label htmlFor="icon-button-file" />
+                </Box>
+                <Box alignItems="center" display="flex" ml={-1}>
                   <Checkbox
                     checked={values.policy}
                     name="policy"
                     onChange={handleChange}
                   />
-                  <Typography
-                    color="textSecondary"
-                    variant="body1"
-                  >
-                    I have read the
-                    {' '}
+                  <Typography color="textSecondary" variant="body1">
+                    I have read the{' '}
                     <Link
                       color="primary"
                       component={RouterLink}
@@ -164,14 +349,11 @@ const RegisterView = () => {
                   </Typography>
                 </Box>
                 {Boolean(touched.policy && errors.policy) && (
-                  <FormHelperText error>
-                    {errors.policy}
-                  </FormHelperText>
+                  <FormHelperText error>{errors.policy}</FormHelperText>
                 )}
                 <Box my={2}>
                   <Button
                     color="primary"
-                    disabled={isSubmitting}
                     fullWidth
                     size="large"
                     type="submit"
@@ -180,17 +362,9 @@ const RegisterView = () => {
                     Sign up now
                   </Button>
                 </Box>
-                <Typography
-                  color="textSecondary"
-                  variant="body1"
-                >
-                  Have an account?
-                  {' '}
-                  <Link
-                    component={RouterLink}
-                    to="/login"
-                    variant="h6"
-                  >
+                <Typography color="textSecondary" variant="body1">
+                  Have an account?{' '}
+                  <Link component={RouterLink} to="/login" variant="h6">
                     Sign in
                   </Link>
                 </Typography>

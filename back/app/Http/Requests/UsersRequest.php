@@ -50,7 +50,7 @@ class UsersRequest extends FormRequest
 
                         'name' => 'required|max:255',
                         'email' => 'required|email|max:255|unique:users,email,'.$this->id,
-                        'image' => 'mimes:jpeg,png,jpg,gif,svg|max:2048',
+                        'image' => 'required',
                         'phone' => 'required|min:6',
                         'gender' => 'required',
                         'age' => 'required|integer',
@@ -81,7 +81,7 @@ class UsersRequest extends FormRequest
             'email.max'=> 'The email is too long',
             'password.required'=> 'The password is required',
             'password.min' => 'the password should be at least 6 charachters',
-            'phone.min' => 'the password should be at least 6 charachters',
+            'phone.min' => 'the Phone should be at least 6 charachters',
             'phone.required'=> 'The phone nb is required',
             'gender.required'=> 'The gender is required',
             'age.required'=> 'The age is required',

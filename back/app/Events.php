@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use App\Hobbies;
 use App\User;
-use App\Cities;
+use App\States;
 class Events extends Model
 {
     
@@ -14,7 +14,7 @@ class Events extends Model
 
 
     protected $fillable = [
-        'id','name','start_date','end_date','start_time','end_time','user_id','location','city_id'
+        'id','name','start_date','end_date','user_id','location','state_id','description'
     ];
 
 
@@ -37,9 +37,9 @@ class Events extends Model
         return $this->hasMany(Images::class, 'event_id', 'id');
     }
 
-    public function city()
+    public function state()
     {
-        return $this->belongsTo(Cities::class, 'city_id', 'id');
+        return $this->belongsTo(States::class, 'state_id', 'id');
     }
 
 

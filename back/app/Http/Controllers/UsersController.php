@@ -58,6 +58,29 @@ class UsersController extends Controller
           
     }
 
+
+
+
+
+
+
+
+    /**
+     * Return the total count of users.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function count()
+    {     
+        $count = $this->repository->count();
+
+        if ($count)  return Response::success($count);
+        
+        return Response::error(400, "couldn't find Users");
+          
+    }
+
     /**
      * Display the specified resource.
      *

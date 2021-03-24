@@ -3,7 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Cities;
+use App\States;
 use App\User;
 use App\Hobbies;
 class Users_Hobbies extends Model
@@ -13,12 +13,12 @@ class Users_Hobbies extends Model
 
 
     protected $fillable = [
-        'id','hobby_id','user_id','fees_per_hour','city_id','address','level_id','rating','is_freelancer'
+        'id','hobby_id','user_id','fees_per_hour','state_id','address','level_id','rating','is_freelancer','about'
     ];
 
-    public function city()
+    public function state()
     {
-        return $this->belongsTo(Cities::class, 'city_id', 'id');
+        return $this->belongsTo(States::class, 'state_id', 'id');
     }
 
     public function user()

@@ -12,9 +12,9 @@ import {
   Typography,
   makeStyles
 } from '@material-ui/core';
-import FacebookIcon from 'src/icons/Facebook';
-import GoogleIcon from 'src/icons/Google';
+
 import Page from 'src/components/Page';
+import { ToastContainer, toast } from 'react-toastify';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,11 +29,80 @@ const LoginView = () => {
   const classes = useStyles();
   const navigate = useNavigate();
 
+  const handleSubmit = async (e) => {
+    // e.preventDefault();
+
+    const url = process.env.REACT_APP_URL + 'admin/login';
+    const body = {
+      email: e.email,
+      password: e.password
+    };
+
+    let formData = new FormData();
+    formData.append('password', e.password);
+    formData.append('email', e.email);
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      // body: formData
+      body: JSON.stringify(body)
+    }).catch(function (error) {});
+
+    const res = await response.json();
+    const result = await response.status;
+
+    if (result == 200) {
+      var accessToken = res.access_token;
+      var admin = res.admin;
+      var adminId = admin.id;
+      var id = JSON.stringify(adminId);
+      window.localStorage.setItem('tokenAdmin', accessToken);
+      window.localStorage.setItem('Admin', id);
+      toast.info('You Seccsussfuly loged in !', {
+        position: 'top-right',
+        autoClose: 1000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        onClose: () => navigate('/admin/dashboard', { replace: true }),
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined
+      });
+
+      // alert( ");
+      // this.props.handleModalLog();
+    } else {
+      toast.error(res.error, {
+        position: 'top-right',
+        autoClose: 1000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        // onClose: () => this.props.handleModalLog(),
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined
+      });
+      // this.setState({ error: res.error });
+    }
+  };
+
   return (
-    <Page
-      className={classes.root}
-      title="Login"
-    >
+    <Page className={classes.root} title="Login">
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <Box
         display="flex"
         flexDirection="column"
@@ -43,15 +112,18 @@ const LoginView = () => {
         <Container maxWidth="sm">
           <Formik
             initialValues={{
-              email: 'demo@devias.io',
-              password: 'Password123'
+              email: '',
+              password: ''
             }}
             validationSchema={Yup.object().shape({
-              email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
+              email: Yup.string()
+                .email('Must be a valid email')
+                .max(255)
+                .required('Email is required'),
               password: Yup.string().max(255).required('Password is required')
             })}
-            onSubmit={() => {
-              navigate('/app/dashboard', { replace: true });
+            onSubmit={(e) => {
+              handleSubmit(e);
             }}
           >
             {({
@@ -65,68 +137,11 @@ const LoginView = () => {
             }) => (
               <form onSubmit={handleSubmit}>
                 <Box mb={3}>
-                  <Typography
-                    color="textPrimary"
-                    variant="h2"
-                  >
-                    Sign in
-                  </Typography>
-                  <Typography
-                    color="textSecondary"
-                    gutterBottom
-                    variant="body2"
-                  >
-                    Sign in on the internal platform
+                  <Typography color="textPrimary" variant="h2">
+                    Sign in (Admin)
                   </Typography>
                 </Box>
-                <Grid
-                  container
-                  spacing={3}
-                >
-                  <Grid
-                    item
-                    xs={12}
-                    md={6}
-                  >
-                    <Button
-                      color="primary"
-                      fullWidth
-                      startIcon={<FacebookIcon />}
-                      onClick={handleSubmit}
-                      size="large"
-                      variant="contained"
-                    >
-                      Login with Facebook
-                    </Button>
-                  </Grid>
-                  <Grid
-                    item
-                    xs={12}
-                    md={6}
-                  >
-                    <Button
-                      fullWidth
-                      startIcon={<GoogleIcon />}
-                      onClick={handleSubmit}
-                      size="large"
-                      variant="contained"
-                    >
-                      Login with Google
-                    </Button>
-                  </Grid>
-                </Grid>
-                <Box
-                  mt={3}
-                  mb={1}
-                >
-                  <Typography
-                    align="center"
-                    color="textSecondary"
-                    variant="body1"
-                  >
-                    or login with email address
-                  </Typography>
-                </Box>
+
                 <TextField
                   error={Boolean(touched.email && errors.email)}
                   fullWidth
@@ -134,6 +149,7 @@ const LoginView = () => {
                   label="Email Address"
                   margin="normal"
                   name="email"
+                  id="email"
                   onBlur={handleBlur}
                   onChange={handleChange}
                   type="email"
@@ -146,6 +162,7 @@ const LoginView = () => {
                   helperText={touched.password && errors.password}
                   label="Password"
                   margin="normal"
+                  id="password"
                   name="password"
                   onBlur={handleBlur}
                   onChange={handleChange}
@@ -156,7 +173,7 @@ const LoginView = () => {
                 <Box my={2}>
                   <Button
                     color="primary"
-                    disabled={isSubmitting}
+                    // disabled={isSubmitting}
                     fullWidth
                     size="large"
                     type="submit"
@@ -165,20 +182,6 @@ const LoginView = () => {
                     Sign in now
                   </Button>
                 </Box>
-                <Typography
-                  color="textSecondary"
-                  variant="body1"
-                >
-                  Don&apos;t have an account?
-                  {' '}
-                  <Link
-                    component={RouterLink}
-                    to="/register"
-                    variant="h6"
-                  >
-                    Sign up
-                  </Link>
-                </Typography>
               </form>
             )}
           </Formik>

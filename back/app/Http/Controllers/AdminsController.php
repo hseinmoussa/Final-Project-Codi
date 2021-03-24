@@ -7,6 +7,7 @@ use App\Admins;
 use App\Repositories\Interfaces\AdminsInterface;
 use App\Response\Response;
 use App\Http\Requests\AdminsRequest;
+use App\Http\Requests\AdminsPassRequest;
 
 class AdminsController extends Controller
 {
@@ -99,6 +100,62 @@ class AdminsController extends Controller
         
         return Response::error(400, "couldn't update Admin");
 
+        
+    }
+
+
+
+
+
+
+    /**
+     * Update Single resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Admin $Admin
+     * @return \Illuminate\Http\Response
+     */
+    public function updateProfile(AdminsRequest $request, $id)
+    {
+      
+        if ($request->validator->fails())  return Response::error(400, $request->validator->messages());
+
+    
+        $Admin = $this->repository->updateProfile($request,$id);
+
+        if ($Admin)  return Response::success($Admin);
+        
+        return Response::error(400, "couldn't update Admin");
+
+        
+    }
+
+
+
+
+        /**
+     * Update Password for admin.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Admin $Admin
+     * @return \Illuminate\Http\Response
+     */
+    public function updatePassword(AdminsPassRequest $request, $id)
+    {
+      
+        if ($request->validator->fails())  return Response::error(400, $request->validator->messages());
+
+    
+        $Admin = $this->repository->updatePassword($request,$id);
+        
+        if(!$Admin)
+            return Response::error(400, "couldn't update Admin");
+            
+        if ($Admin && $Admin!=='password')  
+            return Response::success($Admin);
+        if($Admin==='password')
+            return Response::error(400, "Password and verify password should be the same");
+        
         
     }
     /**

@@ -34,6 +34,22 @@ class EventsController extends Controller
     }
 
 
+        /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function indexByHobby($rowNb,$id)
+    {
+     
+        $Events = $this->repository->indexByHobby($rowNb,$id);
+
+        if ($Events) return Response::success($Events);
+        
+        return Response::error(400, "Couldn't get Events");
+    }
+
+
     /**
      * Store a newly created resource in storage.
      *

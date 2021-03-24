@@ -15,17 +15,20 @@ class CreateEventsTable extends Migration
     {
         Schema::create('Events', function (Blueprint $table) {
   
-//'id','name','start_date','end_date','start_time','end_time','user_id','location','city_id
+//'id','name','start_date','end_date','start_time','end_time','user_id','location','state_id
 
         $table->bigIncrements('id');
         $table->string('name');
-        $table->string('start_date');
-        $table->string('end_date');
-        $table->string('start_time');
-        $table->string('end_time');
+        $table->datetime('start_date');
+        $table->datetime('end_date');
+        $table->string('zone');
+        // $table->string('start_time');
+        // $table->string('end_time');
+
         $table->bigInteger('user_id')->unsigned();
-        $table->bigInteger('city_id')->unsigned();
+        $table->bigInteger('state_id')->unsigned();
         $table->string('location');
+        $table->string('description');
 
          
         });

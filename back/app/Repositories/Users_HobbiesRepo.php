@@ -23,7 +23,7 @@ class Users_HobbiesRepo implements Users_HobbiesInterface
      
            
 
-        $users_hobbies= Users_Hobbies::with(['user','hobby'])->paginate($rowNb);
+        $users_hobbies= Users_Hobbies::with(['user','hobby','state'])->paginate($rowNb);
         // ::where('name', 'LIKE', '%' . $searchName. '%')
         //  ->with(['users','events'])
          
@@ -55,7 +55,7 @@ class Users_HobbiesRepo implements Users_HobbiesInterface
         //     $query->where('Users_Hobbies.is_freelancer', 1);
         // })->with('hobbies')->paginate($rowNb); 
 
-        $users_hobbies= Users_Hobbies::with(['user','hobby'])->where('is_freelancer', 1)->paginate($rowNb);
+        $users_hobbies= Users_Hobbies::with(['user','hobby','state'])->where('is_freelancer', 1)->paginate($rowNb);
 
      
          
@@ -86,7 +86,7 @@ class Users_HobbiesRepo implements Users_HobbiesInterface
         //     $query->where('Users_Hobbies.is_freelancer', 0);
         // })->with('hobbies')->paginate($rowNb); 
          
-        $users_hobbies= Users_Hobbies::with(['user','hobby'])->where('is_freelancer', 0)->paginate($rowNb);
+        $users_hobbies= Users_Hobbies::with(['user','hobby','state'])->where('is_freelancer', 0)->paginate($rowNb);
 
      
          
@@ -117,6 +117,7 @@ class Users_HobbiesRepo implements Users_HobbiesInterface
         $user_hobby->gender = $user[0]->gender;
         $user_hobby->age = $user[0]->age;
         $user_hobby->image = $user[0]->image;
+        $user_hobby->about = $user[0]->about;
 
         return $user_hobby;
     }
@@ -131,7 +132,7 @@ class Users_HobbiesRepo implements Users_HobbiesInterface
     {   
       try{
        
-        $user = User::where('id',$request->user_id)->first();
+        $user = User::find($request->user_id);
 
         $hobby_id = $request->hobby_id;
 
@@ -139,9 +140,20 @@ class Users_HobbiesRepo implements Users_HobbiesInterface
 
         if(is_null($id))
         {
+       
+            $attributes = ['state_id'=>$request->state_id,'level_id'=>$request->level_id,'address'=>$request->address,
+        ];
 
-        $user->hobbies()
-        ->attach($hobby_id,['city_id'=>$request->city_id,'level_id'=>$request->level_id,'address'=>$request->address]);
+        if($request->is_freelancer)
+            $attributes['is_freelancer']= $request->is_freelancer;
+        if($request->rating)
+            $attributes['rating']= $request->rating;
+        if($request->fees_per_hour)
+            $attributes['fees_per_hour']= $request->fees_per_hour;
+        if($request->about)
+            $attributes['about']= $request->about;
+
+         $user->hobbies()->attach($hobby_id,$attributes);
         //  $user_hobby= new Users_Hobbies();
 
         //  $user_hobby->fill($request->all());
@@ -149,11 +161,27 @@ class Users_HobbiesRepo implements Users_HobbiesInterface
         }else
         {
          
-           
-            $attributes = ['city_id'=>$request->city_id,'level_id'=>$request->level_id,'address'=>$request->address];
+            $attributes = ['state_id'=>$request->state_id,'level_id'=>$request->level_id,'address'=>$request->address,
+            ];
+
+            if($request->is_freelancer)
+                $attributes['is_freelancer']= $request->is_freelancer;
+            if($request->rating)
+                $attributes['rating']= $request->rating;
+            if($request->fees_per_hour)
+                $attributes['fees_per_hour']= $request->fees_per_hour;
+            if($request->about)
+                $attributes['about']= $request->about;
+            
+       
             
             if(!is_null($user))
-                $user->hobbies()->updateExistingPivot($hobby_id, $attributes);
+        {   
+            self::destroy($id);
+            $user->hobbies()
+            ->attach($hobby_id,$attributes);
+                // $user->hobbies()->updateExistingPivot($hobby_id, $attributes);
+        }
             else
                 return null;
             // return Users_Hobbies::where('id',$id)->first();
@@ -169,6 +197,7 @@ class Users_HobbiesRepo implements Users_HobbiesInterface
       if($e->errorInfo[1] == 1062){
         return 'duplicate';
       }
+    
     }
     }
     

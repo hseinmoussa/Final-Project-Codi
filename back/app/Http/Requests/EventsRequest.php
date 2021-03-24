@@ -36,10 +36,12 @@ class EventsRequest extends FormRequest
                         'location' => 'required|max:255',
                         'start_date' => 'required|max:255',
                         'end_date' => 'required|max:255',
-                        'start_time' => 'required|max:255',
-                        'end_time' => 'required|max:255',
-                        'city_id' => 'required|exists:Cities,id',
+                        'zone' => 'required|max:255',
+                        // 'start_time' => 'required|max:255',
+                        // 'end_time' => 'required|max:255',
+                        'state_id' => 'required|exists:States,id',
                         'user_id' => 'required|exists:users,id',
+                        'description' => 'required|max:255',
                     ];
                 }
             case 'PUT':
@@ -51,10 +53,12 @@ class EventsRequest extends FormRequest
                         'location' => 'required|max:255',
                         'start_date' => 'required|max:255',
                         'end_date' => 'required|max:255',
-                        'start_time' => 'required|max:255',
-                        'end_time' => 'required|max:255',
-                        'city_id' => 'required|exists:Cities,id',
+                        'zone' => 'required|max:255',
+                        // 'start_time' => 'required|max:255',
+                        // 'end_time' => 'required|max:255',
+                        'state_id' => 'required|exists:States,id',
                         'user_id' => 'required|exists:users,id',
+                        'description' => 'required|max:255',
                     ];
                 }
         }
@@ -78,23 +82,29 @@ class EventsRequest extends FormRequest
             'start_date.required' => 'Start date is required!',
             'start_date.max' => 'Start date is too long',
 
+            // 'start_date.datetime' => 'Invalide start date type!',
+            // 'end_date.datetime' => 'Invalide end date type!',
+
             'end_date.required' => 'End date is required!',
             'end_date.max' => 'End date is too long',
 
-            'start_time.required' => 'Start time is required!',
-            'start_time.max' => 'Start time is too long',
+            'zone.required' => 'Zone time is required!',
+            'zone.max' => 'Zone is too long',
 
-            'end_time.required' => 'End time is required!',
-            'end_time.max' => 'End time is too long',
+            // 'end_time.required' => 'End time is required!',
+            // 'end_time.max' => 'End time is too long',
 
-            'city_id.required' => 'City field is required!',
-            'city_id.exists' => 'Invalid City!',
+            'state_id.required' => 'State field is required!',
+            'state_id.exists' => 'Invalid State!',
 
             'user_id.required' => 'User field is required!',
             'user_id.exists' => 'Invalid User!',
 
             'country_id.required' => 'Country field is required!',
             'country_id.exists' => 'Country field should be real one!',
+
+            'description.required' => 'Description is required!',
+            'description.max' => 'Description is too long',
         ];
     }
 

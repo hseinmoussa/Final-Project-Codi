@@ -36,6 +36,24 @@ class HobbiesController extends Controller
         return Response::error(400, "couldn't get Hobbies");
     }
 
+
+
+           /**
+     * Display a listing of The Main hobbies.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function main($rowNb)
+    {
+     
+        $hobbies = $this->repository->main($rowNb);
+
+        if ($hobbies) return Response::success($hobbies);
+        
+        return Response::error(400, "couldn't get Hobbies");
+    }
+
+    
         /**
      * Store a newly created resource in storage.
      *

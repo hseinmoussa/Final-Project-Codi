@@ -45,8 +45,8 @@ class AdminsRequest extends FormRequest
                     return [
                         'name' => 'required|max:255',
                         'email' => 'required|max:255|email|unique:admins,email,'.$this->id,
-                        'password' => 'required|max:255|min:6',
-                        'image' => 'required|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                        'password' => 'max:255|min:6',
+                        'image' => 'required|max:2048',
                     ];
                 }
         }
