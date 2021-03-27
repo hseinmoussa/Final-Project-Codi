@@ -26,6 +26,11 @@ import { useParams } from 'react-router-dom';
 
 import { useNavigate } from 'react-router-dom';
 
+import CookieConsent, {
+  Cookies,
+  getCookieConsentValue
+} from 'react-cookie-consent';
+
 const useStyles = makeStyles((theme) => ({
   carousel: {
     ['@media (max-width:780px)']: {
@@ -76,7 +81,7 @@ export default function EventsByHobby(props) {
   const [total, setTotal] = React.useState(0);
   const [page, setPage] = React.useState(1);
 
-  const [country_user, setCountryUser] = React.useState('');
+  const country_user = Cookies.get('country');
 
   const navigate = useNavigate();
 
@@ -96,15 +101,6 @@ export default function EventsByHobby(props) {
     );
   };
 
-  useEffect(() => {
-    try {
-      fetch('https://ipapi.co/json/')
-        .then((response) => response.json())
-        .then((res) => {
-          setCountryUser(res.country_name);
-        });
-    } catch (e) {}
-  }, []);
   const CapitalizeFirstLetter = (str) => {
     return str.length ? str.charAt(0).toUpperCase() + str.slice(1) : str;
   };
@@ -128,9 +124,12 @@ export default function EventsByHobby(props) {
 
   useEffect(() => {
     try {
+      let country;
+      if (getCookieConsentValue() && Cookies.get('country') != undefined)
+        country = Cookies.get('country');
+      else country = '';
       fetch(
-        process.env.REACT_APP_URL +
-          `events/10?page=${page}&country=${country_user}`,
+        process.env.REACT_APP_URL + `events/10?page=${page}&country=${country}`,
         {
           method: 'get'
         }
@@ -145,7 +144,7 @@ export default function EventsByHobby(props) {
           }
         });
     } catch (e) {}
-  }, [page, country_user]);
+  }, [page, getCookieConsentValue()]);
 
   return (
     <div>
@@ -338,7 +337,11 @@ export default function EventsByHobby(props) {
                   fontFamily: 'Berkshire Swash, handwriting'
                 }}
               >
-                Newest Events In Your Country
+                {getCookieConsentValue() &&
+                Cookies.get('country') != undefined &&
+                country_user != undefined
+                  ? 'Newest Events In Your Country'
+                  : 'Newest Events'}
               </h2>
 
               <Grid container={500} spacing={3} style={{ margin: 'auto' }}>

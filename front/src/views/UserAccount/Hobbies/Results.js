@@ -62,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Results = ({ className, render, setRender, ...rest }) => {
+const Results = ({ className, render, setRender, Hobby, State, ...rest }) => {
   const classes = useStyles();
   const [selectedCustomerIds, setSelectedCustomerIds] = useState([]);
   const [limit, setLimit] = useState(10);
@@ -72,31 +72,26 @@ const Results = ({ className, render, setRender, ...rest }) => {
 
   const [customers, setCustomers] = useState('1');
 
-  const navigate = useNavigate();
-
-  const search = useSelector((state) => {
-    return state.SearchAdmin.admin;
-  });
-  const search_email = useSelector((state) => {
-    return state.SearchEmailAdmin.email;
-  });
-
   const [open, setOpen] = useState(false);
   const [info, setInfo] = useState({});
 
-  const tokenAdmin = window.localStorage.getItem('tokenAdmin');
+  const navigate = useNavigate();
+
+  const tokenUser = window.localStorage.getItem('tokenUser');
+
+  const [freelancer, setFreelancer] = useState(false);
+
+  const handleChangeFreelancer = (e) => {
+    console.log(e.target.checked);
+    setFreelancer(e.target.checked);
+  };
 
   const handleOpen = () => {
     setOpen(!open);
   };
 
   const setInputState = (e) => {
-    let file;
-
-    if (e.target.files) {
-      file = e.target.files[0];
-      setInfo({ ...info, [e.target.name]: file });
-    } else setInfo({ ...info, [e.target.name]: e.target.value });
+    setInfo({ ...info, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = (e, id) => {
@@ -105,21 +100,40 @@ const Results = ({ className, render, setRender, ...rest }) => {
     try {
       let formData = new FormData();
 
-      formData.append('name', info.name);
+      formData.append('hobby_id', info.hobby_id);
+      formData.append('state_id', info.state_id);
+      formData.append('address', info.address);
+      formData.append('level_id', info.level_id);
 
-      formData.append('email', info.email);
-      if (info.password && info.password != undefined && info.password != '') {
-        formData.append('password', info.password);
+      if (freelancer) {
+        formData.append('is_freelancer', 1);
+      } else {
+        formData.append('is_freelancer', 0);
       }
-      formData.append('image', info.image);
+      if (freelancer)
+        if (
+          document.getElementById('fees_per_hour').value &&
+          document.getElementById('fees_per_hour').value != undefined &&
+          document.getElementById('fees_per_hour').value != ''
+        ) {
+          formData.append(
+            'fees_per_hour',
+            document.getElementById('fees_per_hour').value
+          );
+        }
+
+      if (info.about && info.about != undefined && info.about != '') {
+        formData.append('about', info.about);
+      }
+
       formData.append('_method', 'put');
 
-      fetch(process.env.REACT_APP_URL + `admin/admin/${info.id}`, {
+      fetch(process.env.REACT_APP_URL + `user/user_hobby/${info.id}`, {
         method: 'post',
         body: formData,
         headers: {
           Accept: 'application/json',
-          Authorization: 'Bearer ' + tokenAdmin
+          Authorization: 'Bearer ' + tokenUser
         }
       })
         .then((response) => response.json())
@@ -141,8 +155,8 @@ const Results = ({ className, render, setRender, ...rest }) => {
             res.status == 'Token expired' ||
             res.status == 'Not authorized'
           ) {
-            window.localStorage.removeItem('tokenAdmin');
-            window.localStorage.removeItem('Admin');
+            window.localStorage.removeItem('tokenUser');
+            window.localStorage.removeItem('User');
             toast.info('Cookies Expired, Please Login Again', {
               position: 'top-center',
               autoClose: 1000,
@@ -154,21 +168,23 @@ const Results = ({ className, render, setRender, ...rest }) => {
               progress: undefined
             });
           } else {
+            var msg;
             res.error &&
               res.error.message &&
-              toast.error(
-                res.error.message[Object.keys(res.error.message)[0]][0],
-                {
-                  position: 'top-center',
-                  autoClose: 1000,
-                  hideProgressBar: true,
-                  closeOnClick: true,
-                  pauseOnHover: true,
-                  // onClose: () => (window.location.href = "/cart"),
-                  draggable: true,
-                  progress: undefined
-                }
-              );
+              (Object.keys(res.error.message)[0] == 0
+                ? (msg = res.error.message)
+                : (msg =
+                    res.error.message[Object.keys(res.error.message)[0]][0]),
+              toast.error(msg, {
+                position: 'top-center',
+                autoClose: 1000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                // onClose: () => (window.location.href = "/cart"),
+                draggable: true,
+                progress: undefined
+              }));
             // alert(res.error.message[Object.keys(res.error.message)][0]);
           }
         });
@@ -179,25 +195,14 @@ const Results = ({ className, render, setRender, ...rest }) => {
 
   useEffect(() => {
     try {
-      // e.preventDefault();
-
-      // let formData = new FormData();
-      // formData.append(
-      //   "article_category_id",
-      //   document.getElementById("assign").value
-      // );
-
       fetch(
         process.env.REACT_APP_URL +
-          `admin/admins/${limit}?page=${
-            page + 1
-          }&name=${search}&email=${search_email}`,
+          `user/users_hobbies/${limit}?page=${page + 1}`,
         {
           method: 'get',
-          // body: formData,
           headers: {
             Accept: 'application/json',
-            Authorization: 'Bearer ' + tokenAdmin
+            Authorization: 'Bearer ' + tokenUser
           }
         }
       )
@@ -210,8 +215,8 @@ const Results = ({ className, render, setRender, ...rest }) => {
             res.status == 'Token expired' ||
             res.status == 'Not authorized'
           ) {
-            window.localStorage.removeItem('tokenAdmin');
-            window.localStorage.removeItem('Admin');
+            window.localStorage.removeItem('tokenUser');
+            window.localStorage.removeItem('User');
             toast.info('Cookies Expired, Please Login Again', {
               position: 'top-center',
               autoClose: 1000,
@@ -232,18 +237,13 @@ const Results = ({ className, render, setRender, ...rest }) => {
 
   useEffect(() => {
     try {
-      fetch(
-        process.env.REACT_APP_URL +
-          `admin/admins/${limit}?page=1&name=${search}&email=${search_email}`,
-        {
-          method: 'get',
-          // body: formData,
-          headers: {
-            Accept: 'application/json',
-            Authorization: 'Bearer ' + tokenAdmin
-          }
+      fetch(process.env.REACT_APP_URL + `user/users_hobbies/${limit}?page=1`, {
+        method: 'get',
+        headers: {
+          Accept: 'application/json',
+          Authorization: 'Bearer ' + tokenUser
         }
-      )
+      })
         .then((response) => response.json())
         .then((res) => {
           if (res.status == 200) {
@@ -253,8 +253,8 @@ const Results = ({ className, render, setRender, ...rest }) => {
             res.status == 'Token expired' ||
             res.status == 'Not authorized'
           ) {
-            window.localStorage.removeItem('tokenAdmin');
-            window.localStorage.removeItem('Admin');
+            window.localStorage.removeItem('tokenUser');
+            window.localStorage.removeItem('User');
             toast.info('Cookies Expired, Please Login Again', {
               position: 'top-center',
               autoClose: 1000,
@@ -271,7 +271,7 @@ const Results = ({ className, render, setRender, ...rest }) => {
           }
         });
     } catch (e) {}
-  }, [search, search_email]);
+  }, []);
 
   const handleLimitChange = (event) => {
     setLimit(event.target.value);
@@ -285,12 +285,12 @@ const Results = ({ className, render, setRender, ...rest }) => {
     e.preventDefault();
     if (window.confirm('Are you sure you want to delete it?'))
       try {
-        fetch(process.env.REACT_APP_URL + `admin/admin/${id}`, {
+        fetch(process.env.REACT_APP_URL + `user/user_hobby/${id}`, {
           method: 'delete',
           // body: formData,
           headers: {
             Accept: 'application/json',
-            Authorization: 'Bearer ' + tokenAdmin
+            Authorization: 'Bearer ' + tokenUser
           }
         })
           .then((response) => response.json())
@@ -311,8 +311,8 @@ const Results = ({ className, render, setRender, ...rest }) => {
               res.status == 'Token expired' ||
               res.status == 'Not authorized'
             ) {
-              window.localStorage.removeItem('tokenAdmin');
-              window.localStorage.removeItem('Admin');
+              window.localStorage.removeItem('tokenUser');
+              window.localStorage.removeItem('User');
               toast.info('Cookies Expired, Please Login Again', {
                 position: 'top-center',
                 autoClose: 1000,
@@ -348,10 +348,15 @@ const Results = ({ className, render, setRender, ...rest }) => {
   const handleEdit = (e, id, customer) => {
     setInfo({
       ['id']: id,
-      ['name']: customer.name,
-      ['email']: customer.email,
-      ['image']: customer.image
+      ['hobby_id']: customer.hobby_id,
+      ['level_id']: customer.level_id,
+      ['fees_per_hour']: customer.fees_per_hour,
+      ['about']: customer.about,
+      ['state_id']: customer.state_id,
+      ['address']: customer.address
     });
+    if (customer.is_freelancer == 1) setFreelancer(true);
+    if (customer.is_freelancer == 0) setFreelancer(false);
 
     setOpen(!open);
   };
@@ -381,7 +386,10 @@ const Results = ({ className, render, setRender, ...rest }) => {
           justifyContent: 'center'
         }}
       >
-        <div className={classes.paper} style={{ maxWidth: '95vw' }}>
+        <div
+          className={classes.paper}
+          style={{ maxWidth: '95vw', minWidth: '35vw' }}
+        >
           <h2
             id="simple-modal-title"
             style={{
@@ -391,7 +399,7 @@ const Results = ({ className, render, setRender, ...rest }) => {
               justifyContent: 'center'
             }}
           >
-            Edit Admin
+            Edit Item
           </h2>
           {!info.id ? (
             <div className={classes.root2}>
@@ -403,64 +411,153 @@ const Results = ({ className, render, setRender, ...rest }) => {
               onSubmit={handleSubmit}
               onError={(errors) => console.log(errors)}
             >
-              <TextValidator
-                label="First name"
-                name="name"
-                id="name"
-                validators={['required', 'isString']}
-                errorMessages={['this field is required', 'Name is not valid']}
-                value={info.name}
-                placeholder="First Name"
-                onChange={setInputState}
-              />
+              <Grid container spacing={3}>
+                <Grid item>
+                  <FormControl>
+                    <InputLabel htmlFor="gender">Hobby</InputLabel>
+                    <Select
+                      required
+                      native
+                      value={info.hobby_id}
+                      onChange={setInputState}
+                      inputProps={{
+                        name: 'hobby',
+                        id: 'hobby_id'
+                      }}
+                    >
+                      <option aria-label="None" value="" />
+                      {Hobby}
+                    </Select>
+                  </FormControl>
+                </Grid>
+              </Grid>
+
+              <Grid container spacing={3}>
+                <Grid item>
+                  <FormControl>
+                    <InputLabel htmlFor="state_id">State</InputLabel>
+                    <Select
+                      required
+                      native
+                      value={info.state_id}
+                      onChange={setInputState}
+                      inputProps={{
+                        name: 'state_id',
+                        id: 'state_id'
+                      }}
+                    >
+                      <option aria-label="None" value="" />
+                      {State}
+                    </Select>
+                  </FormControl>
+                </Grid>
+              </Grid>
 
               <Grid container spacing={3}>
                 <Grid item xs>
                   <TextValidator
-                    helperText="Please specify the Email"
-                    label="Email"
-                    name="email"
-                    id="email"
-                    placeholder="Email"
-                    validators={['required', 'isEmail']}
-                    errorMessages={[
-                      'this field is required',
-                      'email is not valid'
-                    ]}
-                    value={info.email}
-                    onChange={(e) => setInputState(e)}
-                  />
-                </Grid>
-                <Grid item xs>
-                  <TextValidator
-                    helperText="Please specify the password (Optional)"
-                    label="Password(Optional)"
-                    name="password"
-                    type="password"
-                    id="password"
-                    // validators={['minStringLength:8']}
-                    // errorMessages={['Weak Password']}
-                    placeholder="Password"
-                    value={info.password}
+                    helperText="Please specify the address"
+                    label="address"
+                    name="address"
+                    type="address"
+                    id="address"
+                    validators={['required']}
+                    errorMessages={['this field is required']}
+                    placeholder="Address"
+                    value={info.address}
                     onChange={(e) => setInputState(e)}
                   />
                 </Grid>
               </Grid>
 
-              <Box mt={1}>
-                <Box mt={1}>
-                  <input
-                    accept="image/*"
-                    type="file"
-                    name="image"
-                    // value={info.image}
-                    onChange={setInputState}
-                    // style={{ display: 'none' }}
-                    id="image"
+              <Grid container spacing={3}>
+                <Grid item xs>
+                  <TextValidator
+                    helperText="Please specify the About (Optional)"
+                    label="about"
+                    name="about"
+                    id="about"
+                    placeholder="About (Optional)"
+                    value={info.about}
+                    onChange={(e) => setInputState(e)}
                   />
-                  <label htmlFor="icon-button-file" />
-                </Box>
-              </Box>
+                </Grid>
+              </Grid>
+              <Grid container spacing={3}>
+                <Grid item xs>
+                  <InputLabel htmlFor="is_freelancer">
+                    Check It if you want to Teach It
+                  </InputLabel>
+                  <Checkbox
+                    checked={freelancer ? true : false}
+                    onChange={handleChangeFreelancer}
+                    name="is_freelancer"
+                    id="is_freelancer"
+                    placeholder="is freelancer ? (Default no)"
+                    inputProps={{ 'aria-label': 'primary checkbox' }}
+                  />
+                  {/* <InputLabel htmlFor="is_freelancer">Level</InputLabel>
+                <Select
+                  required
+                  native
+                  value={info.level_id}
+                  onChange={setInputState}
+                  value={info.is_freelancer}
+                  placeholder="is freelancer ? (Default no)"
+                  inputProps={{
+                    name: 'is_freelancer',
+                    id: 'is_freelancer'
+                  }}
+                >
+                  <option value="0">No</option>
+                  <option value="1">Yes</option>
+                </Select> */}
+                </Grid>
+              </Grid>
+              <Grid container spacing={3}>
+                {freelancer ? (
+                  <Grid item xs>
+                    <TextValidator
+                      helperText="Please specify the Fees per hour (Optional)"
+                      label="fees per hour (in USD)"
+                      name="fees_per_hour"
+                      id="fees_per_hour"
+                      placeholder="Fees Per Hour (Optional)"
+                      validators={['isNumber']}
+                      errorMessages={['fees is not valid']}
+                      value={info.fees_per_hour}
+                      onChange={(e) => setInputState(e)}
+                    />
+                  </Grid>
+                ) : (
+                  ''
+                )}
+              </Grid>
+
+              <Grid container spacing={3}>
+                <Grid item>
+                  <FormControl>
+                    <InputLabel htmlFor="level_id">Level</InputLabel>
+                    <Select
+                      required
+                      native
+                      value={info.level_id}
+                      onChange={setInputState}
+                      inputProps={{
+                        name: 'level_id',
+                        id: 'level_id'
+                      }}
+                    >
+                      <option aria-label="None" value="" />
+                      <option value="1/5">1/5</option>
+                      <option value="2/5">2/5</option>
+                      <option value="3/5">3/5</option>
+                      <option value="4/5">4/5</option>
+                      <option value="5/5">5/5</option>
+                    </Select>
+                  </FormControl>
+                </Grid>
+              </Grid>
 
               <Box display="flex">
                 <Box m="auto" mt={1}>
@@ -470,7 +567,7 @@ const Results = ({ className, render, setRender, ...rest }) => {
                     variant="contained"
                     style={{ margin: 'auto' }}
                   >
-                    Edit Admin
+                    Edit
                   </Button>
                 </Box>
               </Box>
@@ -480,25 +577,18 @@ const Results = ({ className, render, setRender, ...rest }) => {
       </Modal>
 
       <PerfectScrollbar>
-        {/* <Box minWidth={1050}> */}
         <Box>
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell padding="checkbox">
-                  {/* <Checkbox
-                    checked={selectedCustomerIds.length === customers.length}
-                    color="primary"
-                    indeterminate={
-                      selectedCustomerIds.length > 0
-                      && selectedCustomerIds.length < customers.length
-                    }
-                    onChange={handleSelectAll}
-                  /> */}
-                </TableCell>
-                <TableCell>Name</TableCell>
-                <TableCell>Email</TableCell>
-                <TableCell>Owner</TableCell>
+                <TableCell padding="checkbox"></TableCell>
+                <TableCell>Hobby</TableCell>
+                <TableCell>State</TableCell>
+                <TableCell>Fees Per Hour</TableCell>
+                <TableCell>About</TableCell>
+                <TableCell>Address</TableCell>
+                <TableCell>Level</TableCell>
+                <TableCell>Teacher?</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -541,38 +631,59 @@ const Results = ({ className, render, setRender, ...rest }) => {
                             // value="true"
                           />
                         )}
+                        {/* <Box alignItems="center" display="flex">
+                          {customer.name && (
+                            <Typography color="textPrimary" variant="body1">
+                              {customer.name}
+                            </Typography>
+                          )}
+                        </Box> */}
                       </TableCell>
 
-                      <TableCell>
+                      {/* <TableCell>
                         <Box alignItems="center" display="flex">
-                          {customer.image && (
-                            <Avatar
-                              className={classes.avatar}
-                              src={process.env.REACT_APP_URL2 + customer.image}
-                            >
-                              {getInitials(
-                                process.env.REACT_APP_URL2 + customer.image
-                              )}
-                            </Avatar>
-                          )}
                           {customer.name && (
                             <Typography color="textPrimary" variant="body1">
                               {customer.name}
                             </Typography>
                           )}
                         </Box>
-                      </TableCell>
-                      {customer.email && (
-                        <TableCell>{customer.email}</TableCell>
+                      </TableCell> */}
+
+                      {customer.hobby.name && (
+                        <TableCell>{customer.hobby.name}</TableCell>
                       )}
-                      {customer.phone && (
-                        <TableCell>{customer.phone}</TableCell>
+
+                      {customer.state.name && (
+                        <TableCell>{customer.state.name}</TableCell>
                       )}
-                      {
-                        <TableCell>
-                          {customer && customer.is_owner == 0 ? 'No' : 'Yes'}
-                        </TableCell>
-                      }
+                      {console.log(customer.fees_per_hour)}
+                      {customer.fees_per_hour &&
+                      customer.fees_per_hour != null ? (
+                        <TableCell>{customer.fees_per_hour} $</TableCell>
+                      ) : (
+                        <TableCell>Free</TableCell>
+                      )}
+
+                      {customer.about ? (
+                        <TableCell>{customer.about} </TableCell>
+                      ) : (
+                        <TableCell>Empty</TableCell>
+                      )}
+
+                      {customer.address && (
+                        <TableCell>{customer.address}</TableCell>
+                      )}
+
+                      {customer.level_id && (
+                        <TableCell>{customer.level_id}</TableCell>
+                      )}
+
+                      {customer.is_freelancer ? (
+                        <TableCell>Yes</TableCell>
+                      ) : (
+                        <TableCell>No </TableCell>
+                      )}
 
                       {customer.id && (
                         <TableCell padding="checkbox">

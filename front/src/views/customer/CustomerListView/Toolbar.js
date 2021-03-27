@@ -28,6 +28,7 @@ import Search_User_Email from '../../../store/actions/Search_User_Email';
 
 import { useNavigate } from 'react-router-dom';
 
+import MuiPhoneNumber from 'material-ui-phone-number';
 function rand() {
   return Math.round(Math.random() * 20) - 10;
 }
@@ -94,7 +95,9 @@ const Toolbar = ({ className, setRender, render, ...rest }) => {
       setInfo({ ...info, [e.target.name]: file });
     } else setInfo({ ...info, [e.target.name]: e.target.value });
   };
-
+  const setInputStatePhone = (e) => {
+    setInfo({ ...info, [phone]: e });
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -270,7 +273,7 @@ const Toolbar = ({ className, setRender, render, ...rest }) => {
 
               <Grid container spacing={3}>
                 <Grid item xs>
-                  <TextValidator
+                  {/* <TextValidator
                     label="Phone"
                     name="phone"
                     id="phone"
@@ -282,7 +285,16 @@ const Toolbar = ({ className, setRender, render, ...rest }) => {
                     ]}
                     placeholder="Phone"
                     onChange={(e) => setInputState(e)}
+                  /> */}
+                  <MuiPhoneNumber
+                    required
+                    label="Phone"
+                    name="phone"
+                    id="phone"
+                    placeholder="Phone"
+                    onChange={(e) => setInputStatePhone(e)}
                   />
+                  ,
                 </Grid>
                 <Grid item xs>
                   <TextValidator

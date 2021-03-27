@@ -10,7 +10,8 @@ import {
   Typography,
   CardActions,
   Button,
-  Box
+  Box,
+  ButtonBase
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { Carousel } from 'react-responsive-carousel';
@@ -21,6 +22,7 @@ import { ToastContainer, toast } from 'react-toastify';
 
 import Footer from 'src/components/Footer/Footer';
 import { Pagination } from '@material-ui/lab';
+import { useNavigate } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   carousel: {
@@ -61,6 +63,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Freelancers(props) {
   const classes = useStyles();
 
+  const navigate = useNavigate();
   const [events, setEvents] = React.useState([]);
   const [newestEvents, setNewestEvents] = React.useState([]);
 
@@ -76,6 +79,13 @@ export default function Freelancers(props) {
 
   const handleChange = (event, newPage) => {
     setPage(newPage);
+  };
+
+  const handleClick = (e, id) => {
+    console.log(11);
+    navigate(`/freelancer/${id}`, {
+      replace: true
+    });
   };
 
   useEffect(() => {
@@ -162,116 +172,125 @@ export default function Freelancers(props) {
                     lg={4}
                     style={{ textAlign: 'center' }}
                   >
-                    <Card
-                      classes={{
-                        root:
-                          state.raised && event.id == state.id
-                            ? classes.cardHovered
-                            : ''
-                      }}
-                      style={{ textAlign: 'center' }}
-                      onMouseOver={() =>
-                        setState({ raised: true, shadow: 3, id: event.id })
-                      }
-                      onMouseOut={() => setState({ raised: false, shadow: 1 })}
-                      raised={state.raised}
-                      className={classes.root}
+                    <ButtonBase
+                      className={classes.cardAction}
+                      onClick={(e) => handleClick(e, event.id)}
                     >
-                      <CardActionArea>
-                        {event.user && event.user.image && (
-                          <CardMedia
-                            alt="Contemplative Reptile"
-                            height="auto"
-                            // width="250"
-                            // image={process.env.REACT_APP_URL2 + hobbymain.image}
-                            title="Contemplative Reptile"
-                            style={{ padding: '15px' }}
-                          >
-                            <Carousel
-                              showArrows={true}
-                              infiniteLoop={true}
-                              showThumbs={false}
-                              autoPlay={true}
-                              transitionTime="600"
-                              interval="3000"
-                              stopOnHover={false}
-                              swipeable={true}
-                              showIndicators={true}
-                              showStatus={true}
+                      <Card
+                        classes={{
+                          root:
+                            state.raised && event.id == state.id
+                              ? classes.cardHovered
+                              : ''
+                        }}
+                        style={{ textAlign: 'center' }}
+                        onMouseOver={() =>
+                          setState({ raised: true, shadow: 3, id: event.id })
+                        }
+                        onMouseOut={() =>
+                          setState({ raised: false, shadow: 1 })
+                        }
+                        raised={state.raised}
+                        className={classes.root}
+                      >
+                        <CardActionArea>
+                          {event.user && event.user.image && (
+                            <CardMedia
+                              alt="Contemplative Reptile"
+                              height="auto"
+                              // width="250"
+                              // image={process.env.REACT_APP_URL2 + hobbymain.image}
+                              title="Contemplative Reptile"
+                              style={{ padding: '15px' }}
                             >
-                              <div>
-                                <img
-                                  className={classes.carousel}
-                                  src={
-                                    process.env.REACT_APP_URL2 +
-                                    event.user.image
-                                  }
-                                />
-                              </div>
-                            </Carousel>
-                          </CardMedia>
-                        )}
-                        <CardContent>
-                          <Typography
-                            gutterBottom
-                            variant="h5"
-                            component="h2"
-                            style={{ textTransform: 'uppercase' }}
-                          >
-                            <b>
-                              {CapitalizeFirstLetter(
-                                event.user && event.user.name
-                              )}
-                            </b>
-                          </Typography>
-                          <Typography
-                            variant="body2"
-                            color="textSecondary"
-                            component="p"
-                          >
-                            <p>
-                              {' '}
-                              <b>Hobby : </b>
-                              {event.hobby && event.hobby.name}
-                            </p>
-                            <p>
-                              {' '}
-                              <b>State : </b>
-                              {event.state && event.state.name}
-                            </p>
-                            <p>
-                              {' '}
-                              <b>Location : </b>
-                              {event.address}
-                            </p>
-                            <p>
-                              {' '}
-                              <strong>Fees Per Hour: </strong>
-                              {event.fees_per_hour}
-                            </p>
+                              <Carousel
+                                showArrows={true}
+                                infiniteLoop={true}
+                                showThumbs={false}
+                                autoPlay={true}
+                                transitionTime="600"
+                                interval="3000"
+                                stopOnHover={false}
+                                swipeable={true}
+                                showIndicators={true}
+                                showStatus={true}
+                              >
+                                <div>
+                                  {event && event.user && (
+                                    <img
+                                      className={classes.carousel}
+                                      src={
+                                        process.env.REACT_APP_URL2 +
+                                        event.user.image
+                                      }
+                                    />
+                                  )}
+                                </div>
+                              </Carousel>
+                            </CardMedia>
+                          )}
+                          <CardContent>
+                            <Typography
+                              gutterBottom
+                              variant="h5"
+                              component="h2"
+                              style={{ textTransform: 'uppercase' }}
+                            >
+                              <b>
+                                {event &&
+                                  event.user &&
+                                  CapitalizeFirstLetter(event.user.name)}
+                              </b>
+                            </Typography>
+                            <Typography
+                              variant="body2"
+                              color="textSecondary"
+                              component="p"
+                            >
+                              <p>
+                                {' '}
+                                <b>Hobby : </b>
+                                {event && event.hobby && event.hobby.name}
+                              </p>
+                              <p>
+                                {' '}
+                                <b>State : </b>
+                                {event && event.state && event.state.name}
+                              </p>
+                              <p>
+                                {' '}
+                                <b>Location : </b>
+                                {event && event.address}
+                              </p>
+                              <p>
+                                {' '}
+                                <strong>Fees Per Hour: </strong>
+                                {event && event.fees_per_hour}
+                              </p>
 
-                            <p>
-                              {' '}
-                              <b>Level :</b> {event && event.level_id}
-                            </p>
-                            <p>
-                              {' '}
-                              <b>Rating :</b>
-                              {event.rating}
-                            </p>
-                          </Typography>
-                        </CardContent>
-                      </CardActionArea>
-                      <CardActions>
-                        <Button
-                          size="small"
-                          color="primary"
-                          style={{ color: '#daa520' }}
-                        >
-                          Check It
-                        </Button>
-                      </CardActions>
-                    </Card>
+                              <p>
+                                {' '}
+                                <b>Level :</b> {event && event.level_id}
+                              </p>
+                              <p>
+                                {' '}
+                                <b>Rating :</b>
+                                {event && event.rating}
+                              </p>
+                            </Typography>
+                          </CardContent>
+                        </CardActionArea>
+                        <CardActions>
+                          <Button
+                            size="small"
+                            color="primary"
+                            style={{ color: '#daa520' }}
+                          >
+                            Check It
+                          </Button>
+                        </CardActions>
+                      </Card>
+                    </ButtonBase>
                   </Grid>
                 );
               })}

@@ -35,6 +35,9 @@ class UsersController extends Controller
         return Response::error(400, "couldn't get Users");
     }
 
+
+
+    
     
 
     /**
@@ -97,6 +100,52 @@ class UsersController extends Controller
         return Response::error(400, "couldn't find user");
 
     }
+
+
+
+
+     /**
+     * Display the specified resource.
+     *
+     * @param  \App\User $user
+     * @return \Illuminate\Http\Response
+     */
+    public function showUserInfo(Request $request)
+    {
+
+        $user = $this->repository->showUserInfo($request);
+
+        if ($user) return Response::success($user);
+
+        return Response::error(400, "couldn't find user");
+
+    }
+
+
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\User $user
+     * @return \Illuminate\Http\Response
+     */
+    public function updateUserInfo(UsersRequest $request)
+    {
+      
+        if ($request->validator->fails())  return Response::error(400, $request->validator->messages());
+
+    
+        $user = $this->repository->updateUserInfo($request);
+
+        if ($user)  return Response::success($user);
+        
+        return Response::error(400, "couldn't update user");
+
+        
+    }
+
+    
 
 
         /**

@@ -34,6 +34,8 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import getInitials from 'src/utils/getInitials';
 
 import { useNavigate } from 'react-router-dom';
+import MuiPhoneNumber from 'material-ui-phone-number';
+import { SettingsPhone } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -101,13 +103,17 @@ const Results = ({ className, render, setRender, ...rest }) => {
       setInfo({ ...info, [e.target.name]: file });
     } else setInfo({ ...info, [e.target.name]: e.target.value });
   };
+  const setInputStatePhone = (e) => {
+    console.log(e, info.phone);
+    setInfo({ ...info, phone: e });
+  };
 
   const handleSubmit = (e, id) => {
     e.preventDefault();
 
     try {
       let formData = new FormData();
-      console.log(info.password);
+      console.log(info.phone);
 
       formData.append('name', info.name);
       formData.append('phone', info.phone);
@@ -461,7 +467,7 @@ const Results = ({ className, render, setRender, ...rest }) => {
 
               <Grid container spacing={3}>
                 <Grid item xs>
-                  <TextValidator
+                  {/* <TextValidator
                     label="Phone"
                     name="phone"
                     id="phone"
@@ -473,6 +479,15 @@ const Results = ({ className, render, setRender, ...rest }) => {
                     ]}
                     placeholder="Phone"
                     onChange={(e) => setInputState(e)}
+                  /> */}
+                  <MuiPhoneNumber
+                    required
+                    value={info.phone}
+                    label="Phone"
+                    name="phone"
+                    id="phone"
+                    placeholder="Phone"
+                    onChange={(e) => setInputStatePhone(e)}
                   />
                 </Grid>
                 <Grid item xs>

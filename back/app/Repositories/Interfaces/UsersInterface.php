@@ -8,6 +8,10 @@ interface UsersInterface
 
     public function show($id);
 
+    public function showUserInfo($request);
+
+    public function updateUserInfo($request);
+
     public function relations($id);
 
     public function image($image,$folder,$old_path=null);

@@ -1,3 +1,11 @@
 #contact input{
   color: white !important;
 }
+
+.navbar {
+  background-color: #fff;
+}
+
+.scroll {
+  background-color: red;
+}

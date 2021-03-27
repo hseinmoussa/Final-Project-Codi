@@ -86,7 +86,7 @@ const useStyles = makeStyles((theme) => ({
     ['@media (max-width:780px)']: {
       margin: 'auto',
       color: 'black',
-      fontSize: '1.5rem'
+      fontSize: '1rem'
     },
 
     fontFamily: 'New Century Schoolbook, TeX Gyre Schola, serif',
@@ -413,8 +413,8 @@ export default function Home(props) {
       <Card className={classes.root} style={{ padding: 20 }} id="about">
         <Box display="flex">
           <Box m="auto" mt={3} mb={3} style={{ textAlign: 'center' }}>
-            <span style={{ color: 'blue' }}> --</span>
-            <i> who are we ? </i> <span style={{ color: 'blue' }}>--</span>
+            <span style={{ color: '#2f4f4f' }}> --</span>
+            <i> who are we ? </i> <span style={{ color: '#2f4f4f' }}>--</span>
             <strong>
               <h2
                 style={{
@@ -458,11 +458,11 @@ export default function Home(props) {
         </Box>
       </Card>
 
-      <Card className={classes.root} style={{ padding: 20 }}>
+      <Card style={{ padding: 20 }}>
         <Box display="flex">
           <Box m="auto" mt={3} mb={3} style={{ textAlign: 'center' }}>
-            <span style={{ color: 'blue' }}> --</span>
-            <i> Events </i> <span style={{ color: 'blue' }}>--</span>
+            <span style={{ color: '#2f4f4f' }}> --</span>
+            <i> Events </i> <span style={{ color: '#2f4f4f' }}>--</span>
             <strong>
               <h2
                 style={{
@@ -494,6 +494,7 @@ export default function Home(props) {
                     >
                       <ButtonBase
                         className={classes.cardAction}
+                        style={{ width: '100%' }}
                         onClick={(event) => handleClick(event, hobbymain.id)}
                       >
                         <Card
@@ -523,7 +524,7 @@ export default function Home(props) {
                               component="img"
                               alt="Contemplative Reptile"
                               height="250"
-                              width="250"
+                              // width="250"
                               image={
                                 process.env.REACT_APP_URL2 + hobbymain.image
                               }
@@ -574,8 +575,8 @@ export default function Home(props) {
       <Card className={classes.root} style={{ padding: 20 }}>
         <Box display="flex">
           <Box m="auto" mt={3} mb={3} style={{ textAlign: 'center' }}>
-            <span style={{ color: 'blue' }}> --</span>
-            <i> Events </i> <span style={{ color: 'blue' }}>--</span>
+            <span style={{ color: '#2f4f4f' }}> --</span>
+            <i> Events </i> <span style={{ color: '#2f4f4f' }}>--</span>
             <strong>
               <h2
                 style={{
@@ -608,6 +609,7 @@ export default function Home(props) {
                       <ButtonBase
                         className={classes.cardAction}
                         onClick={(e) => handleClick2(e, event.id)}
+                        style={{ minWidth: '100%' }}
                       >
                         <Card
                           classes={{
@@ -699,8 +701,8 @@ export default function Home(props) {
       <Card className={classes.root} style={{ padding: 20 }} id="contact">
         <Box display="flex">
           <Box m="auto" mt={3} mb={3} style={{ textAlign: 'center' }}>
-            <span style={{ color: 'blue' }}> --</span>
-            <i> who are we ? </i> <span style={{ color: 'blue' }}>--</span>
+            <span style={{ color: '#2f4f4f' }}> --</span>
+            <i> who are we ? </i> <span style={{ color: '#2f4f4f' }}>--</span>
             <strong>
               <h2
                 style={{

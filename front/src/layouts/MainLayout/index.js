@@ -7,17 +7,19 @@ import {
   IconButton,
   Drawer,
   Link,
-  MenuItem
+  MenuItem,
+  Menu
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import React, { useState, useEffect, useRef } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { HashLink } from 'react-router-hash-link';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 
 const useStyles = makeStyles(() => ({
   header: {
-    backgroundColor: '#400CCC',
+    backgroundColor: '#2f4f4f',
     paddingRight: '79px',
     paddingLeft: '118px',
     '@media (max-width: 900px)': {
@@ -55,6 +57,26 @@ export default function MainLayout() {
     drawerOpen: false
   });
 
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const [anchorEl2, setAnchorEl2] = React.useState(null);
+
+  const handleClick2 = (event) => {
+    setAnchorEl2(event.currentTarget);
+  };
+
+  const handleClose2 = () => {
+    setAnchorEl2(null);
+  };
+
   const tokenUser = window.localStorage.getItem('tokenUser');
   const User = window.localStorage.getItem('User');
 
@@ -68,21 +90,19 @@ export default function MainLayout() {
         label: 'Contact Us',
         href: '/home#contact'
       },
-      {
-        label: 'Sign Up',
-        href: '/register'
-      },
+
       {
         label: 'Events',
         href: '/events'
       },
-      {
-        label: 'Looking For Freelancer?',
-        href: '/Freelancers'
-      },
+      { label: 'dropdown' },
       {
         label: 'Login',
         href: '/loginUser'
+      },
+      {
+        label: 'Sign Up',
+        href: '/register'
       }
     ]);
   else
@@ -99,10 +119,7 @@ export default function MainLayout() {
         label: 'Events',
         href: '/events'
       },
-      {
-        label: 'Looking For Freelancer?',
-        href: '/Freelancers'
-      },
+      { label: 'dropdown' },
       {
         label: 'Logout',
         href: '/logout'
@@ -183,16 +200,61 @@ export default function MainLayout() {
   };
 
   const getDrawerChoices = () => {
-    return headersData.map(({ label, href }) => {
+    return headersData.map(({ label, href }, index) => {
       if (label == 'Logout')
         return (
           <Link
+            key={index + 1050}
             onClick={() => setLogout(true)}
             color="inherit"
             style={{ textDecoration: 'none' }}
           >
             <MenuItem>{label}</MenuItem>
           </Link>
+        );
+
+      if (label == 'dropdown')
+        return (
+          <>
+            <Button
+              key={index + 1000}
+              className={menuButton}
+              color="inherit"
+              onClick={handleClick}
+            >
+              <ArrowDropDownIcon /> Looking For
+            </Button>
+            <Menu
+              id="simple-menu"
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+            >
+              <HashLink
+                {...{
+                  component: RouterLink,
+                  to: '/Freelancers',
+                  color: 'inherit',
+                  style: { textDecoration: 'none' },
+                  key: 'Freelancers'
+                }}
+              >
+                <MenuItem>Freelancer</MenuItem>
+              </HashLink>
+              <HashLink
+                {...{
+                  component: RouterLink,
+                  to: '/Not_Freelancers',
+                  color: 'inherit',
+                  style: { textDecoration: 'none' },
+                  key: 'Partners'
+                }}
+              >
+                <MenuItem>Partner</MenuItem>
+              </HashLink>
+            </Menu>
+          </>
         );
       return (
         <HashLink
@@ -219,16 +281,115 @@ export default function MainLayout() {
   );
 
   const getMenuButtons = () => {
-    return headersData.map(({ label, href }) => {
+    return headersData.map(({ label, href }, index) => {
       if (label == 'Logout')
         return (
-          <Button
-            className={menuButton}
-            color="inherit"
-            onClick={() => setLogout(true)}
-          >
-            {label}
-          </Button>
+          <>
+            <Button
+              key={index}
+              className={menuButton}
+              color="inherit"
+              onClick={handleClick2}
+            >
+              <ArrowDropDownIcon /> Account
+            </Button>
+            <Menu
+              id="simple-menu"
+              anchorEl={anchorEl2}
+              keepMounted
+              open={Boolean(anchorEl2)}
+              onClose={handleClose2}
+              key={index + 100}
+            >
+              <HashLink
+                {...{
+                  component: RouterLink,
+                  to: '/usercostumer/account',
+                  color: 'inherit',
+                  style: { textDecoration: 'none' },
+                  key: 'Update'
+                }}
+              >
+                <MenuItem>Update</MenuItem>
+              </HashLink>
+
+              <HashLink
+                {...{
+                  component: RouterLink,
+                  to: '/usercostumer/events',
+                  color: 'inherit',
+                  style: { textDecoration: 'none' },
+                  key: 'Events'
+                }}
+              >
+                <MenuItem>Events</MenuItem>
+              </HashLink>
+
+              <HashLink
+                {...{
+                  component: RouterLink,
+                  to: '/usercostumer/hobbies',
+                  color: 'inherit',
+                  style: { textDecoration: 'none' },
+                  key: 'Hobbies'
+                }}
+              >
+                <MenuItem>Hobbies</MenuItem>
+              </HashLink>
+
+              <Button
+                className={menuButton}
+                color="inherit"
+                onClick={() => setLogout(true)}
+              >
+                {label}
+              </Button>
+            </Menu>
+          </>
+        );
+      if (label == 'dropdown')
+        return (
+          <>
+            <Button
+              key={index}
+              className={menuButton}
+              color="inherit"
+              onClick={handleClick}
+            >
+              <ArrowDropDownIcon /> Looking For
+            </Button>
+            <Menu
+              key={index + 150}
+              id="simple-menu"
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+            >
+              <HashLink
+                {...{
+                  component: RouterLink,
+                  to: '/Freelancers',
+                  color: 'inherit',
+                  style: { textDecoration: 'none' },
+                  key: 'Freelancers'
+                }}
+              >
+                <MenuItem>Freelancer</MenuItem>
+              </HashLink>
+              <HashLink
+                {...{
+                  component: RouterLink,
+                  to: '/Not_Freelancers',
+                  color: 'inherit',
+                  style: { textDecoration: 'none' },
+                  key: 'Partners'
+                }}
+              >
+                <MenuItem>Partner</MenuItem>
+              </HashLink>
+            </Menu>
+          </>
         );
       return (
         <HashLink

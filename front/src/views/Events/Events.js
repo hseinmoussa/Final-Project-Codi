@@ -25,6 +25,11 @@ import { Pagination } from '@material-ui/lab';
 
 import { useNavigate } from 'react-router-dom';
 
+import CookieConsent, {
+  Cookies,
+  getCookieConsentValue
+} from 'react-cookie-consent';
+
 const useStyles = makeStyles((theme) => ({
   carousel: {
     ['@media (max-width:780px)']: {
@@ -75,8 +80,6 @@ export default function Events(props) {
   const [total, setTotal] = React.useState(0);
   const [page, setPage] = React.useState(1);
 
-  const [country_user, setCountryUser] = React.useState('');
-
   const handleChange = (event, newPage) => {
     setPage(newPage);
   };
@@ -87,18 +90,35 @@ export default function Events(props) {
       replace: true
     });
   };
-
   const navigate = useNavigate();
+
+  const country_user = Cookies.get('country');
 
   useEffect(() => {
     try {
-      fetch('https://ipapi.co/json/')
+      let country;
+
+      if (getCookieConsentValue() && Cookies.get('country') != undefined)
+        country = Cookies.get('country');
+      else country = '';
+      fetch(
+        process.env.REACT_APP_URL + `events/10?page=${page}&country=${country}`,
+        {
+          method: 'get'
+        }
+      )
         .then((response) => response.json())
         .then((res) => {
-          setCountryUser(res.country_name);
+          if (res.status == 200) {
+            console.log(res);
+            setNewestEvents(res.data.data);
+          } else {
+            // alert(res.error.message[Object.keys(res.error.message)][0]);
+          }
         });
     } catch (e) {}
-  }, []);
+  }, [page, getCookieConsentValue()]);
+
   const CapitalizeFirstLetter = (str) => {
     return str.length ? str.charAt(0).toUpperCase() + str.slice(1) : str;
   };
@@ -119,27 +139,6 @@ export default function Events(props) {
         });
     } catch (e) {}
   }, [page]);
-
-  useEffect(() => {
-    try {
-      fetch(
-        process.env.REACT_APP_URL +
-          `events/10?page=${page}&country=${country_user}`,
-        {
-          method: 'get'
-        }
-      )
-        .then((response) => response.json())
-        .then((res) => {
-          if (res.status == 200) {
-            console.log(res);
-            setNewestEvents(res.data.data);
-          } else {
-            // alert(res.error.message[Object.keys(res.error.message)][0]);
-          }
-        });
-    } catch (e) {}
-  }, [page, country_user]);
 
   return (
     <div>
@@ -281,8 +280,17 @@ export default function Events(props) {
                               </p>
                               <p>
                                 {' '}
-                                <b>Description :</b>
-                                {event.description}
+                                {event && event.description.length > 15 ? (
+                                  <p>
+                                    <b>Description :</b>{' '}
+                                    {event.description.slice(0, 15)} {'...'}
+                                  </p>
+                                ) : (
+                                  <>
+                                    <b>Description :</b>
+                                    event.description
+                                  </>
+                                )}
                               </p>
                             </Typography>
                           </CardContent>
@@ -332,7 +340,11 @@ export default function Events(props) {
                   fontFamily: 'Berkshire Swash, handwriting'
                 }}
               >
-                Newest Events In Your Country
+                {getCookieConsentValue() &&
+                Cookies.get('country') != undefined &&
+                country_user != undefined
+                  ? 'Newest Events In Your Country'
+                  : 'Newest Events'}
               </h2>
 
               <Grid container={500} spacing={3} style={{ margin: 'auto' }}>
