@@ -356,6 +356,7 @@ const RegisterView = () => {
                     color="primary"
                     fullWidth
                     size="large"
+                    style={{ backgroundColor: '#2f4f4f' }}
                     type="submit"
                     variant="contained"
                   >
@@ -364,7 +365,7 @@ const RegisterView = () => {
                 </Box>
                 <Typography color="textSecondary" variant="body1">
                   Have an account?{' '}
-                  <Link component={RouterLink} to="/login" variant="h6">
+                  <Link component={RouterLink} to="/loginUser" variant="h6">
                     Sign in
                   </Link>
                 </Typography>

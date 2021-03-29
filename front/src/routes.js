@@ -32,6 +32,8 @@ import Event from 'src/views/Events/Event';
 
 import Freelancers from 'src/views/Freelancers/Freelancers';
 import User from 'src/views/Freelancers/User';
+import Partner from 'src/views/Freelancers/Partner';
+
 import Not_Freelancers from 'src/views/Freelancers/Not_Freelancers';
 
 import UserAccount from 'src/views/UserAccount/UserAccount';
@@ -86,6 +88,7 @@ const routes = [
       { path: 'Freelancers', element: <Freelancers /> },
       { path: 'Not_Freelancers', element: <Not_Freelancers /> },
       { path: 'freelancer/:id', element: <User /> },
+      { path: 'partner/:id', element: <Partner /> },
 
       { path: '404', element: <NotFoundView /> },
       { path: 'test', element: <Test /> },

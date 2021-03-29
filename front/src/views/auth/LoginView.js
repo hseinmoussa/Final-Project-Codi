@@ -174,6 +174,7 @@ const LoginView = () => {
                   <Button
                     color="primary"
                     // disabled={isSubmitting}
+                    style={{ backgroundColor: '#2f4f4f' }}
                     fullWidth
                     size="large"
                     type="submit"

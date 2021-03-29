@@ -19,11 +19,13 @@ class EventsRepo implements EventsInterface
         {
             $searchName = $_GET['name'];
         }
+   
 
+        
         if (isset($_GET['country'])) 
         {
             $searchCountry = $_GET['country'];
-            return $Events= Events::
+             $Events= Events::
 
             whereHas('state.country', function ($query) use($searchCountry) {
                 $query->where('name', 'like','%' . $searchCountry. '%');
@@ -35,10 +37,33 @@ class EventsRepo implements EventsInterface
         }
        
      
+        else
         $Events= Events::where('name', 'LIKE', '%' . $searchName. '%')
         ->with(['images','user','state.country'])
         ->paginate($rowNb);
      
+        if (isset($_GET['filter'])) 
+        {
+            
+          
+            function custom_sort( $array )
+            {
+            
+            asort($array);
+
+            return $array;
+            }
+
+            $searchfilter=$_GET['filter'];
+            $Events = Events:: whereHas('hobbies',function ($query) use ($searchfilter) {
+               $new_array=explode(",",$searchfilter[0]);
+                    $query->whereIn('hobby_id', $new_array);
+            })
+            ->with(['images','user','state.country'])
+            ->paginate($rowNb);
+
+           
+        }
          
 
     //  return  HobbiesResources::collection($country);
@@ -104,8 +129,12 @@ class EventsRepo implements EventsInterface
     public function indexByHobby($rowNb,$id=null)
     {
 
+        
+
         if (!is_null($id)) 
         {
+
+         
            
             return $Events= Events::
 

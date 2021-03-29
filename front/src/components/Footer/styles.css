@@ -1,4 +1,18 @@
 
 .SocialButtonsContainer a:hover{
-  background-color: grey !important;
+  background-color: #2f4f4f !important;
+
+}
+.SocialButtonsContainer a{
+  background-color: rgb(218, 165, 32)  !important;
+  
+}
+.SocialButtonsContainer {
+width: 100%;
+margin: auto;
+text-align: center;
+}
+.SocialButtonsContainer a:first-child 
+{
+  margin-right: 1%;
 }

@@ -139,7 +139,7 @@ const UserAccount = () => {
         autoClose: 1000,
         hideProgressBar: true,
         closeOnClick: true,
-        // onClose: () => setLoading(false),
+        onClose: () => navigate('/', { replace: true }),
         pauseOnHover: true,
         draggable: true,
         progress: undefined
@@ -256,11 +256,22 @@ const UserAccount = () => {
                 }}
                 // onSubmit={handleSubmit}
               >
+                <Box display="flex">
+                  <Box m="auto" mt={3} mb={3} style={{ textAlign: 'center' }}>
+                    <img
+                      src={process.env.REACT_APP_URL2 + values.image}
+                      alt="Avatar"
+                      width="25%"
+                      style={{ borderRadius: '50%' }}
+                    />
+                  </Box>
+                </Box>
                 <Box mb={3}>
-                  <Typography color="textPrimary" variant="h2">
+                  <Typography variant="h2" style={{ color: '#2f4f4f' }}>
                     Update your account
                   </Typography>
                 </Box>
+
                 <TextField
                   error={Boolean(touched.name && errors.name)}
                   fullWidth
@@ -358,11 +369,11 @@ const UserAccount = () => {
 
                 <Box my={2}>
                   <Button
-                    color="primary"
                     fullWidth
                     size="large"
                     type="submit"
                     variant="contained"
+                    style={{ color: '#daa520', backgroundColor: '#2f4f4f' }}
                   >
                     Update
                   </Button>

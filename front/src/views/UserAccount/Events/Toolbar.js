@@ -223,8 +223,13 @@ const Toolbar = ({ className, setRender, render, State, Hobby, ...rest }) => {
         draggable
         pauseOnHover
       />
-      <Box display="flex" mt={5} justifyContent="flex-end">
-        <Button color="primary" variant="contained" onClick={handleOpen}>
+      <Box display="flex" mt={7} justifyContent="flex-end">
+        <Button
+          color="primary"
+          style={{ backgroundColor: '#2f4f4f' }}
+          variant="contained"
+          onClick={handleOpen}
+        >
           Add Event
         </Button>
 

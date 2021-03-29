@@ -64,6 +64,15 @@ const useStyles = makeStyles((theme) => ({
     textDecoration: 'none',
     color: 'rgb(255, 174, 0)',
     transition: 'all 0.2s linear'
+  },
+  paginationButton: {
+    '&  .Mui-selected': {
+      backgroundColor: '#2f4f4f !important'
+    },
+    '&  button:hover': {
+      backgroundColor: '#2f4f4f !important',
+      opacity: '50%'
+    }
   }
 }));
 
@@ -167,6 +176,64 @@ export default function EventsByHobby(props) {
           </Box>
         </Box>
         <Grid container={500} spacing={3}>
+          <Grid
+            container
+            item
+            xs={12}
+            sm={12}
+            md={3}
+            lg={3}
+            style={{ height: '100%' }}
+          >
+            <Card
+              style={{ textAlign: 'center', height: 'auto', width: '100%' }}
+              raised={state.raised}
+              className={classes.root}
+              className={classes.lastitems}
+            >
+              <h2
+                style={{
+                  fontFamily: 'Berkshire Swash, handwriting'
+                }}
+              >
+                {getCookieConsentValue() &&
+                Cookies.get('country') != undefined &&
+                country_user != undefined
+                  ? 'Newest Events In Your Country'
+                  : 'Newest Events'}
+              </h2>
+
+              <Grid container={500} spacing={3} style={{ margin: 'auto' }}>
+                {newestEvents &&
+                  newestEvents[0] &&
+                  newestEvents.map((value, index) => {
+                    return (
+                      <Grid container item xs={12} sm={12} md={12} lg={12}>
+                        <div style={{ marginTop: '5%' }}>
+                          <b>
+                            <Link
+                              to={`/event/${value.id}`}
+                              replace
+                              className={classes.lastitemsLink}
+                            >
+                              {CapitalizeFirstLetter(value.name)} »
+                            </Link>
+                          </b>
+                          <span style={{ Color: 'grey', opacity: '0.5' }}>
+                            {' '}
+                            {value.state && value.state.name}({' '}
+                            {value.state &&
+                              value.state.country &&
+                              value.state.country.name}
+                            ){' '}
+                          </span>
+                        </div>
+                      </Grid>
+                    );
+                  })}
+              </Grid>
+            </Card>
+          </Grid>
           <Grid container item xs={12} sm={12} md={9} lg={9}>
             <Grid container={500} spacing={3}>
               {events.map((event, index) => {
@@ -286,8 +353,17 @@ export default function EventsByHobby(props) {
                               </p>
                               <p>
                                 {' '}
-                                <b>Description :</b>
-                                {event.description}
+                                {event && event.description.length > 15 ? (
+                                  <p>
+                                    <b>Description :</b>{' '}
+                                    {event.description.slice(0, 15)} {'...'}
+                                  </p>
+                                ) : (
+                                  <>
+                                    <b>Description :</b>
+                                    event.description
+                                  </>
+                                )}
                               </p>
                             </Typography>
                           </CardContent>
@@ -309,71 +385,14 @@ export default function EventsByHobby(props) {
             </Grid>
             <Box m="auto" mt={3} display="flex" justifyContent="center">
               <Pagination
-                color="primary"
                 count={total}
                 page={page}
+                color="primary"
+                className={classes.paginationButton}
                 onChange={handleChange}
                 size="small"
               />
             </Box>
-          </Grid>
-          <Grid
-            container
-            item
-            xs={12}
-            sm={12}
-            md={3}
-            lg={3}
-            style={{ height: '100%' }}
-          >
-            <Card
-              style={{ textAlign: 'center', height: 'auto', width: '100%' }}
-              raised={state.raised}
-              className={classes.root}
-              className={classes.lastitems}
-            >
-              <h2
-                style={{
-                  fontFamily: 'Berkshire Swash, handwriting'
-                }}
-              >
-                {getCookieConsentValue() &&
-                Cookies.get('country') != undefined &&
-                country_user != undefined
-                  ? 'Newest Events In Your Country'
-                  : 'Newest Events'}
-              </h2>
-
-              <Grid container={500} spacing={3} style={{ margin: 'auto' }}>
-                {newestEvents &&
-                  newestEvents[0] &&
-                  newestEvents.map((value, index) => {
-                    return (
-                      <Grid container item xs={12} sm={12} md={12} lg={12}>
-                        <div style={{ marginTop: '5%' }}>
-                          <b>
-                            <Link
-                              to={`/article/${value.id}`}
-                              replace
-                              className={classes.lastitemsLink}
-                            >
-                              {CapitalizeFirstLetter(value.name)} »
-                            </Link>
-                          </b>
-                          <span style={{ Color: 'grey', opacity: '0.5' }}>
-                            {' '}
-                            {value.state && value.state.name}({' '}
-                            {value.state &&
-                              value.state.country &&
-                              value.state.country.name}
-                            ){' '}
-                          </span>
-                        </div>
-                      </Grid>
-                    );
-                  })}
-              </Grid>
-            </Card>
           </Grid>
         </Grid>
       </Container>

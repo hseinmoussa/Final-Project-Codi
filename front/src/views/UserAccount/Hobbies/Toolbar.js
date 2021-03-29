@@ -179,7 +179,12 @@ const Toolbar = ({ className, setRender, render, Hobby, State, ...rest }) => {
         pauseOnHover
       />
       <Box display="flex" justifyContent="flex-end">
-        <Button color="primary" variant="contained" onClick={handleOpen}>
+        <Button
+          color="primary"
+          style={{ backgroundColor: '#2f4f4f' }}
+          variant="contained"
+          onClick={handleOpen}
+        >
           Add new Hobby
         </Button>
 

@@ -71,7 +71,7 @@ const Footer = () => {
     }
     if (c >= 1000) {
       window.requestAnimationFrame(scrollToTop);
-      window.scrollTo(0, c - c / 100);
+      window.scrollTo(0, c - c / 70);
     }
   };
 
@@ -83,6 +83,7 @@ const Footer = () => {
           borderRadius: '50%',
           backgroundColor: bgColour
         }}
+        fill="black"
         iconStyle={iconStyle}
       />
       <span

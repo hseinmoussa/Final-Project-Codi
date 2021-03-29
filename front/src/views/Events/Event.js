@@ -101,12 +101,12 @@ const useStyles = makeStyles((theme) => ({
     },
     ['@media (max-width:780px)']: {
       position: 'absolute',
-      top: '60%',
+      top: '50%',
       left: '50%',
       transform: 'translate(-50%, -50%)',
 
       margin: 'auto',
-      color: 'black',
+      color: 'white',
       fontSize: '1.5rem',
       width: '100%'
     },
@@ -131,12 +131,33 @@ const useStyles = makeStyles((theme) => ({
       webkitTransform: 'matrix(1, 0.3, 0, 1, 0, 0)',
       msTransform: 'matrix(1, 0.3, 0, 1, 0, 0)',
       transform: 'matrix(1, 0.3, 0, 1, 0, 0)'
+    },
+
+    ['@media (max-width:780px)']: {
+      width: '25%',
+      fontSize: '50px',
+      fontWeight: '500',
+      border: '1px solid rgba(255, 255, 255, 0.1)',
+      color: '#fff',
+      fontFamily: 'Barlow Condensed, Arial, sans-serif',
+      borderRadius: '4px',
+      paddingBottom: '10px',
+      webkitTransform: 'matrix(1, 0.3, 0, 1, 0, 0)',
+      msTransform: 'matrix(1, 0.3, 0, 1, 0, 0)',
+      transform: 'matrix(1, 0.3, 0, 1, 0, 0)'
     }
   },
 
   timeSpan: {
     ['@media (min-width:780px)']: {
       fontSize: '25px',
+      fontWeight: 'bolder',
+      display: 'block',
+      color: '#daa520',
+      textTransform: 'uppercase'
+    },
+    ['@media (max-width:780px)']: {
+      fontSize: '16px',
       fontWeight: 'bolder',
       display: 'block',
       color: '#daa520',
@@ -187,6 +208,75 @@ const useStyles = makeStyles((theme) => ({
       textTransform: 'uppercase',
       fontFamily: 'Barlow Condensed, Arial, sans-serif'
     }
+  },
+  description: {
+    ['@media (min-width:780px)']: {
+      width: '75%',
+      lineHeight: '2em'
+    }
+  },
+  moreDetailsSection: {
+    ['@media (min-width:780px)']: {
+      width: '75%'
+    },
+    ['@media (max-width:780px)']: {
+      width: '95%'
+    },
+    textAlign: 'center'
+  },
+  moreDetailsTitle: {
+    ['@media (min-width:780px)']: {
+      fontSize: '50px',
+      fontWeight: '700'
+    },
+    ['@media (max-width:780px)']: {
+      fontSize: '30px',
+      fontWeight: '700'
+    },
+    lineHeight: '1.2',
+    fontFamily: 'Barlow Condensed, Arial, sans-serif',
+    color: '#daa520'
+  },
+  blackBox: {
+    ['@media (min-width:780px)']: {
+      width: '100vw',
+      height: '120vh'
+    },
+    ['@media (max-width:780px)']: {
+      width: '100vw',
+      height: '40vh'
+    },
+
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    position: 'absolute',
+    top: 0
+  },
+  calendar: {
+    ['@media (min-width:780px)']: {
+      height: '80vh',
+      width: '80vw'
+    },
+    ['@media (max-width:780px)']: {
+      height: '40vh',
+      width: '85vw'
+    }
+  },
+  FromTo: {
+    ['@media (min-width:780px)']: {
+      width: '25vw',
+      height: '30vh'
+    },
+    ['@media (max-width:780px)']: {
+      width: '40vw',
+      height: '20vh'
+    },
+    textAlign: 'center',
+    mozBackgroundClip: 'padding',
+    webkitBackgroundClip: 'padding-box',
+    backgroundClip: 'padding-box',
+    mozBoxShadow: '0 0 13px 3px rgba(0,0,0,.5)',
+    webkitBoxShadow: '0 0 13px 3px rgba(0,0,0,.5)',
+    boxShadow: '0 0 13px 3px rgba(0,0,0,.5)'
   }
 }));
 
@@ -209,6 +299,10 @@ export default function Event(props) {
   const [events, setEvents] = React.useState([
     { start: new Date(), end: new Date(), title: 'special event' }
   ]);
+
+  React.useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   React.useEffect(() => {
     let timer1 =
@@ -254,7 +348,6 @@ export default function Event(props) {
         .then((response) => response.json())
         .then((res) => {
           if (res.status == 200) {
-            console.log(res);
             setEvent(res.data);
             var startLocalDate = new Date(res.data.start_date);
             var newStartDate = new Date(
@@ -328,7 +421,7 @@ export default function Event(props) {
               })}
           </Carousel>
         </div>
-
+        <div className={classes.blackBox}></div>
         {/* className={classNames(classes.main, classes.mainRaised)}> */}
         <div className={classes.HeroCarouselText}>
           <span className={classes.hurryUp}>Hurry Up! Don't Waste Time</span>
@@ -365,20 +458,20 @@ export default function Event(props) {
           {time.timeUp ? (
             <p>Event in progress</p>
           ) : (
-            <Grid container>
-              <Grid item xs={12} sm={12} lg={3} className={classes.time}>
+            <Grid container style={{ maxWidth: '95vw', margin: 'auto' }}>
+              <Grid item xs={3} sm={3} lg={3} className={classes.time}>
                 {time.days}
                 <span className={classes.timeSpan}>{dayString}</span>
               </Grid>
-              <Grid item xs={12} sm={12} lg={3} className={classes.time}>
+              <Grid item xs={3} sm={3} lg={3} className={classes.time}>
                 {time.hours}
                 <span className={classes.timeSpan}>Hours</span>
               </Grid>
-              <Grid item xs={12} sm={12} lg={3} className={classes.time}>
+              <Grid item xs={3} sm={3} lg={3} className={classes.time}>
                 {time.minutes}
                 <span className={classes.timeSpan}>Minutes</span>
               </Grid>
-              <Grid item xs={12} sm={12} lg={3} className={classes.time}>
+              <Grid item xs={3} sm={3} lg={3} className={classes.time}>
                 {time.seconds}
                 <span className={classes.timeSpan}>seconds</span>
               </Grid>
@@ -397,62 +490,58 @@ export default function Event(props) {
           ({Intl.DateTimeFormat().resolvedOptions().timeZone})
         </Box>
       </Box>
-      {event && event.start_date && (
-        <DnDCalendar
-          defaultDate={new Date(event.start_date)}
-          defaultView="month"
-          events={events}
-          localizer={localizer}
-          onEventDrop={() => console.log(1)}
-          onEventResize={() => console.log(1)}
-          resizable
-          views={['month', 'agenda']}
-          // views={{ month: false, week: false, day: false, agenda: false }}
-          style={{ height: '100vh' }}
-        />
-      )}
       <Box display="flex">
-        <Box m="auto" mt={3} mb={3} style={{ textAlign: 'center' }}>
+        <Box m="auto" mb={3} style={{ textAlign: 'center' }}>
+          {event && event.start_date && (
+            <DnDCalendar
+              defaultDate={new Date(event.start_date)}
+              defaultView="month"
+              events={events}
+              localizer={localizer}
+              // onEventDrop={() => console.log(1)}
+              // onEventResize={() => console.log(1)}
+              resizable
+              draggableAccessor={(event) => false}
+              views={['month', 'agenda']}
+              className={classes.calendar}
+            />
+          )}
+        </Box>
+      </Box>
+      <Box display="flex">
+        <Box m="auto" mt={3} mb={3} className={classes.FromTo}>
           <Box m="auto" mt={3} mb={3} style={{ textAlign: 'center' }}>
             <b>Start</b>
           </Box>
           <CalendarTodayIcon style={{ color: '#daa520' }} />
-          {event && event.start_date && event.start_date.split(' ')[0]}
+          {events && events[0].start.toDateString()}
           <Box m="auto" mt={3} mb={3} style={{ textAlign: 'center' }}>
             <TimerIcon style={{ color: '#daa520' }} />
-            {event && event.start_date && event.start_date.split(' ')[1]}
+            {events && events[0].start.getHours()}:
+            {events && events[0].start.getMinutes().toString().length == 1
+              ? events[0].start.getMinutes() + '0'
+              : events[0].start.getMinutes()}
           </Box>
         </Box>
-        <Box m="auto" mt={3} mb={3} style={{ textAlign: 'center' }}>
+        <Box m="auto" mt={3} mb={3} className={classes.FromTo}>
           <Box m="auto" mt={3} mb={3} style={{ textAlign: 'center' }}>
             <b>End</b>
           </Box>
           <CalendarTodayIcon style={{ color: '#daa520' }} />
-          {event && event.end_date && event.end_date.split(' ')[0]}
+          {events && events[0].end.toDateString()}
           <Box m="auto" mt={3} mb={3} style={{ textAlign: 'center' }}>
             <TimerIcon style={{ color: '#daa520' }} />
-            {event && event.end_date && event.end_date.split(' ')[1]}
+            {events && events[0].end.getHours()}:
+            {events && events[0].end.getMinutes().toString().length == 1
+              ? events[0].end.getMinutes() + '0'
+              : events[0].end.getMinutes()}
+            {/* {event && event.end_date && event.end_date.split(' ')[1]} */}
           </Box>
         </Box>
       </Box>
       <Box display="flex">
-        <Box
-          m="auto"
-          mt={3}
-          mb={3}
-          style={{ textAlign: 'center', width: '75%' }}
-        >
-          <h2
-            style={{
-              fontSize: '50px',
-              fontWeight: '700',
-              lineHeight: '1.2',
-              fontFamily: 'Barlow Condensed, Arial, sans-serif',
-              color: '#daa520'
-            }}
-          >
-            More Details
-          </h2>
+        <Box m="auto" mt={3} mb={3} className={classes.moreDetailsSection}>
+          <h2 className={classes.moreDetailsTitle}>More Details</h2>
           <Card
             style={{
               textAlign: 'center',
@@ -467,12 +556,24 @@ export default function Event(props) {
                 m="auto"
                 mt={3}
                 mb={3}
-                style={{ width: '75%', lineHeight: '2em' }}
+                className={classes.description}
               >
-                <p>{event && event.description}</p>
+                <p style={{ lineHeight: '3em' }}>
+                  {event && event.description}
+                </p>
               </Box>
-              <Box display="flex">
-                <Box m="auto" mt={3} mb={3} style={{ textAlign: 'center' }}>
+
+              {/* <Box display="flex">
+                <Box m="auto" mt={3} mb={3} style={{ textAlign: 'center' }}> */}
+
+              <Grid container style={{ margin: 'auto' }}>
+                <Grid
+                  item
+                  xs={12}
+                  sm={12}
+                  lg={6}
+                  style={{ textAlign: 'center' }}
+                >
                   <EmailIcon
                     style={{
                       color: '#daa520'
@@ -486,8 +587,16 @@ export default function Event(props) {
                       {event.user.email}
                     </a>
                   )}
-                </Box>
-                <Box m="auto" mt={3} mb={3} style={{ textAlign: 'center' }}>
+                </Grid>
+                {/* </Box> */}
+                <Grid
+                  item
+                  xs={12}
+                  sm={12}
+                  lg={6}
+                  style={{ textAlign: 'center' }}
+                >
+                  {/* <Box m="auto" mt={3} mb={3} style={{ textAlign: 'center' }}> */}
                   <PhoneIcon style={{ color: '#daa520' }} />
                   {event && event.user && event.user.phone && (
                     <a
@@ -497,8 +606,10 @@ export default function Event(props) {
                       {event.user.phone}
                     </a>
                   )}
-                </Box>
-              </Box>
+                </Grid>
+                {/* </Box> */}
+              </Grid>
+              {/* </Box> */}
               <Box display="flex">
                 <Box m="auto" mt={3} mb={3} style={{ textAlign: 'center' }}>
                   <FaceIcon style={{ color: '#daa520' }} />

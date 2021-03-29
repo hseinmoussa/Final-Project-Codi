@@ -8,6 +8,7 @@ import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import { moment } from 'moment';
 import RoomTwoToneIcon from '@material-ui/icons/RoomTwoTone';
 import PropTypes from 'prop-types';
+import Rating from '@material-ui/lab/Rating';
 import {
   Grid,
   Card,
@@ -23,7 +24,6 @@ import {
 } from '@material-ui/core';
 import MainLayout from 'src/layouts/MainLayout';
 import { ToastContainer, toast } from 'react-toastify';
-import Rating from '@material-ui/lab/Rating';
 import Footer from 'src/components/Footer/Footer';
 
 import Bounce from 'react-reveal/Bounce';
@@ -126,7 +126,7 @@ const StyledRating = withStyles({
     color: '#ff3d47'
   }
 })(Rating);
-export default function User(props) {
+export default function Partner(props) {
   const classes = useStyles();
   const [state, setState] = React.useState({
     raised: false,
@@ -231,10 +231,6 @@ export default function User(props) {
             </span>
           </h1>
           {userHobby && userHobby.user_hobby_name}
-          <div>
-            {userHobby && userHobby.fees_per_hour}{' '}
-            <span style={{ color: '#daa520' }}>$/hour</span>
-          </div>
         </div>
         <div className={classes.blackBox}></div>
       </MyImage>
@@ -324,28 +320,26 @@ export default function User(props) {
 
           <Box display="flex">
             <Box m="auto" mb={3} style={{ textAlign: 'center' }}>
-              <StyledRating
-                name="customized-color"
-                defaultValue={2}
-                readOnly
-                getLabelText={(value) =>
-                  `${value} Heart${value !== 1 ? 's' : ''}`
+              <p style={{ textDecoration: 'none', color: '#2f4f4f' }}>
+                My Level
+              </p>
+              <Rating
+                name="read-only"
+                value={
+                  userHobby.level_id == '1/5'
+                    ? 1
+                    : userHobby.level_id == '2/5'
+                    ? 2
+                    : userHobby.level_id == '3/5'
+                    ? 3
+                    : userHobby.level_id == '4/5'
+                    ? 4
+                    : userHobby.level_id == '5/5'
+                    ? 5
+                    : ''
                 }
-                precision={0.5}
-                icon={<FavoriteIcon fontSize="inherit" />}
+                readOnly
               />
-            </Box>
-          </Box>
-
-          <Box display="flex">
-            <Box m="auto" mb={3} style={{ textAlign: 'center' }}>
-              <span style={{ color: '#daa520' }}>
-                <b>{userHobby && userHobby.fees_per_hour} </b>
-              </span>
-              <span style={{ textDecoration: 'none', color: '#2f4f4f' }}>
-                {' '}
-                $/hour
-              </span>
             </Box>
           </Box>
         </Grid>

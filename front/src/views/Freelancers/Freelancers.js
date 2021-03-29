@@ -13,6 +13,16 @@ import {
   Box,
   ButtonBase
 } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+
+import CookieConsent, {
+  Cookies,
+  getCookieConsentValue
+} from 'react-cookie-consent';
+
+import Rating from '@material-ui/lab/Rating';
+
 import { Link } from 'react-router-dom';
 import { Carousel } from 'react-responsive-carousel';
 import Zom from 'react-reveal/Zoom';
@@ -57,8 +67,26 @@ const useStyles = makeStyles((theme) => ({
     textDecoration: 'none',
     color: 'rgb(255, 174, 0)',
     transition: 'all 0.2s linear'
+  },
+  paginationButton: {
+    '&  .Mui-selected': {
+      backgroundColor: '#2f4f4f !important'
+    },
+    '&  button:hover': {
+      backgroundColor: '#2f4f4f !important',
+      opacity: '50%'
+    }
   }
 }));
+
+const StyledRating = withStyles({
+  iconFilled: {
+    color: '#daa520'
+  },
+  iconHover: {
+    color: '#ff3d47'
+  }
+})(Rating);
 
 export default function Freelancers(props) {
   const classes = useStyles();
@@ -72,10 +100,12 @@ export default function Freelancers(props) {
     shadow: 1
   });
 
+  const country_user = Cookies.get('country');
+
   const [total, setTotal] = React.useState(0);
   const [page, setPage] = React.useState(1);
 
-  const [country_user, setCountryUser] = React.useState('');
+  // const [country_user, setCountryUser] = React.useState('');
 
   const handleChange = (event, newPage) => {
     setPage(newPage);
@@ -88,15 +118,16 @@ export default function Freelancers(props) {
     });
   };
 
-  useEffect(() => {
-    try {
-      fetch('https://ipapi.co/json/')
-        .then((response) => response.json())
-        .then((res) => {
-          setCountryUser(res.country_name);
-        });
-    } catch (e) {}
-  }, []);
+  // useEffect(() => {
+  //   try {
+  //     fetch('https://ipapi.co/json/')
+  //       .then((response) => response.json())
+  //       .then((res) => {
+  //         setCountryUser(res.country_name);
+  //       });
+  //   } catch (e) {}
+  // }, []);
+
   const CapitalizeFirstLetter = (str) => {
     return str.length ? str.charAt(0).toUpperCase() + str.slice(1) : str;
   };
@@ -119,9 +150,14 @@ export default function Freelancers(props) {
 
   useEffect(() => {
     try {
+      var country;
+      console.log(Cookies.get('country'));
+      if (getCookieConsentValue() && Cookies.get('country') != undefined)
+        country = Cookies.get('country');
+      else country = '';
+
       fetch(
-        process.env.REACT_APP_URL +
-          `events/10?page=${page}&country=${country_user}`,
+        process.env.REACT_APP_URL + `events/10?page=${page}&country=${country}`,
         {
           method: 'get'
         }
@@ -151,14 +187,70 @@ export default function Freelancers(props) {
                   fontSize: '3rem'
                 }}
               >
-                <Zom right cascade>
-                  Freelancers
-                </Zom>
+                Tutor
               </h2>
             </strong>
           </Box>
         </Box>
         <Grid container={500} spacing={3}>
+          <Grid
+            container
+            item
+            xs={12}
+            sm={12}
+            md={3}
+            lg={3}
+            style={{ height: '100%' }}
+          >
+            <Card
+              style={{ textAlign: 'center', height: 'auto', width: '100%' }}
+              raised={state.raised}
+              className={classes.root}
+              className={classes.lastitems}
+            >
+              <h2
+                style={{
+                  fontFamily: 'Berkshire Swash, handwriting'
+                }}
+              >
+                {getCookieConsentValue() &&
+                Cookies.get('country') != undefined &&
+                country_user != undefined
+                  ? 'Newest Events In Your Country'
+                  : 'Newest Events'}
+              </h2>
+
+              <Grid container={500} spacing={3} style={{ margin: 'auto' }}>
+                {newestEvents &&
+                  newestEvents[0] &&
+                  newestEvents.map((value, index) => {
+                    return (
+                      <Grid container item xs={12} sm={12} md={12} lg={12}>
+                        <div style={{ marginTop: '5%' }}>
+                          <b>
+                            <Link
+                              to={`/event/${value.id}`}
+                              replace
+                              className={classes.lastitemsLink}
+                            >
+                              {CapitalizeFirstLetter(value.name)} »
+                            </Link>
+                          </b>
+                          <span style={{ Color: 'grey', opacity: '0.5' }}>
+                            {' '}
+                            {value.state && value.state.name}({' '}
+                            {value.state &&
+                              value.state.country &&
+                              value.state.country.name}
+                            ){' '}
+                          </span>
+                        </div>
+                      </Grid>
+                    );
+                  })}
+              </Grid>
+            </Card>
+          </Grid>
           <Grid container item xs={12} sm={12} md={9} lg={9}>
             <Grid container={500} spacing={3}>
               {events.map((event, index) => {
@@ -274,8 +366,16 @@ export default function Freelancers(props) {
                               </p>
                               <p>
                                 {' '}
-                                <b>Rating :</b>
-                                {event && event.rating}
+                                <StyledRating
+                                  name="customized-color"
+                                  defaultValue={2}
+                                  readOnly
+                                  getLabelText={(value) =>
+                                    `${value} Heart${value !== 1 ? 's' : ''}`
+                                  }
+                                  precision={0.5}
+                                  icon={<FavoriteIcon fontSize="inherit" />}
+                                />
                               </p>
                             </Typography>
                           </CardContent>
@@ -298,66 +398,13 @@ export default function Freelancers(props) {
             <Box m="auto" mt={3} display="flex" justifyContent="center">
               <Pagination
                 color="primary"
+                className={classes.paginationButton}
                 count={total}
                 page={page}
                 onChange={handleChange}
                 size="small"
               />
             </Box>
-          </Grid>
-          <Grid
-            container
-            item
-            xs={12}
-            sm={12}
-            md={3}
-            lg={3}
-            style={{ height: '100%' }}
-          >
-            <Card
-              style={{ textAlign: 'center', height: 'auto', width: '100%' }}
-              raised={state.raised}
-              className={classes.root}
-              className={classes.lastitems}
-            >
-              <h2
-                style={{
-                  fontFamily: 'Berkshire Swash, handwriting'
-                }}
-              >
-                Newest Events In Your Country
-              </h2>
-
-              <Grid container={500} spacing={3} style={{ margin: 'auto' }}>
-                {newestEvents &&
-                  newestEvents[0] &&
-                  newestEvents.map((value, index) => {
-                    return (
-                      <Grid container item xs={12} sm={12} md={12} lg={12}>
-                        <div style={{ marginTop: '5%' }}>
-                          <b>
-                            <Link
-                              to={`/article/${value.id}`}
-                              replace
-                              className={classes.lastitemsLink}
-                            >
-                              {CapitalizeFirstLetter(value.name)} »
-                            </Link>
-                          </b>
-                          <span style={{ Color: 'grey', opacity: '0.5' }}>
-                            {' '}
-                            {value.state && value.state.name}({' '}
-                            {value.state &&
-                              value.state.country &&
-                              value.state.country.name}
-                            ){' '}
-                          </span>
-                        </div>
-                      </Grid>
-                    );
-                  })}
-              </Grid>
-            </Card>
           </Grid>
         </Grid>
       </Container>

@@ -22,7 +22,7 @@ class CreateUsersHobbiesTable extends Migration
             $table->string('fees_per_hour')->nullable();
             $table->string('address');
             $table->string('rating')->nullable();
-            $table->string('about')->nullable();
+            $table->longText('about')->nullable();
             $table->boolean('is_freelancer')->nullable()->default(false);
             $table->unique(['hobby_id', 'user_id','state_id','is_freelancer']);
 

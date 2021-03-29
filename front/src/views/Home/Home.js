@@ -44,7 +44,12 @@ const useStyles = makeStyles((theme) => ({
     }
   },
   carousel: {
-    height: '85vh'
+    ['@media (min-width:780px)']: {
+      height: '85vh'
+    },
+    ['@media (max-width:780px)']: {
+      height: '40vh'
+    }
   },
   HeroCarousel: {
     ['@media (min-width:780px)']: {
@@ -53,24 +58,25 @@ const useStyles = makeStyles((theme) => ({
       marginTop: '10vh'
     },
     ['@media (max-width:780px)']: {
-      display: 'flex',
-      justifyContent: 'center',
-      alignContent: 'center',
+      //   display: 'flex',
+      //   justifyContent: 'center',
+      //   alignContent: 'center',
 
       width: '100vw',
       height: '40vh',
       margin: 'auto',
-      marginTop: '5vh',
-      /* Center and scale the image nicely */
-      backgroundPosition: 'center',
-      backgroundRepeat: 'no-repeat',
-      backgroundSize: 'cover',
-      background: "URL('/static/images/hobbies2.jpg')"
-    }
+      marginTop: '5vh'
+      //   backgroundPosition: 'center',
+      //   backgroundRepeat: 'no-repeat',
+      //   backgroundSize: 'cover',
+      //   background: "URL('/static/images/hobbies2.jpg')"
+    },
+    position: 'relative',
+    textAlign: 'center'
   },
   CarouselContainer: {
     ['@media (max-width:780px)']: {
-      display: 'none'
+      // display: 'none'
     }
   },
 
@@ -85,16 +91,22 @@ const useStyles = makeStyles((theme) => ({
     },
     ['@media (max-width:780px)']: {
       margin: 'auto',
-      color: 'black',
+      width: '100%',
       fontSize: '1rem'
     },
 
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    color: 'white',
     fontFamily: 'New Century Schoolbook, TeX Gyre Schola, serif',
     fontWeight: 'bolder',
 
     margin: 'auto',
     textAlign: 'center'
   },
+
   cardHovered: {
     transform: 'scale3d(1.05, 1.05, 1)'
   },
@@ -185,7 +197,12 @@ const useStyles = makeStyles((theme) => ({
     }
   },
   titleavatar2: {
-    fontSize: '1.5rem',
+    ['@media (min-width:780px)']: {
+      fontSize: '1.5rem'
+    },
+    ['@media (max-width:780px)']: {
+      fontSize: '0.9rem'
+    },
     fontFamily: 'hexa',
     letterSpacing: '2px',
     // color: '#dd761e',
@@ -206,7 +223,9 @@ const useStyles = makeStyles((theme) => ({
     }
   },
   titleavatar: {
-    fontSize: '2rem',
+    ['@media (min-width:780px)']: {
+      fontSize: '2rem'
+    },
     fontFamily: 'hexa',
     letterSpacing: '2px',
     // color: '#dd761e',
@@ -214,6 +233,59 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: '50px',
     paddingBottom: '35px',
     fontWeight: '400 !important'
+  },
+  hobbyTitle: {
+    fontWeight: '900',
+    color: '#FFF'
+  },
+  secondary: {
+    ['@media (min-width:780px)']: {
+      width: '100%',
+      height: '8vh'
+    },
+    ['@media (max-width:780px)']: {
+      margin: 'auto',
+      textAlign: 'center'
+    },
+    main: '#daa520',
+
+    borderColor: '#fff',
+    fontWeight: 'bolder',
+    fontSize: '1.1rem',
+    color: 'black',
+    backgroundColor: '#daa520',
+    '&:hover': {
+      background: '#daa520',
+      opacity: '0.8'
+    }
+  },
+  btnColor2: {
+    ['@media (min-width:780px)']: {
+      width: '100%',
+      height: '8vh'
+    },
+    ['@media (max-width:780px)']: {
+      margin: 'auto',
+      textAlign: 'center'
+    },
+    backgroundColor: '#fffafac2',
+    // background: 'linear-gradient(180deg,transparent 0,hsla(0,0%,100%,.2))',
+    borderColor: '#fff',
+    fontWeight: 'bolder',
+    fontSize: '1.1rem',
+    color: 'black',
+
+    fontFamily: 'Roboto,Helvetica Neue,Helvetica,Arial,sans-serif',
+    '&:hover': {
+      opacity: '0.8'
+    }
+  },
+  boxShadow: {
+    backgroundColor: 'rgba(0, 0, 0,0.4)',
+    position: 'absolute',
+    top: 0,
+    height: '100%',
+    width: '100%'
   }
 }));
 
@@ -242,6 +314,14 @@ export default function Home(props) {
     setInfo({ ...info, [e.target.name]: e.target.value });
   };
 
+  const clickcheckEvent = (e) => {
+    navigate(`/events`);
+  };
+  const clickcheckPartner = (e) => {
+    console.log(1);
+    navigate(`/not_freelancers`);
+  };
+
   const handleClick2 = (e, id, item) => {
     console.log(11);
     navigate(
@@ -252,6 +332,7 @@ export default function Home(props) {
       { state: item }
     );
   };
+
   const handleClick = (e, id) => {
     console.log(11);
     navigate(`/EventsByHobby/${id}`, {
@@ -400,13 +481,32 @@ export default function Home(props) {
             </div>
           </Carousel>
         </div>
+        <div className={classes.boxShadow}></div>
+
         {/* className={classNames(classes.main, classes.mainRaised)}> */}
         <div className={classes.HeroCarouselText}>
-          <h1>
+          <h1 className={classes.hobbyTitle}>
             <Flip left cascade>
               Hobby Connect
             </Flip>
           </h1>
+          <Box mt={3}>
+            <Grid container spacing={3}>
+              <Grid container item xs={12} sm={12} md={6} lg={6}>
+                <Button onClick={clickcheckEvent} className={classes.secondary}>
+                  Check Events
+                </Button>
+              </Grid>
+              <Grid container item xs={12} sm={12} md={6} lg={6}>
+                <Button
+                  onClick={clickcheckPartner}
+                  className={classes.btnColor2}
+                >
+                  Search For Partner
+                </Button>
+              </Grid>
+            </Grid>
+          </Box>
         </div>
       </div>
 
@@ -422,9 +522,7 @@ export default function Home(props) {
                   fontSize: '3rem'
                 }}
               >
-                <Bounce bottom cascade>
-                  About Us
-                </Bounce>
+                About Us
               </h2>
             </strong>
           </Box>
@@ -470,9 +568,7 @@ export default function Home(props) {
                   fontSize: '3rem'
                 }}
               >
-                <Zom left cascade>
-                  Main Hobbies
-                </Zom>
+                Main Hobbies
               </h2>
             </strong>
           </Box>
@@ -542,25 +638,6 @@ export default function Home(props) {
                               </Typography>
                             </CardContent>
                           </CardActionArea>
-                          <CardActions>
-                            <Button
-                              size="small"
-                              color="primary"
-                              style={{ color: '#daa520' }}
-                              onclick={
-                                handleClick
-
-                                // window.location.replace(
-                                //   `/EventsByHobby/${hobbymain.id}`
-                                // )
-                                // navigate(`/EventsByHobby/${hobbymain.id}`, {
-                                //   replace: true
-                                // })
-                              }
-                            >
-                              Check It
-                            </Button>
-                          </CardActions>
                         </Card>
                       </ButtonBase>
                     </Grid>
@@ -584,9 +661,7 @@ export default function Home(props) {
                   fontSize: '3rem'
                 }}
               >
-                <Zom right cascade>
-                  Newest Events
-                </Zom>
+                Newest Events
               </h2>
             </strong>
           </Box>
@@ -673,8 +748,17 @@ export default function Home(props) {
                                 </p>
                                 <p>
                                   {' '}
-                                  <b>Description :</b>
-                                  {event.description}
+                                  {event && event.description.length > 15 ? (
+                                    <p>
+                                      <b>Description :</b>{' '}
+                                      {event.description.slice(0, 15)} {'...'}
+                                    </p>
+                                  ) : (
+                                    <>
+                                      <b>Description :</b>
+                                      {event.description}
+                                    </>
+                                  )}
                                 </p>
                               </Typography>
                             </CardContent>
@@ -710,9 +794,7 @@ export default function Home(props) {
                   fontSize: '3rem'
                 }}
               >
-                <Bounce bottom cascade>
-                  Contact Us
-                </Bounce>
+                Contact Us
               </h2>
             </strong>
           </Box>
