@@ -68,6 +68,23 @@ class Users_HobbiesRepo implements Users_HobbiesInterface
             $searchName = $_GET['name'];
         }
        
+
+             
+        if (isset($_GET['filter'])) 
+        {
+            
+            $searchfilter=$_GET['filter'];
+            return $Users_Hobbies = Users_Hobbies::where(function ($query) use ($searchfilter) {
+               $new_array=explode(",",$searchfilter[0]);
+                    $query->whereIn('hobby_id', $new_array);
+            })
+            ->with(['user','hobby','state'])
+            ->where('is_freelancer', 1)
+            ->paginate($rowNb);
+
+           
+        }
+
      
         // $users_hobbies= User::with('hobbies')->paginate($rowNb);
       
@@ -97,6 +114,20 @@ class Users_HobbiesRepo implements Users_HobbiesInterface
             $searchName = $_GET['name'];
         }
        
+        if (isset($_GET['filter'])) 
+        {
+            
+            $searchfilter=$_GET['filter'];
+            return $Users_Hobbies = Users_Hobbies::where(function ($query) use ($searchfilter) {
+               $new_array=explode(",",$searchfilter[0]);
+                    $query->whereIn('hobby_id', $new_array);
+            })
+            ->with(['user','hobby','state'])
+            ->where('is_freelancer', 0)
+            ->paginate($rowNb);
+
+           
+        }
      
            
 

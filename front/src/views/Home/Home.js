@@ -277,7 +277,8 @@ const useStyles = makeStyles((theme) => ({
 
     fontFamily: 'Roboto,Helvetica Neue,Helvetica,Arial,sans-serif',
     '&:hover': {
-      opacity: '0.8'
+      opacity: '0.8',
+      color: 'white'
     }
   },
   boxShadow: {

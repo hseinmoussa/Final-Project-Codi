@@ -13,6 +13,8 @@ import {
   Box,
   ButtonBase
 } from '@material-ui/core';
+import { TagsSelect } from 'react-select-material-ui';
+
 import { withStyles } from '@material-ui/core/styles';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 
@@ -95,6 +97,8 @@ export default function Freelancers(props) {
   const [events, setEvents] = React.useState([]);
   const [newestEvents, setNewestEvents] = React.useState([]);
 
+  const [filter, setFilter] = React.useState([]);
+
   const [state, setState] = React.useState({
     raised: false,
     shadow: 1
@@ -104,8 +108,14 @@ export default function Freelancers(props) {
 
   const [total, setTotal] = React.useState(0);
   const [page, setPage] = React.useState(1);
+  const [hobby, setHobby] = React.useState([]);
 
   // const [country_user, setCountryUser] = React.useState('');
+
+  const handleChangeTags = (e, v) => {
+    setFilter(e);
+    console.log(filter);
+  };
 
   const handleChange = (event, newPage) => {
     setPage(newPage);
@@ -133,7 +143,14 @@ export default function Freelancers(props) {
   };
   useEffect(() => {
     try {
-      fetch(process.env.REACT_APP_URL + `freelancers/9?page=${page}`, {
+      var url;
+      if (filter != null) {
+        if (filter.length > 0)
+          url = `freelancers/9?page=${page}&filter[]=${filter}`;
+        else url = `freelancers/9?page=${page}`;
+      } else url = `freelancers/9?page=${page}`;
+
+      fetch(process.env.REACT_APP_URL + url, {
         method: 'get'
       })
         .then((response) => response.json())
@@ -146,7 +163,7 @@ export default function Freelancers(props) {
           }
         });
     } catch (e) {}
-  }, [page]);
+  }, [page, filter]);
 
   useEffect(() => {
     try {
@@ -174,6 +191,29 @@ export default function Freelancers(props) {
     } catch (e) {}
   }, [page, country_user]);
 
+  useEffect(() => {
+    try {
+      fetch(process.env.REACT_APP_URL + `hobbies/10000`, {
+        method: 'get'
+      })
+        .then((response) => response.json())
+        .then((res) => {
+          if (res.status == 200) {
+            setHobby(res.data);
+          } else {
+            // alert(res.error.message[Object.keys(res.error.message)][0]);
+          }
+        });
+    } catch (e) {}
+  }, []);
+
+  let Hobby = [];
+  if (hobby.data)
+    if (hobby.data[0] != undefined) {
+      for (let i = 0; i < hobby.data.length; i++) {
+        Hobby.push({ value: hobby.data[i].id, label: hobby.data[i].name });
+      }
+    }
   return (
     <div>
       <MainLayout />
@@ -208,6 +248,30 @@ export default function Freelancers(props) {
               className={classes.root}
               className={classes.lastitems}
             >
+              <Box m="auto" mb={5} style={{ textAlign: 'center' }}>
+                <h2
+                  style={{
+                    fontFamily: 'Berkshire Swash, handwriting'
+                  }}
+                >
+                  Filter By Hobby
+                </h2>
+
+                <TagsSelect
+                  required
+                  label="Tag"
+                  id="2"
+                  options={Hobby}
+                  name="hobbies"
+                  onChange={(e, v) => handleChangeTags(e, v)}
+                  SelectProps={{
+                    // isCreatable: true,
+                    msgNoOptionsAvailable: 'All tags are selected',
+                    msgNoOptionsMatchFilter: 'No tag matches the filter'
+                  }}
+                />
+              </Box>
+
               <h2
                 style={{
                   fontFamily: 'Berkshire Swash, handwriting'

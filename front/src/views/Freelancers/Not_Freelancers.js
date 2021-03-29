@@ -20,6 +20,8 @@ import Zom from 'react-reveal/Zoom';
 import MainLayout from 'src/layouts/MainLayout';
 import { ToastContainer, toast } from 'react-toastify';
 
+import { TagsSelect } from 'react-select-material-ui';
+
 import CookieConsent, {
   Cookies,
   getCookieConsentValue
@@ -91,6 +93,10 @@ export default function Not_Freelancers(props) {
   const [total, setTotal] = React.useState(0);
   const [page, setPage] = React.useState(1);
 
+  const [hobby, setHobby] = React.useState([]);
+
+  const [filter, setFilter] = React.useState([]);
+
   // const [country_user, setCountryUser] = React.useState('');
 
   const handleChange = (event, newPage) => {
@@ -111,7 +117,14 @@ export default function Not_Freelancers(props) {
   };
   useEffect(() => {
     try {
-      fetch(process.env.REACT_APP_URL + `not_freelancers/9?page=${page}`, {
+      var url;
+      if (filter != null) {
+        if (filter.length > 0)
+          url = `not_freelancers/9?page=${page}&filter[]=${filter}`;
+        else url = `not_freelancers/9?page=${page}`;
+      } else url = `not_freelancers/9?page=${page}`;
+
+      fetch(process.env.REACT_APP_URL + url, {
         method: 'get'
       })
         .then((response) => response.json())
@@ -124,7 +137,7 @@ export default function Not_Freelancers(props) {
           }
         });
     } catch (e) {}
-  }, [page]);
+  }, [page, filter]);
 
   useEffect(() => {
     try {
@@ -150,6 +163,35 @@ export default function Not_Freelancers(props) {
         });
     } catch (e) {}
   }, [page, getCookieConsentValue()]);
+
+  useEffect(() => {
+    try {
+      fetch(process.env.REACT_APP_URL + `hobbies/10000`, {
+        method: 'get'
+      })
+        .then((response) => response.json())
+        .then((res) => {
+          if (res.status == 200) {
+            setHobby(res.data);
+          } else {
+            // alert(res.error.message[Object.keys(res.error.message)][0]);
+          }
+        });
+    } catch (e) {}
+  }, []);
+
+  let Hobby = [];
+  if (hobby.data)
+    if (hobby.data[0] != undefined) {
+      for (let i = 0; i < hobby.data.length; i++) {
+        Hobby.push({ value: hobby.data[i].id, label: hobby.data[i].name });
+      }
+    }
+
+  const handleChangeTags = (e, v) => {
+    setFilter(e);
+    console.log(filter);
+  };
 
   return (
     <div>
@@ -185,6 +227,29 @@ export default function Not_Freelancers(props) {
               className={classes.root}
               className={classes.lastitems}
             >
+              <Box m="auto" mb={5} style={{ textAlign: 'center' }}>
+                <h2
+                  style={{
+                    fontFamily: 'Berkshire Swash, handwriting'
+                  }}
+                >
+                  Filter By Hobby
+                </h2>
+
+                <TagsSelect
+                  required
+                  label="Tag"
+                  id="2"
+                  options={Hobby}
+                  name="hobbies"
+                  onChange={(e, v) => handleChangeTags(e, v)}
+                  SelectProps={{
+                    // isCreatable: true,
+                    msgNoOptionsAvailable: 'All tags are selected',
+                    msgNoOptionsMatchFilter: 'No tag matches the filter'
+                  }}
+                />
+              </Box>
               <h2
                 style={{
                   fontFamily: 'Berkshire Swash, handwriting'
