@@ -13,5 +13,12 @@
  *             email="hseinmoussa98@gmail.com"
  *         ),
  *     ),
+ *  *   @OA\SecurityScheme(
+ *   securityScheme="token",
+ *   type="apiKey",
+ *   name="Authorization",
+ *   in="header"
  * )
+ * ),
+
  */

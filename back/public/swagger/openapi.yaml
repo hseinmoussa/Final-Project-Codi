@@ -30,3 +30,264 @@ paths:
         '422':
           description: 'Missing Data'
       name: Projects
+  '/api/admin/admins/{row}':
+    get:
+      tags:
+        - Admin
+      summary: 'Get Admins'
+      description: 'Return all Admins informations'
+      operationId: ApiV1getAdmins
+      parameters:
+        -
+          name: row
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: 'Couldn''t get any Admin'
+      name: Projects
+  '/api/countries/{row}':
+    get:
+      tags:
+        - Countries
+      summary: 'Get Countries'
+      description: 'Return all Countries informations'
+      operationId: ApiV1getCountries
+      parameters:
+        -
+          name: row
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: 'Couldn''t get any Country'
+      name: Hobby
+  /api/state:
+    post:
+      tags:
+        - States
+      summary: 'Add State'
+      description: 'Add new state and return it'
+      operationId: ApiV1addState
+      parameters:
+        -
+          name: name
+          in: query
+          required: true
+          schema:
+            type: string
+        -
+          name: country_id
+          in: query
+          required: true
+          schema:
+            type: number
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json: {  }
+        '401':
+          description: Unauthenticated
+        '400':
+          description: 'Bad Request'
+        '404':
+          description: 'not found'
+        '500':
+          description: 'Duplicate Entry!'
+        '403':
+          description: Forbidden
+      name: Hobby
+  '/api/events/{row}':
+    get:
+      tags:
+        - Events
+      summary: 'Get Events'
+      description: 'Return all Events informations'
+      operationId: Events
+      parameters:
+        -
+          name: row
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: 'Couldn''t get any Event'
+      name: Hobby
+  '/api/hobbies/{row}':
+    get:
+      tags:
+        - Hobbies
+      summary: 'Get Hobbies'
+      description: 'Return all Hobbies informations'
+      operationId: ApiV1getHobbies
+      parameters:
+        -
+          name: row
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: 'Couldn''t get any Hobby'
+      name: Hobby
+  '/api/states/{row}':
+    get:
+      tags:
+        - States
+      summary: 'Get States'
+      description: 'Return all States informations'
+      operationId: ApiV1getStates
+      parameters:
+        -
+          name: row
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: 'Couldn''t get any State'
+      name: Hobby
+  '/api/state/{id}':
+    get:
+      tags:
+        - States
+      summary: 'Add State'
+      description: 'Show specific ID and return it'
+      operationId: ApiV1getState
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json: {  }
+        '400':
+          description: 'Bad Request'
+        '404':
+          description: 'not found'
+      name: Hobby
+    put:
+      tags:
+        - States
+      summary: 'Update State'
+      description: 'Update specific ID and return it'
+      operationId: ApiV1putState
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+        -
+          name: name
+          in: query
+          required: true
+          schema:
+            type: string
+        -
+          name: country_id
+          in: query
+          required: true
+          schema:
+            type: number
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json: {  }
+        '400':
+          description: 'Bad Request'
+        '404':
+          description: 'not found'
+      name: Hobby
+  '/api/admin/state/{id}':
+    delete:
+      tags:
+        - States
+      summary: 'Delete State'
+      description: 'Delete specific State'
+      operationId: ApiV1deleteState
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json: {  }
+        '400':
+          description: 'Bad Request'
+        '404':
+          description: 'not found'
+      security:
+        -
+          token: []
+      name: Hobby
+  '/api/users/{row}':
+    get:
+      tags:
+        - Users
+      summary: 'Get Users'
+      description: 'Return all Users informations'
+      operationId: ApiV1getUsers
+      parameters:
+        -
+          name: row
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: 'Couldn''t get any User'
+      name: Hobby
+  '/api/usershobbies/{row}':
+    get:
+      tags:
+        - UsersHobbies
+      summary: 'Get Users Hobbies'
+      description: 'Return all Users Hobbies informations'
+      operationId: ApiV1getUsersHobbies
+      parameters:
+        -
+          name: row
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: 'Couldn''t get any Hobby'
+      name: Hobby
+components:
+  securitySchemes:
+    token:
+      type: apiKey
+      name: Authorization
+      in: header

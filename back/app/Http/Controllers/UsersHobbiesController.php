@@ -19,6 +19,40 @@ class UsersHobbiesController extends Controller
         $this->repository = $repository;
     }
 
+
+
+
+                    /**
+ * @OA\Get(
+ *     path="/api/usershobbies/{row}",
+ *     description="Return all Users Hobbies informations",
+ *     name="Hobby",
+ * 
+ *      tags={"UsersHobbies"},
+ *      operationId="ApiV1getUsersHobbies",
+ *      summary="Get Users Hobbies",
+ *
+ *     @OA\Parameter(
+ *          name="row",
+ *          in="path",
+ *          required=true, 
+ *          type="string" 
+ *      ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="OK",
+ *     ),
+ *     @OA\Response(
+ *         response=400,
+ *         description="Couldn't get any Hobby"
+ *     ),
+ *   @OA\Tag(
+     *     name="Projects",
+     *     description="API Endpoints of Projects"
+     * )
+ * )
+ */
+
         /**
      * Display a listing of the resource.
      *

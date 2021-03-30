@@ -19,6 +19,40 @@ class EventsController extends Controller
         $this->repository = $repository;
     }
 
+
+
+
+                /**
+ * @OA\Get(
+ *     path="/api/events/{row}",
+ *     description="Return all Events informations",
+ *     name="Hobby",
+ * 
+ *      tags={"Events"},
+ *      operationId="Events",
+ *      summary="Get Events",
+ *
+ *     @OA\Parameter(
+ *          name="row",
+ *          in="path",
+ *          required=true, 
+ *          type="string" 
+ *      ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="OK",
+ *     ),
+ *     @OA\Response(
+ *         response=400,
+ *         description="Couldn't get any Event"
+ *     ),
+ *   @OA\Tag(
+     *     name="Projects",
+     *     description="API Endpoints of Projects"
+     * )
+ * )
+ */
+
     /**
      * Display a listing of the resource.
      *

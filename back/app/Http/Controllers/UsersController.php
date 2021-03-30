@@ -19,6 +19,39 @@ class UsersController extends Controller
 
 
 
+
+                    /**
+ * @OA\Get(
+ *     path="/api/users/{row}",
+ *     description="Return all Users informations",
+ *     name="Hobby",
+ * 
+ *      tags={"Users"},
+ *      operationId="ApiV1getUsers",
+ *      summary="Get Users",
+ *
+ *     @OA\Parameter(
+ *          name="row",
+ *          in="path",
+ *          required=true, 
+ *          type="string" 
+ *      ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="OK",
+ *     ),
+ *     @OA\Response(
+ *         response=400,
+ *         description="Couldn't get any User"
+ *     ),
+ *   @OA\Tag(
+     *     name="Projects",
+     *     description="API Endpoints of Projects"
+     * )
+ * )
+ */
+
+
     /**
      * Display a listing of the resource.
      *

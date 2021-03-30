@@ -20,11 +20,36 @@ class AdminsController extends Controller
 
 
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+        /**
+ * @OA\Get(
+ *     path="/api/admin/admins/{row}",
+ *     description="Return all Admins informations",
+ *     name="Projects",
+ * 
+ *      tags={"Admin"},
+ *      operationId="ApiV1getAdmins",
+ *      summary="Get Admins",
+ *
+ *     @OA\Parameter(
+ *          name="row",
+ *          in="path",
+ *          required=true, 
+ *          type="string" 
+ *      ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="OK",
+ *     ),
+ *     @OA\Response(
+ *         response=400,
+ *         description="Couldn't get any Admin"
+ *     ),
+ *   @OA\Tag(
+     *     name="Projects",
+     *     description="API Endpoints of Projects"
+     * )
+ * )
+ */
     public function index($rowNb)
     {
      

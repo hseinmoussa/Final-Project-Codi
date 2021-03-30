@@ -18,11 +18,36 @@ class StatesController extends Controller
         $this->repository = $repository;
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+        /**
+ * @OA\Get(
+ *     path="/api/states/{row}",
+ *     description="Return all States informations",
+ *     name="Hobby",
+ * 
+ *      tags={"States"},
+ *      operationId="ApiV1getStates",
+ *      summary="Get States",
+ *
+ *     @OA\Parameter(
+ *          name="row",
+ *          in="path",
+ *          required=true, 
+ *          type="string" 
+ *      ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="OK",
+ *     ),
+ *     @OA\Response(
+ *         response=400,
+ *         description="Couldn't get any State"
+ *     ),
+ *   @OA\Tag(
+     *     name="Projects",
+     *     description="API Endpoints of Projects"
+     * )
+ * )
+ */
     public function index($rowNb)
     {
      
@@ -34,12 +59,62 @@ class StatesController extends Controller
     }
 
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+        /**
+ * @OA\Post(
+ *     path="/api/state",
+ *     description="Add new state and return it",
+ *     name="Hobby",
+ * 
+ *      tags={"States"},
+ *      operationId="ApiV1addState",
+ *      summary="Add State",
+ 
+
+ *   @OA\Parameter(
+     *      name="name",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string"
+     *      )
+     *   ),
+     *   @OA\Parameter(
+     *      name="country_id",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="number"
+     *      )
+     *   ),
+     *   @OA\Response(
+     *      response=200,
+     *       description="Success",
+     *      @OA\MediaType(
+     *           mediaType="application/json",
+     *      )
+     *   ),
+     *   @OA\Response(
+     *      response=401,
+     *       description="Unauthenticated"
+     *   ),
+     *   @OA\Response(
+     *      response=400,
+     *      description="Bad Request"
+     *   ),
+     *   @OA\Response(
+     *      response=404,
+     *      description="not found"
+     *   ),
+     *   @OA\Response(
+     *      response=500,
+     *      description="Duplicate Entry!"
+     *   ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+ * )
+ */
     public function store(StatesRequest $request)
     {
       
@@ -54,6 +129,55 @@ class StatesController extends Controller
     
           
     }
+
+
+
+
+
+
+
+
+
+            /**
+ * @OA\Get(
+ *     path="/api/state/{id}",
+ *     description="Show specific ID and return it",
+ *     name="Hobby",
+ * 
+ *      tags={"States"},
+ *      operationId="ApiV1getState",
+ *      summary="Add State",
+ 
+
+ *   @OA\Parameter(
+     *      name="id",
+     *      in="path",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="integer"
+     *      )
+     *   ),
+
+     *   @OA\Response(
+     *      response=200,
+     *       description="Success",
+     *      @OA\MediaType(
+     *           mediaType="application/json",
+     *      )
+     *   ),
+
+     *   @OA\Response(
+     *      response=400,
+     *      description="Bad Request"
+     *   ),
+     *   @OA\Response(
+     *      response=404,
+     *      description="not found"
+     *   ),
+
+  
+ * )
+ */
 
     /**
      * Display the specified resource.
@@ -92,6 +216,70 @@ class StatesController extends Controller
 
 
 
+
+
+
+
+
+            /**
+ * @OA\Put(
+ *     path="/api/state/{id}",
+ *     description="Update specific ID and return it",
+ *     name="Hobby",
+ * 
+ *      tags={"States"},
+ *      operationId="ApiV1putState",
+ *      summary="Update State",
+
+
+ *   @OA\Parameter(
+     *      name="id",
+     *      in="path",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="integer"
+     *      )
+     *   ),
+     * 
+     *  *   @OA\Parameter(
+     *      name="name",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string"
+     *      )
+     *   ),
+     *   @OA\Parameter(
+     *      name="country_id",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="number"
+     *      )
+     *   ),
+
+     *   @OA\Response(
+     *      response=200,
+     *       description="Success",
+     *      @OA\MediaType(
+     *           mediaType="application/json",
+     *      )
+     *   ),
+
+     *   @OA\Response(
+     *      response=400,
+     *      description="Bad Request"
+     *   ),
+     *   @OA\Response(
+     *      response=404,
+     *      description="not found"
+     *   ),
+
+  
+ * )
+ */
+
+
      /**
      * Update the specified resource in storage.
      *
@@ -115,6 +303,57 @@ class StatesController extends Controller
     }
 
 
+
+
+
+
+            /**
+             * 
+             * /**
+
+ 
+ * @OA\Delete(
+ *     path="/api/admin/state/{id}",
+ *     description="Delete specific State",
+ *     name="Hobby",
+ *   security={{"token": {}}},
+ * 
+ *      tags={"States"},
+ *      operationId="ApiV1deleteState",
+ *      summary="Delete State",
+
+
+ *   @OA\Parameter(
+     *      name="id",
+     *      in="path",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="integer"
+     *      )
+     *   ),
+     * 
+ 
+
+     *   @OA\Response(
+     *      response=200,
+     *       description="Success",
+     *      @OA\MediaType(
+     *           mediaType="application/json",
+     *      )
+     *   ),
+
+     *   @OA\Response(
+     *      response=400,
+     *      description="Bad Request"
+     *   ),
+     *   @OA\Response(
+     *      response=404,
+     *      description="not found"
+     *   ),
+
+  
+ * )
+ */
 
     /**
      * Remove the specified resource from storage.
