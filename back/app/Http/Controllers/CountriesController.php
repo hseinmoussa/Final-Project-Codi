@@ -71,63 +71,6 @@ class CountriesController extends Controller
 
 
 
-            /**
- * @OA\Post(
- *     path="/api/state",
- *     description="Add new state and return it",
- *     name="Hobby",
- * 
- *      tags={"States"},
- *      operationId="ApiV1addState",
- *      summary="Add State",
- 
-
- *   @OA\Parameter(
-     *      name="name",
-     *      in="query",
-     *      required=true,
-     *      @OA\Schema(
-     *           type="string"
-     *      )
-     *   ),
-     *   @OA\Parameter(
-     *      name="country_id",
-     *      in="query",
-     *      required=true,
-     *      @OA\Schema(
-     *          type="number"
-     *      )
-     *   ),
-     *   @OA\Response(
-     *      response=200,
-     *       description="Success",
-     *      @OA\MediaType(
-     *           mediaType="application/json",
-     *      )
-     *   ),
-     *   @OA\Response(
-     *      response=401,
-     *       description="Unauthenticated"
-     *   ),
-     *   @OA\Response(
-     *      response=400,
-     *      description="Bad Request"
-     *   ),
-     *   @OA\Response(
-     *      response=404,
-     *      description="not found"
-     *   ),
-     *   @OA\Response(
-     *      response=500,
-     *      description="Duplicate Entry!"
-     *   ),
-     *      @OA\Response(
-     *          response=403,
-     *          description="Forbidden"
-     *      )
- * )
- */
-
     /**
      * Store a newly created resource in storage.
      *

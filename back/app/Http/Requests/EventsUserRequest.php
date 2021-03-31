@@ -36,7 +36,7 @@ class EventsUserRequest extends FormRequest
                         'location' => 'required|max:255',
                         'start_date' => 'required|max:255',
                         'end_date' => 'required|max:255',
-                        'zone' => 'required|max:255',
+                        // 'zone' => 'required|max:255',
                         // 'start_time' => 'required|max:255',
                         // 'end_time' => 'required|max:255',
                         'state_id' => 'required|exists:States,id',
@@ -52,7 +52,7 @@ class EventsUserRequest extends FormRequest
                         'location' => 'required|max:255',
                         'start_date' => 'required|max:255',
                         'end_date' => 'required|max:255',
-                        'zone' => 'required|max:255',
+                        // 'zone' => 'required|max:255',
                         // 'start_time' => 'required|max:255',
                         // 'end_time' => 'required|max:255',
                         'state_id' => 'required|exists:States,id',
@@ -86,8 +86,8 @@ class EventsUserRequest extends FormRequest
             'end_date.required' => 'End date is required!',
             'end_date.max' => 'End date is too long',
 
-            'zone.required' => 'Zone time is required!',
-            'zone.max' => 'Zone is too long',
+            // 'zone.required' => 'Zone time is required!',
+            // 'zone.max' => 'Zone is too long',
 
             // 'end_time.required' => 'End time is required!',
             // 'end_time.max' => 'End time is too long',

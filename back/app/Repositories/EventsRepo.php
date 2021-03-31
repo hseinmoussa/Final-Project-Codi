@@ -182,7 +182,7 @@ class EventsRepo implements EventsInterface
          $event->location=$request->all()['location'];
          $event->start_date=$request->all()['start_date'];
          $event->end_date=$request->all()['end_date'];
-         $event->zone=$request->all()['zone'];
+        //  $event->zone=$request->all()['zone'];
         //  $event->start_time=$request->all()['start_time'];
         //  $event->end_time=$request->all()['end_time'];
          $event->state_id=$request->all()['state_id'];
@@ -243,7 +243,7 @@ class EventsRepo implements EventsInterface
          $event->location=$request->all()['location'];
          $event->start_date=$request->all()['start_date'];
          $event->end_date=$request->all()['end_date'];
-         $event->zone=$request->all()['zone'];
+        //  $event->zone=$request->all()['zone'];
          $event->state_id=$request->all()['state_id'];
          $event->user_id=$idd;
          $event->description=$request->all()['description'];
@@ -265,7 +265,7 @@ class EventsRepo implements EventsInterface
                 $event->location=$request->all()['location'];
                 $event->start_date=$request->all()['start_date'];
                 $event->end_date=$request->all()['end_date'];
-                $event->zone=$request->all()['zone'];
+                // $event->zone=$request->all()['zone'];
                 $event->state_id=$request->all()['state_id'];
                 $event->user_id=$idd;
                 $event->description=$request->all()['description'];

@@ -542,14 +542,14 @@ export default function Home(props) {
                   <b>About Us</b>
                 </h2>
                 <p className={classes.textavatar}>
-                  Hobby connect is a web app that would help the users to meet
-                  other people who share the same hobbies and to try out things
-                  together.
+                  Hobby Connect is a platform that helps users communicate with
+                  others who share the same hobbies or intrests and try out
+                  things together.
                   <br></br>
                   We Help connecting movie lovers, chess players, joggers,
                   bowlers, and gives them the opportunity to meet in person to
-                  do their thing or attend Events together, as well as we give
-                  the opportunity for Tutors (or Freelancers) to give courses .
+                  do their thing or attend Events together, as well as giving
+                  the opportunity for Tutors to give private courses .
                 </p>
               </div>
             </Zoom>

@@ -122,7 +122,7 @@ const ProductCard = ({
         document.getElementById('description').value
       );
 
-      formData.append('zone', info.zone);
+      // formData.append('zone', info.zone);
 
       if (info.image)
         for (let i = 0; i < info.image.length; i++) {
@@ -451,7 +451,7 @@ const ProductCard = ({
                   onChange={(e) => setInputState(e)}
                 />
               </Grid>
-              <Grid item xs>
+              {/* <Grid item xs>
                 <TimezonePicker
                   onChange={
                     (time) =>
@@ -469,7 +469,7 @@ const ProductCard = ({
                     id: 'zone'
                   }}
                 />
-              </Grid>
+              </Grid> */}
             </Grid>
 
             <Box mt={1}>

@@ -173,7 +173,7 @@ const useStyles = makeStyles((theme) => ({
       fontSize: '50px',
       lineHeight: '1'
     },
-    textTransform: 'capitalize',
+    textTransform: 'uppercase',
     color: 'transparent',
     '-webkitTextFillColor': 'transparent',
     '-webkitTextStrokeWidth': '2px',
@@ -292,7 +292,8 @@ export default function Event(props) {
     hours: '00',
     minutes: '00',
     seconds: '00',
-    timeUp: false
+    timeUp: false,
+    timeEnd: false
   });
   const [event, setEvent] = React.useState([]);
 
@@ -310,15 +311,24 @@ export default function Event(props) {
       event.start_date &&
       setInterval(() => {
         let eventDate = +new Date(event.start_date);
+        let eventEndDate = +new Date(event.end_date);
 
         let difference =
           eventDate -
           +new Date(
             Date.now() + new Date().getTimezoneOffset() * 60000
           ).getTime();
-        if (difference < 1) {
-          clearInterval(timer1);
+
+        let differenceEnd =
+          eventEndDate -
+          +new Date(
+            Date.now() + new Date().getTimezoneOffset() * 60000
+          ).getTime();
+        if (difference < 1 && differenceEnd > 1) {
           setTime({ ...time, timeUp: true });
+        } else if (difference < 1 && differenceEnd < 1) {
+          clearInterval(timer1);
+          setTime({ ...time, timeUp: true, timeEnd: true });
         } else {
           let days = Math.floor(difference / (1000 * 60 * 60 * 24));
           let hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
@@ -430,11 +440,9 @@ export default function Event(props) {
           <h5>({Intl.DateTimeFormat().resolvedOptions().timeZone})</h5>
           {/* <h5>{event && event.start_date && event.start_date.split(' ')[0]}</h5> */}
           <h1>
-            <Flip left cascade>
-              {/* {moment(event.start_date).format('DD/MM/YYYY')} */}
+            {/* {moment(event.start_date).format('DD/MM/YYYY')} */}
 
-              <span className={classes.bigTitle}>{event && event.name}</span>
-            </Flip>
+            <span className={classes.bigTitle}>{event && event.name}</span>
           </h1>
           <Grid container>
             <Grid item xs={12} sm={12} lg={6}>
@@ -455,8 +463,10 @@ export default function Event(props) {
             </Grid>
           </Grid>
 
-          {time.timeUp ? (
+          {time.timeUp && !time.timeEnd ? (
             <p>Event in progress</p>
+          ) : time.timeUp && time.timeEnd ? (
+            <p>Event Ended</p>
           ) : (
             <Grid container style={{ maxWidth: '95vw', margin: 'auto' }}>
               <Grid item xs={3} sm={3} lg={3} className={classes.time}>

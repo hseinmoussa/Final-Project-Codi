@@ -61,10 +61,10 @@ class StatesController extends Controller
 
         /**
  * @OA\Post(
- *     path="/api/state",
+ *     path="/api/admin/state",
  *     description="Add new state and return it",
  *     name="Hobby",
- * 
+ *  security={{"token": {}}},
  *      tags={"States"},
  *      operationId="ApiV1addState",
  *      summary="Add State",
@@ -146,7 +146,7 @@ class StatesController extends Controller
  * 
  *      tags={"States"},
  *      operationId="ApiV1getState",
- *      summary="Add State",
+ *      summary="Show specific State",
  
 
  *   @OA\Parameter(
@@ -223,9 +223,10 @@ class StatesController extends Controller
 
             /**
  * @OA\Put(
- *     path="/api/state/{id}",
+ *     path="/api/admin/state/{id}",
  *     description="Update specific ID and return it",
  *     name="Hobby",
+ *  security={{"token": {}}},
  * 
  *      tags={"States"},
  *      operationId="ApiV1putState",

@@ -138,11 +138,13 @@ export default function Events(props) {
 
   useEffect(() => {
     try {
+      console.log(Cookies.get('country'));
       let country;
 
-      if (getCookieConsentValue() && Cookies.get('country') != undefined)
+      if (Cookies.get('country') != undefined) {
+        console.log(22222);
         country = Cookies.get('country');
-      else country = '';
+      } else country = '';
       fetch(
         process.env.REACT_APP_URL + `events/10?page=${page}&country=${country}`,
         {
@@ -159,7 +161,7 @@ export default function Events(props) {
           }
         });
     } catch (e) {}
-  }, [page, getCookieConsentValue()]);
+  }, [page, Cookies.get('country')]);
 
   const CapitalizeFirstLetter = (str) => {
     return str.length ? str.charAt(0).toUpperCase() + str.slice(1) : str;
@@ -380,11 +382,15 @@ export default function Events(props) {
                                 color="textSecondary"
                                 component="p"
                               >
-                                <p>
-                                  {' '}
-                                  <b>State : </b>
-                                  {event.state.name}
-                                </p>
+                                {event && event.state && event.state.country && (
+                                  <p>
+                                    {' '}
+                                    <b>State : </b>
+                                    {event.state.name}(
+                                    {event.state.country.name})
+                                  </p>
+                                )}
+
                                 <p>
                                   {' '}
                                   <b>Start : </b>

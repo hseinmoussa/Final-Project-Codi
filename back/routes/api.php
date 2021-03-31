@@ -224,6 +224,5 @@ Route::get('/states/{row}', 'StatesController@index');
 
 
 ///For Swagger 
-Route::post('/state', 'StatesController@store');
 Route::get('/state/{id}', 'StatesController@show');
 Route::put('/state/{id}', 'StatesController@update');

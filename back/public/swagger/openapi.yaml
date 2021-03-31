@@ -68,42 +68,6 @@ paths:
         '400':
           description: 'Couldn''t get any Country'
       name: Hobby
-  /api/state:
-    post:
-      tags:
-        - States
-      summary: 'Add State'
-      description: 'Add new state and return it'
-      operationId: ApiV1addState
-      parameters:
-        -
-          name: name
-          in: query
-          required: true
-          schema:
-            type: string
-        -
-          name: country_id
-          in: query
-          required: true
-          schema:
-            type: number
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json: {  }
-        '401':
-          description: Unauthenticated
-        '400':
-          description: 'Bad Request'
-        '404':
-          description: 'not found'
-        '500':
-          description: 'Duplicate Entry!'
-        '403':
-          description: Forbidden
-      name: Hobby
   '/api/events/{row}':
     get:
       tags:
@@ -161,11 +125,50 @@ paths:
         '400':
           description: 'Couldn''t get any State'
       name: Hobby
+  /api/admin/state:
+    post:
+      tags:
+        - States
+      summary: 'Add State'
+      description: 'Add new state and return it'
+      operationId: ApiV1addState
+      parameters:
+        -
+          name: name
+          in: query
+          required: true
+          schema:
+            type: string
+        -
+          name: country_id
+          in: query
+          required: true
+          schema:
+            type: number
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json: {  }
+        '401':
+          description: Unauthenticated
+        '400':
+          description: 'Bad Request'
+        '404':
+          description: 'not found'
+        '500':
+          description: 'Duplicate Entry!'
+        '403':
+          description: Forbidden
+      security:
+        -
+          token: []
+      name: Hobby
   '/api/state/{id}':
     get:
       tags:
         - States
-      summary: 'Add State'
+      summary: 'Show specific State'
       description: 'Show specific ID and return it'
       operationId: ApiV1getState
       parameters:
@@ -185,6 +188,7 @@ paths:
         '404':
           description: 'not found'
       name: Hobby
+  '/api/admin/state/{id}':
     put:
       tags:
         - States
@@ -219,8 +223,10 @@ paths:
           description: 'Bad Request'
         '404':
           description: 'not found'
+      security:
+        -
+          token: []
       name: Hobby
-  '/api/admin/state/{id}':
     delete:
       tags:
         - States

@@ -153,7 +153,7 @@ export default function EventsByHobby(props) {
           }
         });
     } catch (e) {}
-  }, [page, getCookieConsentValue()]);
+  }, [page, Cookies.get('country')]);
 
   return (
     <div>

@@ -71,7 +71,7 @@ const Toolbar = ({ className, setRender, render, User, State, ...rest }) => {
   const [open, setOpen] = useState(false);
   const [info, setInfo] = useState({});
 
-  const [timezone, setTimezone] = useState('');
+  // const [timezone, setTimezone] = useState('');
   // const [timezone2, setTimezone2] = useState('');
   const [date1, setDate1] = useState('');
   const [date2, setDate2] = useState('');
@@ -118,7 +118,7 @@ const Toolbar = ({ className, setRender, render, User, State, ...rest }) => {
         document.getElementById('description').value
       );
 
-      formData.append('zone', timezone);
+      // formData.append('zone', timezone);
 
       for (let i = 0; i < info.image.length; i++) {
         formData.append('photos[]', info.image[i]);
@@ -263,12 +263,11 @@ const Toolbar = ({ className, setRender, render, User, State, ...rest }) => {
                     onChange={(e) => setInputState(e)}
                   />
                 </Grid>
-                <Grid item xs>
+                {/* <Grid item xs>
                   <TimezonePicker
                     onChange={
                       (time) => setTimezone(time)
 
-                      // console.log('New Timezone Selected:', setTimezone(time))
                     }
                     required
                     value={timezone}
@@ -278,7 +277,7 @@ const Toolbar = ({ className, setRender, render, User, State, ...rest }) => {
                       id: 'zone'
                     }}
                   />
-                </Grid>
+                </Grid> */}
               </Grid>
 
               <Grid container spacing={3}>
