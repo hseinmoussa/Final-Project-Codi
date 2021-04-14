@@ -10,7 +10,7 @@ class FileType
     public static function store($file, $folder)
     {
         $path = Storage::disk('public')->put($folder, $file);
-        $path= $file->move(public_path() . "/storage/$folder");
+        // $path= $file->move(public_path() . "/storage/$folder");
         return $path;
     }
 

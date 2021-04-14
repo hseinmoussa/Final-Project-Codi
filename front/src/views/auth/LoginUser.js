@@ -120,7 +120,7 @@ const LoginUser = () => {
       var id = JSON.stringify(userId);
       window.localStorage.setItem('tokenUser', accessToken);
       window.localStorage.setItem('User', id);
-      toast.info('You Seccsussfuly loged in !', {
+      toast.info('You Successfully loged in !', {
         position: 'top-right',
         autoClose: 1000,
         hideProgressBar: true,
