@@ -21,14 +21,14 @@ class CreateEventsTable extends Migration
         $table->string('name');
         $table->datetime('start_date');
         $table->datetime('end_date');
-        $table->string('zone');
+        $table->string('zone')->nullable();
         // $table->string('start_time');
         // $table->string('end_time');
 
         $table->bigInteger('user_id')->unsigned();
         $table->bigInteger('state_id')->unsigned();
         $table->string('location');
-        $table->string('description');
+        $table->longText('description');
 
          
         });

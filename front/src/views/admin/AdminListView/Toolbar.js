@@ -256,8 +256,8 @@ const Toolbar = ({ className, setRender, render, ...rest }) => {
                     name="password"
                     type="password"
                     id="password"
-                    validators={['required', 'minStringLength:8']}
-                    errorMessages={['this field is required', 'Weak Password']}
+                    validators={['required']}
+                    errorMessages={['this field is required']}
                     placeholder="Password"
                     value={info.password}
                     onChange={(e) => setInputState(e)}

@@ -146,4 +146,44 @@ class ImagesRepo implements ImagesInterface
        
     }
 
+
+    public function destroyImageUser($request,$id)
+    {
+
+    
+        $token=$request->headers->get('Authorization');
+
+        $tokenParts = explode(".", $token);  
+        $tokenHeader = base64_decode($tokenParts[0]);
+        $tokenPayload = base64_decode($tokenParts[1]);
+        $jwtHeader = json_decode($tokenHeader);
+        $jwtPayload = json_decode($tokenPayload);
+        $idd= $jwtPayload->sub;
+
+      
+        $image = self::findImageOfId($id);
+
+        $Image = self::show($id);
+
+        $verify_Not_Hacker=$Image
+        ->whereHas('event.user', function ($query) use($idd) {
+            $query->where('id', $idd);
+        });
+
+        if(!is_null($verify_Not_Hacker))
+        {
+        if(!is_null($image))
+          FileType::destroy($image);
+
+        if(!is_null($Image))
+          $Image->delete();
+
+        return $Image;
+        }
+        
+        return null;
+       
+    }
+
+
 }

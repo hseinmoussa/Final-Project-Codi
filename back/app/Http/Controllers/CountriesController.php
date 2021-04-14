@@ -18,6 +18,39 @@ class CountriesController extends Controller
         $this->repository = $repository;
     }
 
+
+
+            /**
+ * @OA\Get(
+ *     path="/api/countries/{row}",
+ *     description="Return all Countries informations",
+ *     name="Hobby",
+ * 
+ *      tags={"Countries"},
+ *      operationId="ApiV1getCountries",
+ *      summary="Get Countries",
+ *
+ *     @OA\Parameter(
+ *          name="row",
+ *          in="path",
+ *          required=true, 
+ *          type="string" 
+ *      ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="OK",
+ *     ),
+ *     @OA\Response(
+ *         response=400,
+ *         description="Couldn't get any Country"
+ *     ),
+ *   @OA\Tag(
+     *     name="Projects",
+     *     description="API Endpoints of Projects"
+     * )
+ * )
+ */
+
     /**
      * Display a listing of the resource.
      *
@@ -32,6 +65,10 @@ class CountriesController extends Controller
         
         return Response::error(400, "couldn't get Countries");
     }
+
+
+
+
 
 
     /**

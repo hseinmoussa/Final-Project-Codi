@@ -265,5 +265,7 @@ class DatabaseSeeder extends Seeder
 
         DB::table('Countries')->insert($countries);
         $this->call(States::class);
+        $this->call(admins::class);
+        $this->call(Hobbies::class);
     }
 }

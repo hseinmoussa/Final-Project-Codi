@@ -6,6 +6,7 @@ import { Container } from './styles.css';
 import { makeStyles } from '@material-ui/core/styles';
 import Elev from './rocket.png';
 import SocialMediaButtons from 'react-social-media-buttons';
+import CookieConsent, { Cookies } from 'react-cookie-consent';
 
 const iconStyle = { color: '#ffffff' };
 
@@ -70,7 +71,7 @@ const Footer = () => {
     }
     if (c >= 1000) {
       window.requestAnimationFrame(scrollToTop);
-      window.scrollTo(0, c - c / 100);
+      window.scrollTo(0, c - c / 70);
     }
   };
 
@@ -82,6 +83,7 @@ const Footer = () => {
           borderRadius: '50%',
           backgroundColor: bgColour
         }}
+        fill="black"
         iconStyle={iconStyle}
       />
       <span
@@ -91,7 +93,7 @@ const Footer = () => {
           lineHeight: '1.5'
         }}
       >
-        <b>&#169; 2020.</b> All rights reserved.
+        <b>&#169; 2021.</b> All rights reserved.
       </span>
       <div style={{ textAlign: 'center' }}>
         <img
@@ -108,6 +110,20 @@ const Footer = () => {
           Take The Elevator Up To The Roof Top
         </span>
       </div>
+
+      <CookieConsent
+        onAccept={() => {
+          try {
+            fetch('https://ipapi.co/json/')
+              .then((response) => response.json())
+              .then((res) => {
+                console.log(Cookies.set('country', res.country_name));
+              });
+          } catch (e) {}
+        }}
+      >
+        This website uses cookies to enhance the user experience.
+      </CookieConsent>
     </footer>
   );
 };

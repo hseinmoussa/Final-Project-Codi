@@ -48,6 +48,60 @@ class Users implements UsersInterface
         return  $user;
     }
 
+
+    public function showUserInfo($request)
+    {
+
+        $token=$request->headers->get('Authorization');
+
+        $tokenParts = explode(".", $token);  
+        $tokenHeader = base64_decode($tokenParts[0]);
+        $tokenPayload = base64_decode($tokenParts[1]);
+        $jwtHeader = json_decode($tokenHeader);
+        $jwtPayload = json_decode($tokenPayload);
+        $idd= $jwtPayload->sub;
+
+        $user= User::where('id',$idd)->first();
+        
+        return  $user;
+    }
+
+    
+    
+
+
+
+
+
+
+
+
+
+        //Return the count of all Not freelancers
+        public function not_freelancers($rowNb)
+        {
+        
+        $users_hobbies= Users_Hobbies::where('is_freelancer', 0)->count();
+    
+        // return  new Users_HobbiesResources($users_hobbies);
+        return  $users_hobbies;
+    
+    
+        }
+
+
+             //Return the count of all freelancers
+             public function freelancers($rowNb)
+             {
+             
+             $users_hobbies= Users_Hobbies::where('is_freelancer', 1)->count();
+         
+             // return  new Users_HobbiesResources($users_hobbies);
+             return  $users_hobbies;
+         
+         
+             }
+
     public function relations($id)
     {
         $user= User::where('id',$id)->with(['hobbies','events'])->first();
@@ -140,6 +194,62 @@ class Users implements UsersInterface
       
          return $user;
     }
+    
+
+
+    public function updateUserInfo($request)
+    {   
+       
+        $token=$request->headers->get('Authorization');
+
+        $tokenParts = explode(".", $token);  
+        $tokenHeader = base64_decode($tokenParts[0]);
+        $tokenPayload = base64_decode($tokenParts[1]);
+        $jwtHeader = json_decode($tokenHeader);
+        $jwtPayload = json_decode($tokenPayload);
+        $idd= $jwtPayload->sub;
+
+         
+            $data=$request->all();
+       
+            $user = User::where('id', $idd)->first();
+
+            if(empty($request->file('image'))){
+           
+                $path = self::findImageOfId($idd);
+     
+             }else{
+
+                $old_path = self::findImageOfId($idd);
+        
+                $path = self::image($request->file('image'),'users',$old_path);
+            
+             }
+            
+
+            $password = $request->password;
+
+            if (trim($password) == '')
+            {
+                // 'name', 'email', 'password','image','phone','gender','age'
+
+                $user->name = $data['name'];
+                $user->email = $data['email'];
+                $user->gender = $data['gender'];
+                $user->phone = $data['phone'];
+                $user->age = $data['age'];
+            } else 
+            {
+                $user->update($request->all());
+            }
+        
+
+         $user->image = $path;
+         $user->save();
+      
+         return $user;
+    }
+
     
      public function findImageOfId($id)
      {

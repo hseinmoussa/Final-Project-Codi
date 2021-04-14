@@ -16,6 +16,8 @@ interface ImagesInterface
 
     public function destroy($id);
 
+    public function destroyImageUser($request,$id);
+    
     public function count();
     
 

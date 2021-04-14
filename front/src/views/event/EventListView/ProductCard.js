@@ -115,7 +115,7 @@ const ProductCard = ({
         document.getElementById('description').value
       );
 
-      formData.append('zone', info.zone);
+      // formData.append('zone', info.zone);
 
       if (info.image)
         for (let i = 0; i < info.image.length; i++) {
@@ -375,7 +375,7 @@ const ProductCard = ({
                   onChange={(e) => setInputState(e)}
                 />
               </Grid>
-              <Grid item xs>
+              {/* <Grid item xs>
                 <TimezonePicker
                   onChange={
                     (time) =>
@@ -383,7 +383,6 @@ const ProductCard = ({
                         ...info,
                         zone: time
                       })
-                    // console.log('New Timezone Selected:', setTimezone(time))
                   }
                   required
                   value={info.zone}
@@ -393,7 +392,7 @@ const ProductCard = ({
                     id: 'zone'
                   }}
                 />
-              </Grid>
+              </Grid> */}
             </Grid>
 
             <Grid container spacing={3}>

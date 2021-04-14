@@ -62,7 +62,7 @@ const LoginView = () => {
       var id = JSON.stringify(adminId);
       window.localStorage.setItem('tokenAdmin', accessToken);
       window.localStorage.setItem('Admin', id);
-      toast.info('You Seccsussfuly loged in !', {
+      toast.info('You Successfully loged in !', {
         position: 'top-right',
         autoClose: 1000,
         hideProgressBar: true,
@@ -174,6 +174,7 @@ const LoginView = () => {
                   <Button
                     color="primary"
                     // disabled={isSubmitting}
+                    style={{ backgroundColor: '#2f4f4f' }}
                     fullWidth
                     size="large"
                     type="submit"

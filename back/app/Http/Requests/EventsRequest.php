@@ -36,12 +36,12 @@ class EventsRequest extends FormRequest
                         'location' => 'required|max:255',
                         'start_date' => 'required|max:255',
                         'end_date' => 'required|max:255',
-                        'zone' => 'required|max:255',
+                        // 'zone' => 'required|max:255',
                         // 'start_time' => 'required|max:255',
                         // 'end_time' => 'required|max:255',
                         'state_id' => 'required|exists:States,id',
                         'user_id' => 'required|exists:users,id',
-                        'description' => 'required|max:255',
+                        'description' => 'required',
                     ];
                 }
             case 'PUT':
@@ -53,12 +53,12 @@ class EventsRequest extends FormRequest
                         'location' => 'required|max:255',
                         'start_date' => 'required|max:255',
                         'end_date' => 'required|max:255',
-                        'zone' => 'required|max:255',
+                        // 'zone' => 'required|max:255',
                         // 'start_time' => 'required|max:255',
                         // 'end_time' => 'required|max:255',
                         'state_id' => 'required|exists:States,id',
                         'user_id' => 'required|exists:users,id',
-                        'description' => 'required|max:255',
+                        'description' => 'required',
                     ];
                 }
         }
@@ -88,8 +88,8 @@ class EventsRequest extends FormRequest
             'end_date.required' => 'End date is required!',
             'end_date.max' => 'End date is too long',
 
-            'zone.required' => 'Zone time is required!',
-            'zone.max' => 'Zone is too long',
+            // 'zone.required' => 'Zone time is required!',
+            // 'zone.max' => 'Zone is too long',
 
             // 'end_time.required' => 'End time is required!',
             // 'end_time.max' => 'End time is too long',
@@ -104,7 +104,7 @@ class EventsRequest extends FormRequest
             'country_id.exists' => 'Country field should be real one!',
 
             'description.required' => 'Description is required!',
-            'description.max' => 'Description is too long',
+            // 'description.max' => 'Description is too long',
         ];
     }
 

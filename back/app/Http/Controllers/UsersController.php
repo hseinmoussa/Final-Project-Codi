@@ -19,6 +19,39 @@ class UsersController extends Controller
 
 
 
+
+                    /**
+ * @OA\Get(
+ *     path="/api/users/{row}",
+ *     description="Return all Users informations",
+ *     name="Hobby",
+ * 
+ *      tags={"Users"},
+ *      operationId="ApiV1getUsers",
+ *      summary="Get Users",
+ *
+ *     @OA\Parameter(
+ *          name="row",
+ *          in="path",
+ *          required=true, 
+ *          type="string" 
+ *      ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="OK",
+ *     ),
+ *     @OA\Response(
+ *         response=400,
+ *         description="Couldn't get any User"
+ *     ),
+ *   @OA\Tag(
+     *     name="Projects",
+     *     description="API Endpoints of Projects"
+     * )
+ * )
+ */
+
+
     /**
      * Display a listing of the resource.
      *
@@ -35,6 +68,9 @@ class UsersController extends Controller
         return Response::error(400, "couldn't get Users");
     }
 
+
+
+    
     
 
     /**
@@ -97,6 +133,52 @@ class UsersController extends Controller
         return Response::error(400, "couldn't find user");
 
     }
+
+
+
+
+     /**
+     * Display the specified resource.
+     *
+     * @param  \App\User $user
+     * @return \Illuminate\Http\Response
+     */
+    public function showUserInfo(Request $request)
+    {
+
+        $user = $this->repository->showUserInfo($request);
+
+        if ($user) return Response::success($user);
+
+        return Response::error(400, "couldn't find user");
+
+    }
+
+
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\User $user
+     * @return \Illuminate\Http\Response
+     */
+    public function updateUserInfo(UsersRequest $request)
+    {
+      
+        if ($request->validator->fails())  return Response::error(400, $request->validator->messages());
+
+    
+        $user = $this->repository->updateUserInfo($request);
+
+        if ($user)  return Response::success($user);
+        
+        return Response::error(400, "couldn't update user");
+
+        
+    }
+
+    
 
 
         /**

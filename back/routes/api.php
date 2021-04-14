@@ -73,7 +73,7 @@ Route::post('/admin/login', 'AdminAuthController@login');
     Route::get('/country/{id}', 'CountriesController@show');
     Route::get('/countryRelations/{id}', 'CountriesController@showRelation');
     Route::put('/country/{id}', 'CountriesController@update');
-    Route::post('/country', 'CountriesController@store');
+    Route::post('/country', 'CountriesController@store')->name('country.create');
     Route::delete('/country/{id}', 'CountriesController@destroy');
 
 
@@ -130,10 +130,34 @@ Route::post('/admin/login', 'AdminAuthController@login');
 Route::group(['prefix' => 'user','middleware' => ['assign.guard:users']],function ()
 {
 
-    Route::get('/user/{id}', 'UsersController@show');
-
+    //User
+    Route::get('/user', 'UsersController@showUserInfo');
+    Route::put('/update/{id}', 'UsersController@updateUserInfo');
     Route::post('/user/logout', 'UserAuthController@logout');
 
+
+    //Events
+    Route::get('/events/{row}', 'EventsController@indexUser');
+    Route::delete('/event/{id}', 'EventsController@destroyUser');
+    Route::put('/event/{id}', 'EventsController@updateUser');
+    Route::post('/event', 'EventsController@storeUser');
+    Route::delete('/hobby/{idEvent}/{idHobby}', 'EventsController@dettachHobbyUser');
+
+
+    ///Image
+    Route::delete('/image/{id}', 'ImagesController@destroyImageUser');
+
+
+    
+
+    //User_Hobby
+    Route::post('/user_hobby', 'UsersHobbiesController@storeUser');
+    Route::get('/users_hobbies/{row}', 'UsersHobbiesController@indexUser');
+    Route::delete('/user_hobby/{id}', 'UsersHobbiesController@destroyUser');
+    Route::put('/user_hobby/{id}', 'UsersHobbiesController@updateUser');
+
+
+    
 
 });
 
@@ -152,37 +176,27 @@ Route::group(['prefix' => 'user','middleware' => ['assign.guard:users']],functio
 Route::get('/hobbies/{row}', 'HobbiesController@index');
 Route::get('/hobby/{id}', 'HobbiesController@show');
 Route::get('/hobbyRelations/{id}', 'HobbiesController@showRelation');
-Route::put('/hobby/{id}', 'HobbiesController@update');
-Route::post('/hobby', 'HobbiesController@store');
-Route::delete('/hobby/{id}', 'HobbiesController@destroy');
 
 Route::get('/hobbiesmain/{row}', 'HobbiesController@main');
 
 /////Images
 Route::get('/images/{row}', 'ImagesController@index');
 Route::get('/image/{id}', 'ImagesController@show');
-Route::put('/image/{id}', 'ImagesController@update');
-Route::post('/image', 'ImagesController@store');
-Route::delete('/image/{id}', 'ImagesController@destroy');
+
 
 
 
 /////Users_Hobbies
-Route::get('/users_hobbies/{row}', 'UsersHobbiesController@index');
 Route::get('/freelancers/{row}', 'UsersHobbiesController@freelancers');
 Route::get('/not_freelancers/{row}', 'UsersHobbiesController@not_freelancers');
 Route::get('/user_hobby/{id}', 'UsersHobbiesController@show');
-Route::put('/user_hobby/{id}', 'UsersHobbiesController@update');
-Route::post('/user_hobby', 'UsersHobbiesController@store');
-Route::delete('/user_hobby/{id}', 'UsersHobbiesController@destroy');
+
 
 
 /////Events_Hobbies
 Route::get('/events_hobbies/{row}', 'EventsHobbiesController@index');
 Route::get('/event_hobby/{id}', 'EventsHobbiesController@show');
-Route::put('/event_hobby/{id}', 'EventsHobbiesController@update');
-Route::post('/event_hobby', 'EventsHobbiesController@store');
-Route::delete('/event_hobby/{id}', 'EventsHobbiesController@destroy');
+
 
 
 
@@ -190,9 +204,7 @@ Route::delete('/event_hobby/{id}', 'EventsHobbiesController@destroy');
 /////Events
 Route::get('/events/{row}', 'EventsController@index');
 Route::get('/event/{id}', 'EventsController@show');
-Route::put('/event/{id}', 'EventsController@update');
-Route::post('/event', 'EventsController@store');
-Route::delete('/event/{id}', 'EventsController@destroy');
+
 Route::get('/eventsbyhobby/{row}/{id}', 'EventsController@indexByHobby');
 
 
@@ -205,3 +217,12 @@ Route::get('/eventsbyhobby/{row}/{id}', 'EventsController@indexByHobby');
 Route::post('/contactus', 'ContactUs@sendEmail');
 
 
+/////States
+Route::get('/states/{row}', 'StatesController@index');
+
+
+
+
+///For Swagger 
+Route::get('/state/{id}', 'StatesController@show');
+Route::put('/state/{id}', 'StatesController@update');

@@ -568,11 +568,11 @@ const Results = ({ className, render, setRender, ...rest }) => {
                       {customer.phone && (
                         <TableCell>{customer.phone}</TableCell>
                       )}
-                      {customer.is_owner && (
+                      {
                         <TableCell>
-                          {customer.is_owner == 0 ? 'No' : 'Yes'}
+                          {customer && customer.is_owner == 0 ? 'No' : 'Yes'}
                         </TableCell>
-                      )}
+                      }
 
                       {customer.id && (
                         <TableCell padding="checkbox">

@@ -31,7 +31,16 @@ import EventsByHobby from 'src/views/Events/EventsByHobby';
 import Event from 'src/views/Events/Event';
 
 import Freelancers from 'src/views/Freelancers/Freelancers';
+import User from 'src/views/Freelancers/User';
+import Partner from 'src/views/Freelancers/Partner';
+
 import Not_Freelancers from 'src/views/Freelancers/Not_Freelancers';
+
+import UserAccount from 'src/views/UserAccount/UserAccount';
+import EventCRUD from 'src/views/UserAccount/Events';
+import HobbyCRUD from 'src/views/UserAccount/Hobbies';
+
+import Test from 'src/views/test';
 
 const routes = [
   {
@@ -78,8 +87,11 @@ const routes = [
 
       { path: 'Freelancers', element: <Freelancers /> },
       { path: 'Not_Freelancers', element: <Not_Freelancers /> },
+      { path: 'freelancer/:id', element: <User /> },
+      { path: 'partner/:id', element: <Partner /> },
 
       { path: '404', element: <NotFoundView /> },
+      { path: 'test', element: <Test /> },
       { path: '/', element: <Navigate to="/home" /> },
       { path: '*', element: <Navigate to="/404" /> }
     ]
@@ -88,7 +100,11 @@ const routes = [
   {
     path: '/usercostumer',
     // element: <MainLayout />,
-    children: [{ path: '/', element: <Navigate to="/404" /> }]
+    children: [
+      { path: '/account', element: <UserAccount /> },
+      { path: '/events', element: <EventCRUD /> },
+      { path: '/hobbies', element: <HobbyCRUD /> }
+    ]
   }
 ];
 

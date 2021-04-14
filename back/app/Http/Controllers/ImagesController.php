@@ -133,6 +133,25 @@ class ImagesController extends Controller
     }
 
 
+
+        /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Image  $Image
+     * @return \Illuminate\Http\Response
+     */
+    public function destroyImageUser(Request $request,$id)
+    {
+        $Image = $this->repository->destroyImageUser($request,$id);
+
+        if ($Image)  return Response::success("Image has been deleted successfuly");
+        
+        return Response::error(400, "couldn't delete Image");
+
+    }
+
+    
+
    
 }
 
